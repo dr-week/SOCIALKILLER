@@ -311,7 +311,7 @@ export function useAudienceData() {
         persistAccount(updated)
         localStorage.setItem('followdesk-current', JSON.stringify(updated))
       } else {
-        throw new Error(`No recent scan found on backend for @${currentAccountUsername.value}. Open Instagram on their profile and click Scan in The Social Base companion.`)
+        throw new Error(`No recent scan found on backend for @${currentAccountUsername.value}. Open Instagram on their profile and click Scan in SOCIALKILLER companion.`)
       }
     } catch (e) {
       error.value = e instanceof Error ? e.message : 'Refresh failed.'

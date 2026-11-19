@@ -37,7 +37,7 @@ export function mountAppTopbar(
       </button>
       <button type="button" class="mobile-brand" data-workspace-link @click=${handlers.openWorkspace}>
         <img class="brand-mark" src="/branding/social-base-logo.png" alt="" />
-        <span>The Social <span class="brand-accent">Base</span></span>
+        <span>SOCIAL<span class="brand-accent">KILLER</span></span>
       </button>
       <div class="breadcrumbs">
         ${createIcon('dashboard', 14)}

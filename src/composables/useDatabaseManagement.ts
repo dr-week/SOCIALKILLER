@@ -89,7 +89,7 @@ export function useDatabaseManagement(
         }
         alert('Database backup restored successfully!')
       } catch {
-        alert('Invalid backup file for The Social Base.')
+        alert('Invalid backup file for SOCIALKILLER.')
       }
     }
     reader.readAsText(file)

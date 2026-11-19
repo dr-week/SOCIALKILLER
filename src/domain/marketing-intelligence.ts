@@ -44,7 +44,7 @@ export interface LyraCopyFramework {
 }
 
 export function generateLyraMarketingSuite({
-  projectName = 'Zuari (dr-week/fast-framework) & The Social Base',
+  projectName = 'Zuari (dr-week/fast-framework) & SOCIALKILLER',
   category = 'Zero-VDOM Reactive Web, 120 FPS WebXR & Rust/Zig Wasm Framework',
   valueProposition = '<2.5KB gzipped, 0% Virtual DOM, 120 FPS Apple Vision Pro / Quest 3 spatial HUDs, and automated 10-channel human + AI distribution',
   targetMarket = 'both'
@@ -102,7 +102,7 @@ export function generateLyraMarketingSuite({
       market: 'both',
       niche: 'Open-Source Founders & DevRel',
       demandLevel: 'High',
-      targetPersona: 'Creators building multi-project ecosystems (Zuari, The Social Base)',
+      targetPersona: 'Creators building multi-project ecosystems (Zuari, SOCIALKILLER)',
       keyPainPoint: 'Keeping GitHub, Discord, Reddit, LinkedIn, and Dev.to active daily',
       suggestedAction: 'Run daily automated Keep-Alive pulses + dual-market AI/Human broadcasts'
     }

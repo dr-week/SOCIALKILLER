@@ -74,7 +74,7 @@ function selectView(view: View) {
     <div class="sidebar-header">
       <a class="brand" href="#" @click.prevent="selectView('app-launcher')">
         <img class="brand-mark" src="/branding/social-base-logo.png" alt="" />
-        <span>The Social <span class="brand-accent">Base</span></span>
+        <span>SOCIAL<span class="brand-accent">KILLER</span></span>
       </a>
     </div>
 

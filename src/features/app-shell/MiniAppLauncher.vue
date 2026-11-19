@@ -16,9 +16,9 @@ const {
   <main class="app-launcher">
     <header class="launcher-heading">
       <div>
-        <p class="launcher-eyebrow">THE SOCIAL BASE · APP LAUNCHER</p>
-        <h1>Your agency, <span class="heading-highlight">in one place.</span></h1>
-        <p class="launcher-copy">Choose a focused workspace. Your active brand and local settings stay shared as you move between apps.</p>
+        <p class="launcher-eyebrow">SOCIALKILLER · APP LAUNCHER</p>
+        <h1>Kill the middleman. <span class="heading-highlight">Keep 100% of your craft.</span></h1>
+        <p class="launcher-copy">One solo creator, every agency capability. Your active brand and local settings stay shared as you move between apps.</p>
       </div>
       <div class="workspace-chip"><span class="workspace-chip-status"></span><span class="workspace-chip-name">{{ activeBrandName }}</span></div>
     </header>
