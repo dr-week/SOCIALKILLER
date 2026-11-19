@@ -1,0 +1,82 @@
+.app-shell {
+  --mini-app-context-accent: var(--accent-primary);
+  background:
+    radial-gradient(ellipse at 86% 0%, color-mix(in srgb, var(--accent-primary) 12%, transparent), transparent 34%),
+    radial-gradient(ellipse at 4% 92%, rgba(80, 152, 210, 0.09), transparent 30%),
+    var(--bg-app);
+}
+
+.app-shell .content-wrap { background-image: var(--mini-app-workspace-art, none); }
+.app-shell[data-active-visual='aurora'] { --mini-app-workspace-art: radial-gradient(ellipse at 88% 0%, color-mix(in srgb, var(--mini-app-context-accent) 7%, transparent), transparent 38%); }
+.app-shell[data-active-visual='orbit'] { --mini-app-workspace-art: radial-gradient(ellipse at 98% 5%, color-mix(in srgb, var(--mini-app-context-accent) 8%, transparent), transparent 32%); }
+.app-shell[data-active-visual='constellation'] { --mini-app-workspace-art: linear-gradient(150deg, transparent 47%, color-mix(in srgb, var(--mini-app-context-accent) 3%, transparent) 49%, transparent 52%); }
+.app-shell[data-active-visual='nebula'] { --mini-app-workspace-art: radial-gradient(ellipse at 92% 8%, color-mix(in srgb, var(--mini-app-context-accent) 9%, transparent), transparent 32%), radial-gradient(ellipse at 2% 74%, color-mix(in srgb, var(--mini-app-context-accent) 4%, transparent), transparent 34%); }
+.app-shell[data-active-visual='radar'] { --mini-app-workspace-art: repeating-radial-gradient(ellipse at 100% 0%, transparent 0 48px, color-mix(in srgb, var(--mini-app-context-accent) 3%, transparent) 49px 50px, transparent 51px 90px); }
+.app-shell[data-active-visual='lens'] { --mini-app-workspace-art: linear-gradient(90deg, transparent 96%, color-mix(in srgb, var(--mini-app-context-accent) 3%, transparent) 96.2% 96.4%, transparent 96.6%), linear-gradient(0deg, transparent 96%, color-mix(in srgb, var(--mini-app-context-accent) 3%, transparent) 96.2% 96.4%, transparent 96.6%); }
+.app-shell[data-active-visual='prism'] { --mini-app-workspace-art: conic-gradient(from 225deg at 100% 0%, color-mix(in srgb, var(--mini-app-context-accent) 6%, transparent), transparent 28%, color-mix(in srgb, var(--mini-app-context-accent) 3%, transparent), transparent 66%); }
+.app-shell[data-active-visual='landscape'] { --mini-app-workspace-art: linear-gradient(160deg, transparent 68%, color-mix(in srgb, var(--mini-app-context-accent) 5%, transparent) 68.2% 69%, transparent 69.2%); }
+.app-shell[data-active-visual='flow'] { --mini-app-workspace-art: linear-gradient(135deg, transparent 48%, color-mix(in srgb, var(--mini-app-context-accent) 3%, transparent) 49% 50%, transparent 51%); }
+.app-shell[data-active-visual='isometric'] { --mini-app-workspace-art: repeating-linear-gradient(30deg, transparent 0 70px, color-mix(in srgb, var(--mini-app-context-accent) 2%, transparent) 71px 72px, transparent 73px 125px); }
+
+.app-shell .topbar {
+  background: var(--glass-bg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(20px) saturate(140%);
+}
+
+.app-shell .brand-workspace-header {
+  border-color: var(--glass-border);
+  background:
+    radial-gradient(ellipse at 100% 0%, color-mix(in srgb, var(--accent-primary) 8%, transparent), transparent 45%),
+    var(--glass-bg);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.09);
+  backdrop-filter: blur(18px) saturate(130%);
+}
+
+.app-shell aside.sidebar.sidebar {
+  background:
+    radial-gradient(ellipse at 0% 0%, color-mix(in srgb, var(--accent-primary) 9%, transparent), transparent 42%),
+    var(--glass-bg);
+  box-shadow: 8px 0 34px rgba(0, 0, 0, 0.13);
+  backdrop-filter: blur(24px) saturate(135%);
+}
+
+.app-shell .brand-mark { box-shadow: 0 0 24px color-mix(in srgb, var(--accent-primary) 20%, transparent); }
+
+.app-shell .import-banner,
+.app-shell .stat-card,
+.app-shell .panel,
+.app-shell .profile-scanner,
+.app-shell .workspace-card,
+.app-shell .card,
+.app-shell .pub-card,
+.app-shell .publisher-minimal-header {
+  border-color: var(--glass-border);
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(18px) saturate(125%);
+}
+
+.stats-grid .stat-card:nth-child(1) {
+  background: radial-gradient(ellipse at 100% 0%, rgba(255, 123, 136, 0.13), transparent 50%), var(--glass-bg);
+}
+.stats-grid .stat-card:nth-child(2) {
+  background: radial-gradient(ellipse at 100% 0%, rgba(105, 170, 255, 0.13), transparent 50%), var(--glass-bg);
+}
+.stats-grid .stat-card:nth-child(3) {
+  background: radial-gradient(ellipse at 100% 0%, rgba(89, 221, 182, 0.12), transparent 50%), var(--glass-bg);
+}
+.stats-grid .stat-card:nth-child(4) {
+  background: radial-gradient(ellipse at 100% 0%, rgba(184, 154, 255, 0.14), transparent 50%), var(--glass-bg);
+}
+
+.app-shell .stat-card,
+.app-shell .panel,
+.app-shell .workspace-card,
+.app-shell .pub-card,
+.app-shell .card {
+  border-radius: var(--radius-card);
+}
+
+@media (max-width: 560px) {
+  .app-shell .topbar { backdrop-filter: blur(16px); }
+}

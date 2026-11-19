@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "id": "social-base-logo",
+      "name": "The Social Base logo",
+      "kind": "raster",
+      "category": "brand / identity",
+      "creator": "Product owner supplied",
+      "sourceUrl": null,
+      "license": "Owner-supplied product artwork; use in this product is approved",
+      "attribution": "No attribution requirement supplied",
+      "usagePermission": "Approved for this product",
+      "originalDimensions": "760 × 760 PNG",
+      "original": "src/assets/branding/the-social-base-logo-source.png",
+      "processedMaster": "src/assets/branding/generated/social-base-logo.png",
+      "transformations": ["Reviewed crop", "Deterministic background cleanup", "Lanczos resize"],
+      "variants": [
+        { "path": "public/branding/variants/social-base-logo-128.webp", "preview": "/branding/variants/social-base-logo-128.webp", "width": 128, "height": 128, "format": "webp" },
+        { "path": "public/branding/variants/social-base-logo-320.webp", "preview": "/branding/variants/social-base-logo-320.webp", "width": 320, "height": 320, "format": "webp" },
+        { "path": "public/branding/variants/social-base-logo-640.webp", "preview": "/branding/variants/social-base-logo-640.webp", "width": 640, "height": 640, "format": "webp" }
+      ]
+    },
+    {
+      "id": "mini-app-backgrounds",
+      "name": "Mini-app background overlays",
+      "kind": "image-set",
+      "category": "mini-app artwork",
+      "creator": "User-provided; ownership confirmed by user",
+      "sourceUrl": null,
+      "license": "User confirms ownership and grants project use",
+      "attribution": "Not required per user",
+      "usagePermission": "Approved for this product",
+      "originalDimensions": "13 owner-supplied originals with optimized WebP overlays",
+      "original": "src/assets/app-backgrounds/",
+      "processedMaster": null,
+      "transformations": ["Originals retained unchanged", "Auto-oriented and resized to fit 800 × 600", "Deterministic WebP overlay at quality 80"],
+      "variants": [],
+      "files": [
+        { "app": "planner", "source": "src/assets/app-backgrounds/planner/source.jpe", "overlay": "src/assets/app-backgrounds/planner/overlay.webp" },
+        { "app": "connections", "source": "src/assets/app-backgrounds/connections/source.jpe", "overlay": "src/assets/app-backgrounds/connections/overlay.webp" },
+        { "app": "engage", "source": "src/assets/app-backgrounds/engage/source.jpe", "overlay": "src/assets/app-backgrounds/engage/overlay.webp" },
+        { "app": "audience", "source": "src/assets/app-backgrounds/audience/source.png", "overlay": "src/assets/app-backgrounds/audience/overlay.webp" },
+        { "app": "profile-scout", "source": "src/assets/app-backgrounds/profile-scout/source.jpe", "overlay": "src/assets/app-backgrounds/profile-scout/overlay.webp" },
+        { "app": "content-studio", "source": "src/assets/app-backgrounds/content-studio/source.jpe", "overlay": "src/assets/app-backgrounds/content-studio/overlay.webp" },
+        { "app": "script-studio", "source": "src/assets/app-backgrounds/script-studio/source.png", "overlay": "src/assets/app-backgrounds/script-studio/overlay.webp" },
+        { "app": "workflows", "source": "src/assets/app-backgrounds/workflows/source.jpe", "overlay": "src/assets/app-backgrounds/workflows/overlay.webp" },
+        { "app": "workspaces", "source": "src/assets/app-backgrounds/workspaces/source.jpe", "overlay": "src/assets/app-backgrounds/workspaces/overlay.webp" },
+        { "app": "design-system", "source": "src/assets/app-backgrounds/design-system/source.png", "overlay": "src/assets/app-backgrounds/design-system/overlay.webp" },
+        { "app": "asset-manager", "source": "src/assets/app-backgrounds/asset-manager/source.jpe", "overlay": "src/assets/app-backgrounds/asset-manager/overlay.webp" },
+        { "app": "automations", "source": "src/assets/app-backgrounds/automations/source.jpe", "overlay": "src/assets/app-backgrounds/automations/overlay.webp" },
+        { "app": "android-builder", "source": "src/assets/app-backgrounds/android-builder/source.jpe", "overlay": "src/assets/app-backgrounds/android-builder/overlay.webp" }
+      ],
+      "includedInApp": true
+    },
+    {
+      "id": "lucide-icon-library",
+      "name": "Lucide interface icons",
+      "kind": "library",
+      "category": "interface iconography",
+      "creator": "Lucide contributors",
+      "sourceUrl": "https://github.com/lucide-icons/lucide",
+      "license": "ISC; Feather-derived icons retain their MIT notice",
+      "attribution": "See docs/engineering/VISUAL_ASSET_POLICY.md",
+      "usagePermission": "Use under the recorded upstream licenses",
+      "originalDimensions": "Scalable SVG components",
+      "original": "lucide-vue-next package",
+      "processedMaster": null,
+      "transformations": ["Rendered from the installed icon package"],
+      "variants": []
+    },
+    {
+      "id": "supplied-design-references",
+      "name": "User-provided design references",
+      "kind": "reference",
+      "category": "art direction",
+      "creator": "Attachment creators not verified",
+      "sourceUrl": null,
+      "license": "Unverified",
+      "attribution": "Unknown",
+      "usagePermission": "Not recorded",
+      "originalDimensions": "Not catalogued as project files",
+      "original": null,
+      "processedMaster": null,
+      "transformations": [],
+      "variants": [],
+      "includedInApp": false
+    }
+  ]
+}

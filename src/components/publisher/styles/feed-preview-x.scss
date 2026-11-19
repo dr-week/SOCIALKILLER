@@ -1,0 +1,90 @@
+.feed-preview-card {
+/* X Mock */
+.mock-x-card {
+  display: flex;
+  gap: 10px;
+  padding: 8px 4px;
+}
+
+.mock-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  color: #fff;
+  font-size: 12px;
+}
+
+.mock-content-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mock-author-row {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  font-size: 11.5px;
+}
+
+.mock-author-name {
+  font-weight: 700;
+  color: #fff;
+}
+
+.mock-author-handle {
+  color: #94a3b8;
+  font-size: 10.5px;
+}
+
+.mock-text {
+  font-size: 12px;
+  line-height: 1.45;
+  color: #f1f5f9;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.mock-link-preview {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+}
+
+.mock-link-domain {
+  font-size: 10px;
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+.mock-link-url {
+  font-size: 10.5px;
+  color: #94a3b8;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mock-action-row {
+  display: flex;
+  justify-content: space-between;
+  color: #64748b;
+  font-size: 10.5px;
+  padding-top: 4px;
+}
+
+.mock-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Reddit Mock */
+}

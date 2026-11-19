@@ -1,0 +1,149 @@
+.feed-preview-card {
+/* Reddit Mock */
+.mock-reddit-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.reddit-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+}
+
+.subreddit-tag {
+  font-weight: 700;
+  color: #ff4500;
+}
+
+.reddit-author {
+  color: #94a3b8;
+}
+
+.reddit-flair {
+  background: rgba(255, 69, 0, 0.15);
+  color: #ff6b35;
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.reddit-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.reddit-markdown {
+  font-size: 11px;
+  line-height: 1.4;
+  color: #cbd5e1;
+  font-family: inherit;
+  white-space: pre-wrap;
+  margin: 0;
+}
+
+.reddit-link-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  color: #38bdf8;
+}
+
+/* Discord Mock */
+.mock-discord-card {
+  display: flex;
+  gap: 8px;
+  background: #1e1f22;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.discord-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #5865f2;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+}
+
+.discord-content-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.discord-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.discord-bot-name {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.discord-bot-tag {
+  background: #5865f2;
+  color: #fff;
+  font-size: 8px;
+  font-weight: 700;
+  padding: 1px 3px;
+  border-radius: 3px;
+}
+
+.discord-time {
+  font-size: 9.5px;
+  color: #94a3b8;
+}
+
+.discord-embed {
+  display: flex;
+  background: #2b2d31;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 3px;
+}
+
+.discord-embed-bar {
+  width: 4px;
+  background: #5865f2;
+}
+
+.discord-embed-content {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.discord-embed-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #38bdf8;
+  margin: 0;
+}
+
+.discord-embed-desc {
+  font-size: 10.5px;
+  color: #dbdee1;
+  line-height: 1.35;
+  margin: 0;
+}
+
+/* Blog Mock */
+}

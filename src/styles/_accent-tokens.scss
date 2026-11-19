@@ -1,0 +1,34 @@
+@mixin light-accent($primary, $secondary, $glow) {
+  --accent-primary: #{$primary};
+  --accent-secondary: #{$secondary};
+  --accent-glow: #{$glow};
+}
+
+:root,
+[data-accent='coral'] {
+  --accent-primary: #ff7b88;
+  --accent-secondary: #ff99bd;
+  --accent-glow: rgba(255, 123, 136, 0.22);
+}
+[data-accent='violet'] { --accent-primary: #b495ff; --accent-secondary: #ed8fff; --accent-glow: rgba(180, 149, 255, 0.23); }
+[data-accent='cyan'] { --accent-primary: #54d6ee; --accent-secondary: #69aaff; --accent-glow: rgba(84, 214, 238, 0.22); }
+[data-accent='mint'] { --accent-primary: #59ddb6; --accent-secondary: #9cdd83; --accent-glow: rgba(89, 221, 182, 0.2); }
+[data-accent='orange'] { --accent-primary: #ffad68; --accent-secondary: #ff7f8e; --accent-glow: rgba(255, 173, 104, 0.22); }
+
+@mixin light-theme-accents {
+  [data-theme='light'][data-accent='coral'] { @include light-accent(#c63f55, #a93c6b, rgba(198, 63, 85, 0.14)); }
+  [data-theme='light'][data-accent='violet'] { @include light-accent(#7046ba, #9b3eaf, rgba(112, 70, 186, 0.14)); }
+  [data-theme='light'][data-accent='cyan'] { @include light-accent(#087b9a, #2565b5, rgba(8, 123, 154, 0.14)); }
+  [data-theme='light'][data-accent='mint'] { @include light-accent(#167d5c, #477f36, rgba(22, 125, 92, 0.14)); }
+  [data-theme='light'][data-accent='orange'] { @include light-accent(#a85211, #b83e49, rgba(168, 82, 17, 0.14)); }
+}
+
+@include light-theme-accents;
+
+@media (prefers-color-scheme: light) {
+  [data-theme='auto'][data-accent='coral'] { @include light-accent(#c63f55, #a93c6b, rgba(198, 63, 85, 0.14)); }
+  [data-theme='auto'][data-accent='violet'] { @include light-accent(#7046ba, #9b3eaf, rgba(112, 70, 186, 0.14)); }
+  [data-theme='auto'][data-accent='cyan'] { @include light-accent(#087b9a, #2565b5, rgba(8, 123, 154, 0.14)); }
+  [data-theme='auto'][data-accent='mint'] { @include light-accent(#167d5c, #477f36, rgba(22, 125, 92, 0.14)); }
+  [data-theme='auto'][data-accent='orange'] { @include light-accent(#a85211, #b83e49, rgba(168, 82, 17, 0.14)); }
+}

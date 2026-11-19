@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tab screenshot · The Social Base</title>
+  <style>
+    body { margin: 0; padding: 20px; background: #0b1020; color: #f8fafc; font: 15px system-ui, sans-serif; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+    button { border: 0; border-radius: 8px; padding: 10px 14px; background: #38bdf8; color: #07111f; font-weight: 700; cursor: pointer; }
+    img { display: block; max-width: 100%; height: auto; margin: auto; }
+    #status { color: #94a3b8; }
+  </style>
+</head>
+<body>
+  <header><strong>Visible tab screenshot</strong><button id="download" disabled>Download PNG</button></header>
+  <p id="status">Loading screenshot…</p>
+  <img id="preview" alt="Screenshot of the visible browser tab" hidden>
+  <script type="module" src="screenshot-viewer.js"></script>
+</body>
+</html>

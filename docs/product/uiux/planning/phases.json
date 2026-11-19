@@ -1,0 +1,44 @@
+[
+  {
+    "id": "research",
+    "title": "Research and baseline",
+    "status": "in_progress",
+    "dependsOn": [],
+    "exitCriteria": "Persona, top tasks, concept, terminology, and baseline are recorded."
+  },
+  {
+    "id": "responsive",
+    "title": "Responsive repair",
+    "status": "in_progress",
+    "dependsOn": ["research"],
+    "exitCriteria": "No horizontal page overflow at the supported viewport widths."
+  },
+  {
+    "id": "workbench",
+    "title": "Workbench and navigation",
+    "status": "proposed",
+    "dependsOn": ["responsive"],
+    "exitCriteria": "Users can identify workspace, primary area, and next task."
+  },
+  {
+    "id": "create-review",
+    "title": "Create, review, and planning",
+    "status": "proposed",
+    "dependsOn": ["workbench"],
+    "exitCriteria": "A basic draft can be saved without advanced setup."
+  },
+  {
+    "id": "accessible-zuari",
+    "title": "Accessibility and incremental Zuari migration",
+    "status": "proposed",
+    "dependsOn": ["create-review"],
+    "exitCriteria": "Redesigned slices pass accessibility and lifecycle checks."
+  },
+  {
+    "id": "release",
+    "title": "Validate and release",
+    "status": "proposed",
+    "dependsOn": ["accessible-zuari"],
+    "exitCriteria": "User validation and critical regression checks pass."
+  }
+]

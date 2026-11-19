@@ -1,0 +1,74 @@
+.video-studio-wrap {
+.beats-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.beat-card {
+  background: var(--surface-raised);
+  border: 1px solid var(--surface-border);
+  border-left: 3px solid var(--purple);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &.hook { border-left-color: #ef4444; }
+  &.conflict { border-left-color: #f59e0b; }
+  &.lesson { border-left-color: #10b981; }
+  &.cta { border-left-color: #38bdf8; }
+}
+
+.beat-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.marker-chip {
+  font-size: 9.5px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.time-chip {
+  font-size: 9.5px;
+  color: var(--muted);
+  font-family: monospace;
+}
+
+.cues-box {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 10px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.narration-line {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.teleprompter-view {
+  background: var(--input-bg);
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.teleprompter-text {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.8;
+  color: var(--ink);
+  white-space: pre-wrap;
+  font-family: inherit;
+}
+}

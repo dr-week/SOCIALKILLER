@@ -1,0 +1,79 @@
+@mixin dark-theme {
+  color-scheme: dark;
+  --ink: #f3f1fb;
+  --text: var(--ink);
+  --text-primary: var(--ink);
+  --muted: #9da2b8;
+  --purple: #b89aff;
+  --primary: var(--purple);
+  --purple-soft: rgba(184, 154, 255, 0.14);
+  --line: rgba(196, 198, 226, 0.13);
+  --border: var(--line);
+  --surface: #12131d;
+  --surface-card: #151722;
+  --surface-raised: #1c1e2b;
+  --surface-muted: #1a1b28;
+  --surface-border: rgba(196, 198, 226, 0.16);
+  --input-bg: #0c0d15;
+  --bg-app: #090a11;
+  --card-shadow: 0 16px 42px rgba(0, 0, 0, 0.28);
+  --glass-bg: rgba(15, 16, 25, 0.82);
+  --glass-border: rgba(220, 218, 255, 0.12);
+  --radius-card: 18px;
+  --focus-ring: #8de5ff;
+  --accent-primary: #ff7b88;
+  --accent-secondary: #ff99bd;
+  --accent-glow: rgba(255, 123, 136, 0.22);
+  --accent-gradient: linear-gradient(125deg, var(--accent-primary), var(--accent-secondary));
+  --status-success: #69dfb3;
+  --status-warning: #ffc477;
+  --status-danger: #ff858b;
+}
+
+@mixin light-theme {
+  color-scheme: light;
+  --ink: #202236;
+  --text: var(--ink);
+  --text-primary: var(--ink);
+  --muted: #72778a;
+  --purple: #7353d3;
+  --primary: var(--purple);
+  --purple-soft: rgba(115, 83, 211, 0.11);
+  --line: #e2e3ed;
+  --border: var(--line);
+  --surface: #ffffff;
+  --surface-card: #ffffff;
+  --surface-raised: #f6f5fb;
+  --surface-muted: #f5f4fa;
+  --surface-border: #e2e3ed;
+  --input-bg: #f7f7fb;
+  --bg-app: #f4f4f9;
+  --card-shadow: 0 12px 32px rgba(24, 27, 48, 0.07);
+  --glass-bg: rgba(250, 249, 253, 0.88);
+  --glass-border: rgba(105, 96, 142, 0.14);
+  --radius-card: 18px;
+  --focus-ring: #5842b5;
+  --accent-primary: #e9687a;
+  --accent-secondary: #e17ba8;
+  --accent-glow: rgba(233, 104, 122, 0.15);
+  --accent-gradient: linear-gradient(125deg, var(--accent-primary), var(--accent-secondary));
+  --status-success: #19845f;
+  --status-warning: #a56816;
+  --status-danger: #c33d50;
+}
+
+:root,
+[data-theme='dark'] {
+  @include dark-theme;
+}
+
+[data-theme='light'] {
+  @include light-theme;
+}
+
+@media (prefers-color-scheme: light) {
+  [data-theme='auto'] {
+    @include light-theme;
+  }
+}
+

@@ -1,0 +1,143 @@
+[
+  {
+    "id": "meta-business-suite",
+    "product": "Meta Business Suite",
+    "url": "https://www.facebook.com/business/tools/meta-business-suite",
+    "sourceType": "official product page",
+    "reviewedOn": "2026-11-04",
+    "evidence": "Meta describes a single place for business activity on Facebook, Messenger, and Instagram, including notifications/messages, content creation and scheduling, and insights.",
+    "designTakeaway": "Keep business context and related work predictable without copying every feature into one screen.",
+    "limitations": "Vendor overview only; not a logged-in UI inspection and not evidence that The Social Base APIs offer the same capabilities."
+  },
+  {
+    "id": "buffer-publish",
+    "product": "Buffer Publish",
+    "url": "https://buffer.com/publish",
+    "sourceType": "official product page",
+    "reviewedOn": "2026-11-04",
+    "evidence": "Buffer describes week/month calendars, channel/tag/post-type filters, drafts, editing posts from the calendar, and separate text boxes per network.",
+    "designTakeaway": "Use a calendar/queue for planning and keep per-channel text edits close to the shared draft.",
+    "limitations": "Vendor product page; plan eligibility and actual interface details may vary."
+  },
+  {
+    "id": "hootsuite-publishing",
+    "product": "Hootsuite Publishing",
+    "url": "https://www.hootsuite.com/platform/publishing",
+    "sourceType": "official product page",
+    "reviewedOn": "2026-11-04",
+    "evidence": "Hootsuite describes list and calendar views for paid and organic content, collaboration, and approval workflows.",
+    "designTakeaway": "Keep review and content status close to the planning surface.",
+    "limitations": "Vendor product page; advanced team workflows are not currently supported in The Social Base."
+  },
+  {
+    "id": "planable-product",
+    "product": "Planable",
+    "url": "https://planable.io/product/",
+    "sourceType": "official product page",
+    "reviewedOn": "2026-11-04",
+    "evidence": "Planable describes Feed, Calendar, Grid, and List views, previews and feedback in context, plus labels and brand/client workspaces.",
+    "designTakeaway": "Show content in its relevant preview and keep brand context clear; start with only the views users need.",
+    "limitations": "Vendor product page; its permissions and collaboration model exceed the current product scope."
+  },
+  {
+    "id": "later-scheduler",
+    "product": "Later Scheduler",
+    "url": "https://later.com/social-media-scheduler/",
+    "sourceType": "official product page",
+    "reviewedOn": "2026-11-04",
+    "evidence": "Later describes a visual calendar/feed planner, media folders, and cross-platform posts tailored per profile.",
+    "designTakeaway": "Make reusable media easy to find and platform-specific changes easy to make.",
+    "limitations": "Vendor product page; feature availability depends on product plan and connected platform."
+  },
+  {
+    "id": "publer-pricing",
+    "product": "Publer",
+    "url": "https://publer.com/plans",
+    "sourceType": "official pricing and feature page",
+    "reviewedOn": "2026-11-05",
+    "evidence": "The free plan is limited by connected accounts and queued posts; paid plans add reusable workspaces, custom variants, calendar and queue scheduling, analytics, approvals, and API/MCP capabilities.",
+    "designTakeaway": "Expose queue limits, channel-specific variants, and the next available setup step before a user schedules.",
+    "limitations": "Pricing and capabilities change by billing cadence, number of accounts, and plan."
+  },
+  {
+    "id": "metricool-pricing",
+    "product": "Metricool",
+    "url": "https://metricool.com/pricing/",
+    "sourceType": "official pricing and feature page",
+    "reviewedOn": "2026-11-05",
+    "evidence": "The free tier allows one brand, 20 scheduled posts monthly, competitor profiles, and 30 days of analytics; higher tiers add more brands, team/client management, roles, approvals, and reporting.",
+    "designTakeaway": "Make brand limits and analytics coverage explicit in the workspace and reporting views.",
+    "limitations": "Prices vary by currency, billing schedule, and brand count."
+  },
+  {
+    "id": "socialpilot-pricing",
+    "product": "SocialPilot",
+    "url": "https://www.socialpilot.co/pricing",
+    "sourceType": "official pricing and feature page",
+    "reviewedOn": "2026-11-05",
+    "evidence": "Plan features scale from solo scheduling and analytics to bulk scheduling, inbox, team collaboration, client approvals, and white-label reporting.",
+    "designTakeaway": "Keep team review and client-facing reporting visible as distinct steps in agency workflows.",
+    "limitations": "Prices and account caps depend on tier and annual billing."
+  },
+  {
+    "id": "zoho-social-pricing",
+    "product": "Zoho Social",
+    "url": "https://www.zoho.com/social/pricing.html",
+    "sourceType": "official pricing and feature page",
+    "reviewedOn": "2026-11-05",
+    "evidence": "The plans organize connected channels into brands and progressively add collaboration, workflow approvals, analytics and client portals.",
+    "designTakeaway": "Use clear brand boundaries and explain how many channels are included in each brand.",
+    "limitations": "Pricing is regional and varies between monthly and annual billing."
+  },
+  {
+    "id": "sendible-pricing",
+    "product": "Sendible",
+    "url": "https://www.sendible.com/pricing?country=US",
+    "sourceType": "official pricing and feature page",
+    "reviewedOn": "2026-11-05",
+    "evidence": "Plans scale by workspaces for clients/brands and add assignment, approvals, libraries, campaigns, reporting and role controls.",
+    "designTakeaway": "Let agencies see workspace count and client separation as a first-order setup choice.",
+    "limitations": "Pricing depends on workspace count and billing cadence; country selection changes displayed prices."
+  },
+  {
+    "id": "publer-scheduling-workflows",
+    "product": "Publer",
+    "url": "https://publer.com/help/en/article/how-to-schedule-posts-in-publer-15atdj7",
+    "sourceType": "official help center workflow",
+    "reviewedOn": "2026-11-05",
+    "evidence": "Scheduling supports specific time, AutoSchedule slots, recurring posts, and recycling; reminder-based manual publication is a separate mode for selected platform actions.",
+    "designTakeaway": "Represent publishing mode per network variant and keep queue time distinct from confirmed provider publication.",
+    "limitations": "Behavior and schedule limits depend on plan, platform and account type; help article describes Publer behavior only."
+  },
+  {
+    "id": "metricool-shared-planner",
+    "product": "Metricool",
+    "url": "https://help.metricool.com/how-to-share-your-content-calendar-with-clients-or-collaborators-sy0yt",
+    "sourceType": "official help center workflow",
+    "reviewedOn": "2026-11-05",
+    "evidence": "Calendar sharing allows collaborators to review the planner and reports and take approval actions based on assigned role.",
+    "designTakeaway": "Keep client review and reporting connected to the brand planner while applying role-based access.",
+    "limitations": "Plan eligibility and the exact reviewer experience can vary."
+  },
+  {
+    "id": "socialpilot-approval-flow",
+    "product": "SocialPilot",
+    "url": "https://help.socialpilot.co/hc/en-us/articles/49895024701073-How-Do-I-Manage-Team-Client-Approval-Workflows-in-SocialPilot",
+    "sourceType": "official help center workflow",
+    "reviewedOn": "2026-11-05",
+    "evidence": "Posts can pass manager review and then optional client review; send-back comments return work for correction, and clients can act through portal or approval links.",
+    "designTakeaway": "Make approval steps ordered and version-specific; record reviewer identity, comments, and return state.",
+    "limitations": "Feature access depends on account and plan configuration."
+  },
+  {
+    "id": "buffer-cross-channel-approvals",
+    "product": "Buffer",
+    "url": "https://support.buffer.com/en-us/articles/how-to-use-the-all-channels-view-in-buffer-oqqE4Sdf3T",
+    "sourceType": "official help center workflow",
+    "reviewedOn": "2026-11-05",
+    "evidence": "The All Channels view consolidates posts across channels, including approvals, while account permissions govern who can act.",
+    "designTakeaway": "Provide a combined action inbox without weakening per-workspace and per-account authorization.",
+    "limitations": "Team and approval features vary by plan and account permission."
+  }
+]
+

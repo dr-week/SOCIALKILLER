@@ -1,0 +1,40 @@
+.app-shell .alert {
+  border-color: color-mix(in srgb, var(--status-danger) 32%, transparent);
+  background: color-mix(in srgb, var(--status-danger) 10%, var(--surface));
+  color: var(--status-danger);
+}
+.app-shell .alert > span { background: color-mix(in srgb, var(--status-danger) 17%, transparent); }
+.app-shell .check-status-btn { border-color: var(--line); background: var(--surface-raised); color: var(--muted); }
+.app-shell .check-status-btn:hover { border-color: var(--purple); background: var(--purple-soft); color: var(--ink); }
+.app-shell .pagination-bar,.app-shell .change-row { border-color: var(--line); }
+.app-shell .pagination-bar,.app-shell .list-more,.app-shell .data-note,.app-shell .page-footer,.app-shell .panel-footer { color: var(--muted); }
+.app-shell .snapshot-card { border-color: var(--line); background: var(--surface-raised); }
+.app-shell .snapshot-info strong,.app-shell .change-row strong,.app-shell .panel-footer strong { color: var(--ink); }
+.app-shell .snapshot-info span,.app-shell .change-row span { color: var(--muted); }
+.app-shell .tip-card {
+  border-color: color-mix(in srgb, var(--purple) 24%, transparent);
+  background: radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--purple) 24%, transparent), transparent 44%), linear-gradient(130deg, var(--surface-raised), var(--surface));
+}
+.app-shell .tip-card h3 { color: var(--ink); }
+.app-shell .tip-card p { color: var(--muted); }
+.app-shell .tip-icon { background: var(--purple-soft); }
+.app-shell .tip-decoration { color: color-mix(in srgb, var(--purple) 28%, transparent); }
+.app-shell .page-footer { border-color: var(--line); }
+.app-shell .empty-list > span,.app-shell .round-icon,.app-shell .snapshot-icon { background: var(--purple-soft); color: var(--purple); }
+.app-shell .empty-list strong { color: var(--ink); }
+.app-shell .empty-list p { color: var(--muted); }
+.app-shell .stat-icon--peach { background: rgba(255, 173, 104, 0.15); color: #ffbd7d; }
+.app-shell .stat-icon--mint { background: rgba(89, 221, 182, 0.15); color: #59ddb6; }
+.app-shell .stat-icon--blue { background: rgba(105, 170, 255, 0.15); color: #69aaff; }
+.app-shell .stat-trend--amber { color: var(--status-warning); }
+.app-shell .stat-trend--green,.app-shell .snapshot-live,.app-shell .change-count { color: var(--status-success) !important; }
+.app-shell .status-tag--warn { background: color-mix(in srgb, var(--status-warning) 14%, transparent); color: var(--status-warning); }
+.app-shell .status-tag--success { background: color-mix(in srgb, var(--status-success) 14%, transparent); color: var(--status-success); }
+.app-shell .status-tag--danger { background: color-mix(in srgb, var(--status-danger) 14%, transparent); color: var(--status-danger); }
+.app-shell .status-tag--checking { background: var(--surface-raised); color: var(--muted); }
+.app-shell .tab-badge,.app-shell .tabs button.selected .tab-badge { background: var(--purple-soft); color: var(--purple); }
+.app-shell .change-indicator--green { background: color-mix(in srgb, var(--status-success) 14%, transparent); color: var(--status-success); }
+.app-shell .change-indicator--red { background: color-mix(in srgb, var(--status-danger) 14%, transparent); color: var(--status-danger); }
+.app-shell .change-count--red { color: var(--status-danger) !important; }
+.app-shell .whitelist-btn { border-color: var(--line); color: var(--muted); }
+.app-shell .whitelist-btn:hover,.app-shell .whitelist-btn--active { border-color: #e7c44d; background: rgba(231, 196, 77, 0.14); color: #e7c44d; }

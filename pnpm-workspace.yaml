@@ -1,0 +1,7 @@
+overrides:
+  '@zuari/dom': file:vendor/zuari/zuari-dom-0.1.0.tgz
+  '@zuari/glyphs': file:vendor/zuari/zuari-glyphs-0.1.0.tgz
+  '@zuari/headless': file:vendor/zuari/zuari-headless-0.1.0.tgz
+  '@zuari/recipes': file:vendor/zuari/zuari-recipes-0.1.0.tgz
+  '@zuari/signals': file:vendor/zuari/zuari-signals-0.1.0.tgz
+  '@zuari/ui': file:vendor/zuari/zuari-ui-0.1.0.tgz

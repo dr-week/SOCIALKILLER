@@ -1,0 +1,106 @@
+name: Autonomous Multi-Platform Social Broadcast
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      platforms:
+        description: 'Comma-separated target platforms (discord,telegram,twitter,linkedin,github,buffer,reddit or all)'
+        required: false
+        default: 'discord,telegram,twitter,linkedin,github,buffer,reddit'
+      preset:
+        description: 'Broadcast preset (release, benchmark, community)'
+        required: false
+        default: 'release'
+      dry_run:
+        description: 'Run in safe dry-run preview mode without live posting'
+        required: false
+        default: 'false'
+      title:
+        description: 'Optional custom announcement title override'
+        required: false
+        default: ''
+      summary:
+        description: 'Optional custom 280-char summary override'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  social-broadcast:
+    name: Verify Build & Broadcast to Social Channels
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1. Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 2. Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: 3. Install Dependencies
+        run: npm ci
+
+      - name: 4. Run Unit & Type Verification Suite
+        run: npm run test:all
+
+      - name: 5. Extract Version Tag & Release Context
+        id: release_meta
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            TAG="${GITHUB_REF#refs/tags/}"
+          else
+            TAG="v$(node -p "require('./package.json').version")"
+          fi
+          echo "version_tag=${TAG}" >> "$GITHUB_OUTPUT"
+
+      - name: 6. Execute Multi-Platform Social Publisher
+        env:
+          SOCIAL_DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
+          TWITTER_API_SECRET: ${{ secrets.TWITTER_API_SECRET }}
+          TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+          TWITTER_ACCESS_SECRET: ${{ secrets.TWITTER_ACCESS_SECRET }}
+          TWITTER_BEARER_TOKEN: ${{ secrets.TWITTER_BEARER_TOKEN }}
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_AUTHOR_URN: ${{ secrets.LINKEDIN_AUTHOR_URN }}
+          BUFFER_ACCESS_TOKEN: ${{ secrets.BUFFER_ACCESS_TOKEN }}
+          BUFFER_PROFILE_IDS: ${{ secrets.BUFFER_PROFILE_IDS }}
+          META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
+          META_IG_ACCOUNT_ID: ${{ secrets.META_IG_ACCOUNT_ID }}
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          REDDIT_USERNAME: ${{ secrets.REDDIT_USERNAME }}
+          REDDIT_PASSWORD: ${{ secrets.REDDIT_PASSWORD }}
+          REDDIT_SUBREDDIT: ${{ secrets.REDDIT_SUBREDDIT || 'opensource' }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          PLATFORMS="${{ github.event.inputs.platforms || 'discord,telegram,twitter,linkedin,github,buffer,reddit' }}"
+          PRESET="${{ github.event.inputs.preset || 'release' }}"
+          EXTRA_ARGS=()
+          if [[ "${{ github.event.inputs.dry_run }}" == "true" ]]; then
+            EXTRA_ARGS+=("--dry-run")
+          fi
+          if [[ -n "${{ github.event.inputs.title }}" ]]; then
+            EXTRA_ARGS+=("--title=${{ github.event.inputs.title }}")
+          fi
+          if [[ -n "${{ github.event.inputs.summary }}" ]]; then
+            EXTRA_ARGS+=("--summary=${{ github.event.inputs.summary }}")
+          fi
+          node --experimental-strip-types scripts/social/broadcast.ts \
+            --platforms="${PLATFORMS}" \
+            --preset="${PRESET}" \
+            --version="${{ steps.release_meta.outputs.version_tag }}" \
+            "${EXTRA_ARGS[@]}"

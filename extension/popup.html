@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Social Base Companion</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card: #111827;
+      --primary: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.15);
+      --green: #10b981;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --line: rgba(255, 255, 255, 0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 320px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .top-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-bottom: 9px; border-bottom: 1px solid var(--line);
+    }
+    .brand { display: flex; align-items: center; gap: 8px; }
+    .brand-logo {
+      width: 28px; height: 28px; border-radius: 8px;
+      background: var(--accent-glow);
+      border: 1px solid var(--primary);
+      display: grid; place-items: center; overflow: hidden;
+      transition: all 0.25s ease;
+    }
+    .brand-logo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .brand h1 { font-size: 13.5px; font-weight: 700; letter-spacing: -0.2px; }
+    .brand small { font-size: 10px; color: var(--muted); }
+    .icon-toolbar { display: flex; gap: 5px; }
+    .icon-btn {
+      width: 26px; height: 26px; border-radius: 6px;
+      border: 1px solid var(--line); background: var(--card);
+      color: var(--muted); cursor: pointer; display: grid; place-items: center;
+      font-size: 11.5px;
+      transition: all 0.2s ease;
+    }
+    .icon-btn:hover { border-color: var(--primary); color: #fff; }
+    
+    /* Dynamic Site Hero Card */
+    .hero-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 11px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: var(--primary);
+      opacity: 0.8;
+    }
+    .hero-head {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .site-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11px; font-weight: 700; color: var(--text);
+    }
+    .account-badge {
+      font-size: 10.5px; color: var(--primary); font-family: monospace; font-weight: 600;
+    }
+    .post-preview-box {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 7px 9px;
+      font-size: 11px;
+      line-height: 1.4;
+      color: #cbd5e1;
+      max-height: 72px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    .algo-tip {
+      font-size: 9.5px; color: var(--muted); display: flex; align-items: center; gap: 4px;
+    }
+    
+    /* Action Buttons */
+    .action-stack { display: flex; flex-direction: column; gap: 6px; }
+    .btn {
+      width: 100%; border: none; border-radius: 8px; padding: 9px 12px;
+      font-size: 11.5px; font-weight: 700; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      transition: transform 0.1s ease, filter 0.2s ease;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-action-primary {
+      background: var(--primary);
+      color: #040914;
+    }
+    .btn-action-secondary {
+      background: var(--card);
+      border: 1px solid var(--line);
+      color: var(--text);
+    }
+    .btn-action-secondary:hover { border-color: var(--primary); }
+    .row-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .workflow-card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px; display: grid; gap: 7px; }
+    .workflow-card h2 { font-size: 11px; }
+    .workflow-card p, .workflow-status { color: var(--muted); font-size: 9.5px; line-height: 1.4; }
+    .workflow-card input, .workflow-card select { width: 100%; border: 1px solid var(--line); border-radius: 6px; padding: 7px 8px; background: var(--bg); color: var(--text); font: inherit; font-size: 10px; }
+    .workflow-card .btn { padding: 7px 9px; font-size: 10px; }
+    .workflow-card .btn:disabled { opacity: .5; cursor: default; }
+    
+    /* Instagram specific mode */
+    #instagramScannerWrap { display: none; flex-direction: column; gap: 6px; }
+    
+    /* Minimal Status Toast */
+    .alert-box {
+      border-radius: 7px; padding: 7px 9px; font-size: 10.5px;
+      display: none; align-items: center; gap: 6px; font-weight: 600;
+    }
+    .error-msg { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); color: #fca5a5; }
+    .success-msg { background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.35); color: #34d399; }
+  </style>
+</head>
+<body>
+  <!-- Clean Header -->
+  <div class="top-bar">
+    <div class="brand">
+      <div class="brand-logo"><img src="icons/icon-48.png" alt="" /></div>
+      <div>
+        <h1 id="brandTitle">The Social Base</h1>
+        <small id="syncStatus">Synced with App</small>
+      </div>
+    </div>
+    <div class="icon-toolbar">
+      
+      <button id="openAppBtn" class="icon-btn" title="Open The Social Base Web App">🖥️</button>
+      <button id="captureScreenshotBtn" class="icon-btn" title="Capture the visible tab">📷</button>
+      <button id="refreshSyncBtn" class="icon-btn" title="Sync Latest Queue from App">🔄</button>
+    </div>
+  </div>
+
+  <!-- Dynamic Adaptive Hero (Changes automatically based on active website) -->
+  <div class="hero-card" id="developerHeroCard">
+    <div class="hero-head">
+      <div class="site-pill">
+        <span id="siteIcon">𝕏</span>
+        <span id="siteName">X (Twitter)</span>
+      </div>
+      <span class="account-badge" id="detectedAccount">@scanning...</span>
+    </div>
+
+    <!-- Live Post Preview automatically pulled from Main App -->
+    <div class="post-preview-box" id="activePostPreview">
+      Loading latest post from The Social Base...
+    </div>
+
+    <div class="algo-tip" id="algoTip">
+      💡 <strong>X Tip:</strong> Bookmarks (10x) & Replies with author (75x+) boost reach.
+    </div>
+  </div>
+
+  <!-- Developer Channels Action Stack -->
+  <div class="action-stack" id="developerActionStack">
+    <!-- Manual Controlled Trigger: Opens ONLY 1 tab for the active website upon explicit user click -->
+    <button id="primarySmartActionBtn" class="btn btn-action-primary" title="Click to start: opens only 1 tab for the current platform">
+      ⚡ 1-Click Post to Channel
+    </button>
+
+    <div class="row-actions">
+      <!-- 1-Click Randomize Trending Tech Debate -->
+      <button id="randomizeViralBtn" class="btn btn-action-secondary" title="Roll a random viral debate / controversial tech opinion">
+        🎲 Viral Topic
+      </button>
+
+      <!-- Direct 1-Click Harvest active page data back to Main App -->
+      <button id="harvestPageBtn" class="btn btn-action-secondary" title="Harvest and transfer thread data to App">
+        📥 Harvest to App
+      </button>
+    </div>
+  </div>
+
+  <!-- Dedicated Instagram Mode: Audience Audit & Sync Tools -->
+  <div id="instagramScannerWrap" style="display: none; flex-direction: column; gap: 8px;">
+    <div class="hero-card" style="border-color: rgba(236, 72, 153, 0.4);">
+      <div class="hero-head">
+        <div class="site-pill">
+          <span>📸</span>
+          <span>Instagram Audience Assistant</span>
+        </div>
+        <span class="account-badge" style="color: #ec4899;">@audit</span>
+      </div>
+      <p style="font-size: 11px; line-height: 1.4; color: #cbd5e1;">
+        Fast local audit of your followers & following. Export your followers or sync with The Social Base to track who unfollowed you.
+      </p>
+    </div>
+
+    <button id="extractIgBtn" class="btn btn-action-primary" style="background: linear-gradient(135deg, #ec4899, #8b5cf6); color: white;">
+      📸 Export Followers &amp; Open Auditor
+    </button>
+    <button id="igSyncBtn" class="btn btn-action-secondary" title="Push page profile data into The Social Base">
+      🔄 Quick Sync Current Profile
+    </button>
+  </div>
+
+  <section class="workflow-card" aria-labelledby="workflowTitle">
+    <h2 id="workflowTitle">Teach a page workflow</h2>
+    <p>Record clicks, text fields, and scrolling on this tab. Typed text is not recorded. Password fields and submit controls are skipped.</p>
+    <input id="workflowName" maxlength="80" placeholder="Workflow name" aria-label="Workflow name">
+    <button id="workflowStart" class="btn btn-action-primary" type="button">Start recording</button>
+    <button id="workflowStop" class="btn btn-action-secondary" type="button" hidden>Stop and save</button>
+    <select id="workflowList" aria-label="Saved workflows"><option value="">No saved workflows</option></select>
+    <button id="workflowReplay" class="btn btn-action-secondary" type="button" disabled>Replay reviewed steps</button>
+    <p class="workflow-status" id="workflowStatus" role="status">Workflows stay in this local app and company workspace.</p>
+  </section>
+
+  <div id="errorArea" class="alert-box error-msg"></div>
+  <div id="successArea" class="alert-box success-msg"></div>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

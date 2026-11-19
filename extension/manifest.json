@@ -1,0 +1,101 @@
+{
+  "manifest_version": 3,
+  "name": "The Social Base Companion - Audience & Social Publisher",
+  "version": "1.4.0",
+  "description": "Export Instagram followers, recognize logged-in handles, inject DOM reply chips, and auto-publish across X, Reddit, LinkedIn, GitHub, Dev.to & Discord.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "cookies",
+    "tabs",
+    "storage",
+    "alarms",
+    "nativeMessaging",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "https://*.instagram.com/*",
+    "https://instagram.com/*",
+    "https://*.twitter.com/*",
+    "https://*.x.com/*",
+    "https://*.reddit.com/*",
+    "https://*.linkedin.com/*",
+    "https://*.dev.to/*",
+    "https://*.hashnode.com/*",
+    "https://*.medium.com/*",
+    "https://gist.github.com/*",
+    "https://*.github.com/*",
+    "https://*.discord.com/*",
+    "http://127.0.0.1/*",
+    "http://localhost/*",
+    "http://127.0.0.1:4174/*",
+    "http://localhost:4174/*",
+    "http://127.0.0.1:5173/*",
+    "http://localhost:5173/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://127.0.0.1/*",
+        "http://localhost/*"
+      ],
+      "js": [
+        "modules/injections/app-bridge.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["https://*.instagram.com/*", "https://instagram.com/*"],
+      "js": [
+        "modules/fiber/react-fiber-bridge.js",
+        "modules/fiber/network-interceptor.js",
+        "modules/ghost-mode.js",
+        "modules/media-downloader.js",
+        "modules/profile-badge.js",
+        "modules/injections/search-injector.js",
+        "modules/injections/whitelist-injector.js",
+        "modules/injections/creator-hud-injector.js",
+        "modules/injections/modal-harvester.js",
+        "modules/injections/social-autoposter.js",
+        "modules/injections/dom-chat-banner.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://*.twitter.com/*",
+        "https://*.x.com/*",
+        "https://*.reddit.com/*",
+        "https://*.linkedin.com/*",
+        "https://*.dev.to/*",
+        "https://*.hashnode.com/*",
+        "https://*.medium.com/*",
+        "https://gist.github.com/*",
+        "https://*.github.com/*",
+        "https://*.discord.com/*"
+      ],
+      "js": [
+        "modules/injections/social-autoposter.js",
+        "modules/injections/dom-chat-banner.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  }
+}

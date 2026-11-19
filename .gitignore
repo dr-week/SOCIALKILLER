@@ -1,0 +1,10 @@
+node_modules/
+dist/
+npm-debug.log*
+
+# Local runtime data, credentials, and user-managed private files
+/.data/
+/local-private/
+/.env
+/.env.*
+!/.env.example

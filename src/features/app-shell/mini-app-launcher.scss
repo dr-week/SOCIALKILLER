@@ -1,0 +1,83 @@
+.app-launcher { width: 100%; max-width: 1280px; margin: 0 auto; }
+.launcher-heading {
+  position: relative; isolation: isolate; display: flex; min-height: 170px; align-items: center;
+  justify-content: space-between; gap: 20px; overflow: hidden; margin-bottom: 30px;
+  padding: 28px clamp(22px, 4vw, 42px); border: 1px solid var(--glass-border);
+  border-radius: 26px; background: radial-gradient(ellipse at 87% 2%, color-mix(in srgb, var(--accent-primary) 20%, transparent), transparent 42%), linear-gradient(115deg, var(--surface-card), var(--surface));
+  box-shadow: var(--card-shadow);
+}
+.launcher-heading::after {
+  position: absolute; z-index: -1; top: -91px; right: 7%; width: 250px; height: 250px;
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 24%, transparent); border-radius: 50%;
+  box-shadow: 0 0 0 24px color-mix(in srgb, var(--accent-primary) 4%, transparent), 0 0 0 54px color-mix(in srgb, var(--accent-primary) 3%, transparent);
+  content: '';
+}
+.launcher-heading > div:first-child { position: relative; z-index: 1; }
+.launcher-eyebrow { margin: 0; color: var(--accent-primary); font-size: 9px; font-weight: 700; letter-spacing: .16em; }
+.launcher-heading h1 { margin: 10px 0 7px; font: 750 clamp(25px, 3vw, 36px) Manrope, sans-serif; letter-spacing: -.045em; }
+.heading-highlight { background: linear-gradient(100deg, #72d9f3, #bd9aff 55%, #ff9aab); background-clip: text; color: transparent; -webkit-background-clip: text; }
+.launcher-copy { max-width: 600px; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.workspace-chip { display: inline-flex; max-width: 100%; min-height: 36px; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid var(--glass-border); border-radius: 99px; background: var(--glass-bg); color: var(--ink); font-size: 11px; font-weight: 650; }
+.workspace-chip-status { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%; background: var(--status-success); box-shadow: 0 0 12px color-mix(in srgb, var(--status-success) 60%, transparent); }
+.workspace-chip-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 13px; }
+.section-heading h2 { margin: 0; font-size: 15px; }
+.section-heading > span,.roadmap summary small { color: var(--muted); font-size: 10px; }
+.app-category,.roadmap-category { margin-top: 21px; }
+.app-category h3,.roadmap-category h3 { margin: 0 0 10px; color: var(--muted); font-size: 9px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.app-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.app-card {
+  position: relative; isolation: isolate; min-width: 0; min-height: 190px; overflow: visible;
+  border: 1px solid var(--glass-border); border-radius: 20px;
+  background: linear-gradient(145deg, color-mix(in srgb, var(--app-accent) 6%, var(--surface-card)), var(--surface));
+  box-shadow: 0 12px 34px rgba(0, 0, 0, .13); transition: opacity .24s ease, filter .24s ease, transform .24s ease, border-color .24s ease, box-shadow .24s ease;
+}
+.app-card[data-app='planner'] { grid-column: span 2; min-height: 210px; }
+.app-card-open { position: relative; z-index: 1; display: flex; width: 100%; min-height: inherit; flex-direction: column; align-items: flex-start; padding: 18px; border: 0; border-radius: inherit; background: transparent; color: var(--ink); cursor: pointer; text-align: left; }
+.app-icon { display: grid; width: 42px; height: 42px; place-items: center; border: 1px solid color-mix(in srgb, var(--app-accent) 34%, transparent); border-radius: 14px 14px 14px 6px; background: color-mix(in srgb, var(--app-accent) 15%, var(--surface)); color: var(--app-accent); box-shadow: 0 0 24px color-mix(in srgb, var(--app-accent) 14%, transparent); }
+.app-card:nth-child(3n + 2) .app-icon { border-radius: 50% 50% 13px 13px; }
+.app-card:nth-child(3n) .app-icon { border-radius: 13px 6px 13px 13px; }
+.app-status { position: absolute; z-index: 1; top: 20px; right: 17px; display: inline-flex; align-items: center; gap: 4px; color: var(--status-success); font-size: 9px; font-weight: 650; }
+.app-category { margin-top: 13px; color: var(--muted); font-size: 8px; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; }
+.app-card strong { margin-top: 5px; font: 700 15px Manrope, sans-serif; letter-spacing: -.02em; }
+.launch-link { display: inline-flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 13px; color: var(--app-accent); font-size: 10px; font-weight: 700; transition: opacity .16s ease; }
+.app-info-toggle { position: absolute; z-index: 3; right: 12px; bottom: 12px; display: grid; width: 32px; height: 32px; place-items: center; border: 1px solid var(--glass-border); border-radius: 50%; background: var(--glass-bg); color: var(--muted); cursor: pointer; transition: color .16s ease, border-color .16s ease; }
+.app-info-toggle:hover,.app-info-toggle[aria-expanded='true'] { border-color: var(--app-accent); color: var(--app-accent); }
+.app-new-tab { position: absolute; z-index: 3; right: 12px; bottom: 51px; display: grid; width: 32px; height: 32px; place-items: center; border: 1px solid var(--glass-border); border-radius: 50%; background: var(--glass-bg); color: var(--muted); text-decoration: none; transition: color .16s ease, border-color .16s ease; }
+.app-new-tab:hover { border-color: var(--app-accent); color: var(--app-accent); }
+.app-tooltip { position: absolute; z-index: 2; right: 56px; bottom: 13px; left: 16px; padding: 5px 8px; border-left: 2px solid color-mix(in srgb, var(--app-accent) 65%, transparent); border-radius: 0 7px 7px 0; background: linear-gradient(90deg, color-mix(in srgb, var(--app-accent) 10%, transparent), transparent); color: var(--muted); font-size: 9px; line-height: 1.4; opacity: 0; pointer-events: none; transform: translateY(4px); transition: opacity .16s ease, transform .16s ease, visibility .16s ease; visibility: hidden; }
+.app-tooltip span { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.app-tooltip--open,.app-card-open:focus-visible ~ .app-tooltip { opacity: 1; transform: translateY(0); visibility: visible; }
+.app-card:hover .launch-link,.app-card--description-open .launch-link,.app-card-open:focus-visible .launch-link { opacity: 0; }
+.app-card--dimmed { opacity: .62; filter: saturate(.72); transform: scale(.995); }
+.app-card.app-card--active { z-index: 2; border-color: color-mix(in srgb, var(--app-accent) 58%, var(--glass-border)); box-shadow: 0 19px 48px color-mix(in srgb, var(--app-accent) 19%, transparent); transform: translateY(-3px) scale(1.015); }
+.app-card.app-card--active .app-icon { box-shadow: 0 0 30px color-mix(in srgb, var(--app-accent) 36%, transparent); }
+.roadmap { margin-top: 29px; border-top: 1px solid var(--line); }
+.roadmap summary { display: flex; min-height: 54px; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; list-style: none; }
+.roadmap summary::-webkit-details-marker { display: none; }
+.roadmap summary > span { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; font-weight: 700; }
+.roadmap-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; padding-bottom: 12px; }
+.roadmap-card { display: flex; min-width: 0; align-items: flex-start; gap: 10px; padding: 12px; border: 1px dashed color-mix(in srgb, var(--app-accent) 32%, var(--line)); border-radius: 12px; background: radial-gradient(ellipse at 100% 0%, color-mix(in srgb, var(--app-accent) 8%, transparent), transparent 62%); color: var(--muted); }
+.roadmap-card > div { min-width: 0; flex: 1; }
+.roadmap-card strong { color: var(--ink); font-size: 11px; }
+.roadmap-card p { margin: 4px 0 0; font-size: 10px; line-height: 1.45; }
+.roadmap-card > span { color: var(--muted); font-size: 9px; }
+.roadmap-card > svg { flex: 0 0 auto; color: var(--app-accent); }
+@media (hover: hover) {
+  .app-card:hover { z-index: 2; border-color: color-mix(in srgb, var(--app-accent) 58%, var(--glass-border)); box-shadow: 0 19px 48px color-mix(in srgb, var(--app-accent) 19%, transparent); transform: translateY(-3px) scale(1.015); }
+  .app-card:hover .app-icon { box-shadow: 0 0 30px color-mix(in srgb, var(--app-accent) 36%, transparent); }
+  .app-card:hover .app-tooltip { opacity: 1; transform: translateY(0); visibility: visible; }
+}
+@media (max-width: 900px) { .app-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) {
+  .launcher-heading { min-height: 0; align-items: flex-start; flex-direction: column; margin-bottom: 23px; padding: 22px 18px; border-radius: 20px; }
+  .launcher-heading::after { top: -112px; right: -66px; }
+  .workspace-chip { min-height: 32px; }
+  .app-grid,.roadmap-grid { grid-template-columns: 1fr; }
+  .app-card[data-app='planner'] { grid-column: auto; }
+  .app-card,.app-card-open { min-height: 172px; }
+  .app-card-open { padding: 15px; }
+  .app-tooltip { right: 54px; bottom: 10px; left: 13px; }
+  .roadmap summary { align-items: flex-start; flex-direction: column; justify-content: center; gap: 3px; padding: 9px 0; }
+}
+@media (prefers-reduced-motion: reduce) { .app-card,.app-info-toggle,.app-tooltip,.app-card::before { transition: none; }.app-card.app-card--active,.app-card.app-card--dimmed,.app-card--active::before { transform: none; } }
