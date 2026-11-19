@@ -9,6 +9,7 @@ import type { PlatformBadge } from './publisher-types'
 
 const props = defineProps<{
   activePlatform: PlatformId
+  selectedPlatforms?: PlatformId[]
   brandName: string
   topic: string
   platformBadges: Record<PlatformId, PlatformBadge>
@@ -20,6 +21,11 @@ const props = defineProps<{
   randomDraftFeedback: 'like' | 'dislike' | null
   sendingRandomFeedback: boolean
 }>()
+
+const previewPlatforms = computed(() => {
+  if (props.selectedPlatforms && props.selectedPlatforms.length > 0) return props.selectedPlatforms
+  return Object.keys(props.platformBadges) as PlatformId[]
+})
 
 const emit = defineEmits<{
   (e: 'update:activePlatform', platform: PlatformId): void
@@ -49,14 +55,17 @@ function copyVariant() {
 <template>
   <div class="pub-card preview-card">
     <div class="pub-tabs preview-platforms">
-      <button v-for="(meta, platform) in platformBadges" :key="platform" class="pub-tab-btn" :class="{ active: activePlatform === platform }" @click="emit('update:activePlatform', platform as PlatformId)">
+      <button v-for="platform in previewPlatforms" :key="platform" class="pub-tab-btn" :class="{ active: activePlatform === platform }" @click="emit('update:activePlatform', platform)">
         <PlatformIcon :platform="platform" :size="13" />
-        <span>{{ meta.label.split(' ')[0] }}</span>
+        <span>{{ platformBadges[platform].label.split(' ')[0] }}</span>
       </button>
     </div>
 
     <div class="pub-row-between preview-heading">
-      <span class="pub-pill purple"><PlatformIcon :platform="activePlatform" :size="12" /> {{ platformBadges[activePlatform].label }}</span>
+      <div class="pub-tabs">
+        <button class="pub-tab-btn" :class="{ active: viewMode === 'editor' }" @click="viewMode = 'editor'"><PenTool :size="12" /> Editor</button>
+        <button class="pub-tab-btn" :class="{ active: viewMode === 'preview' }" @click="viewMode = 'preview'"><Eye :size="12" /> Preview</button>
+      </div>
       <details class="preview-score">
         <summary>Scores</summary>
         <div class="pub-tabs">
@@ -65,11 +74,6 @@ function copyVariant() {
           <span class="pub-pill amber">{{ activeText.length }} chars</span>
         </div>
       </details>
-    </div>
-
-    <div class="pub-tabs">
-      <button class="pub-tab-btn" :class="{ active: viewMode === 'editor' }" @click="viewMode = 'editor'"><PenTool :size="12" /> Editor</button>
-      <button class="pub-tab-btn" :class="{ active: viewMode === 'preview' }" @click="viewMode = 'preview'"><Eye :size="12" /> Preview</button>
     </div>
 
     <img v-if="previewCover" class="preview-cover" :src="previewCover" alt="Draft cover card" />
@@ -100,8 +104,8 @@ function copyVariant() {
   </div>
 </template>
 
-<style scoped>
-@import './publisher-shared.css';
+<style scoped lang="scss">
+@use './styles/publisher-shared.scss';
 .preview-card { width: 100%; }
 .preview-platforms { display: grid; grid-template-columns: repeat(auto-fit, minmax(78px, 1fr)); }
 .preview-heading { min-width: 0; flex-wrap: wrap; }

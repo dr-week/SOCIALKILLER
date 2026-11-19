@@ -1,7 +1,7 @@
 # SOCIALKILLER Backend & Code Structure Organization Plan
 
-**Reviewed:** 2026-11-19  
-**Goal:** Reorganize `server/`, `extension/`, and shared `src/` layers into crisp, testable, `<150`-line feature modules backed by SQLite as the single source of truth—removing stale global caches, mixed HTTP/domain routes, and all 51 `check:file-size` violations.
+**Updated:** 2026-11-19  
+**Goal:** Reorganize `server/`, `extension/`, and shared `src/` layers into crisp, testable, `<150`-line feature modules backed by SQLite as the single source of truth—removing stale global caches, mixed HTTP/domain routes, and all remaining `check:file-size` violations.
 
 ---
 
@@ -72,3 +72,17 @@ server/
 2. **Publishing & Jobs (`Phase 5b`):** Extract `server/modules/publishing/` and `server/jobs/` (`p-queue` + fail-closed scheduler + remove stale in-memory arrays from `orchestrator.mjs`).
 3. **Content, Connections, Audience & Vision (`Phase 5c`):** Split oversized `server/routes/*`, `server/marketing/*`, and `server/engine/*` files into `<149`-line modules under `server/modules/` and `server/engine/vision/`.
 4. **Extension & Test Modularity (`Phase 7`):** Split remaining oversized files in `src/`, `extension/`, `scripts/`, and `test/` until `npm run check:file-size` reports `0` violations while all backend, extension, social, and domain tests stay green.
+
+---
+
+## 5. Wave 2 Completed Hardening & Modularity (`2026-11-19`)
+
+- **Structured Secret Redaction (`server/http/logger.mjs`):** Masks credential keys and secret token/webhook prefixes before log serialization.
+- **Bounded JSON Parsing (`server/http/read-json.mjs`):** Adopted across `server/router.mjs`, `viral-routes.mjs`, `viral-random-post-route.mjs`, `viral-topics-routes.mjs`, `instagram-sync-routes.mjs`, `ops-workflow-routes.mjs`, and `ops-routes.mjs` with explicit `413` / `400` status mapping.
+- **`GET /api/social/random-post` Bugfix:** Fixed `ReferenceError: keywords is not defined` when ranking live trending leads against brand profile keywords.
+- **Route & Vision Splits (`<= 149` lines):** Split `viral-routes.mjs` (`394` → 3 modules), `instagram-routes.mjs` (`231` → 2 modules), `ops-routes.mjs` (`287` → 3 modules), and `server/engine/vision-contour.mjs` (`206` → `vision/icon-templates.mjs` + `vision-contour.mjs`).
+- **Isolated Guard Testing:** Added optional `historicalPosts` injection parameter to `server/marketing/content-safety-guard.mjs`.
+- **Phase 4A SQLite Single-Source-of-Truth & Fail-Closed Scheduler (`2026-11-19`):**
+  - Migrated `social_posts` schema & statements (`server/db/schema-social.mjs`, `statements/publishing-statements.mjs`, `repositories/publishing-repository.mjs`) to persist `platformsJson`, `approvalStatus`, `approvedAt`, `rejectedAt`, `confirmedAt`, and `handoffUrl` with additive startup migrations.
+  - Replaced stale module-level arrays in `server/marketing/orchestrator.mjs` (`429` lines) and split it into `server/modules/publishing/post-store.mjs`, `post-approval.mjs`, `post-creator.mjs`, and thin `orchestrator.mjs` facade (`<= 149` lines).
+  - Split `server/scheduler.mjs` (`255` lines) into `server/jobs/scheduler-state.mjs`, `server/jobs/scheduler-tick.mjs` (fail-closed `publishNow: false`), and `scheduler.mjs`, and replaced manual body parsing in `server/routes/social/scheduler-routes.mjs` with bounded `readJsonBody`.

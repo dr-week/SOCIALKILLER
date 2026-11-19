@@ -45,19 +45,17 @@ export function mountImportBanner(
             <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"></path>
             <path d="m9 12 2 2 4-4"></path>
           </svg>
-          PRIVATE &amp; IN-BROWSER
+          100% LOCAL
         </span>
-        <h2 id="import-banner-title">Import Your Instagram Export Archive</h2>
-        <p>Analyze who unfollowed you, mutual connections, non-reciprocal accounts, and inactive followers locally in your browser. No Instagram account credentials or passwords required.</p>
+        <h2 id="import-banner-title">Import Instagram Export (.zip / .json)</h2>
         <div class="import-steps">
-          <span><b>01</b> Request download from Instagram Accounts Center (JSON format)</span>
+          <span><b>01</b> Export JSON</span>
           <i aria-hidden="true"></i>
-          <span><b>02</b> Drop your export ZIP or <code>followers_1.json</code> &amp; <code>following.json</code></span>
+          <span><b>02</b> Drop ZIP</span>
           <i aria-hidden="true"></i>
-          <span><b>03</b> Instantly inspect your audience</span>
+          <span><b>03</b> Audit</span>
         </div>
-        <div class="import-actions" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px;"></div>
-        <small class="file-hint">Everything is computed client-side. Zero external network transfer of your personal list.</small>
+        <div class="import-actions" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px;"></div>
       </div>
     </section>
   `, host)

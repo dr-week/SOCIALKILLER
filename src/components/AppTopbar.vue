@@ -7,7 +7,8 @@ const props = defineProps<AppTopbarProps>()
 const emit = defineEmits<{
   (e: 'update:menuOpen', val: boolean): void
   (e: 'update:activeView', val: View): void
-  (e: 'triggerImport'): void
+  (e: 'update:searchQuery', val: string): void
+  (e: 'searchSubmit', val: string): void
 }>()
 const host = ref<HTMLElement | null>(null)
 let island: AppTopbarIsland | undefined
@@ -20,7 +21,8 @@ onMounted(() => {
       emit('update:menuOpen', false)
       emit('update:activeView', 'app-launcher')
     },
-    triggerImport: () => emit('triggerImport')
+    onSearch: (query) => emit('update:searchQuery', query),
+    onSearchSubmit: (query) => emit('searchSubmit', query)
   })
 })
 

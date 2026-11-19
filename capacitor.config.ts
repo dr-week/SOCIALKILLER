@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
   appId: 'com.followdesk.app',
-  appName: 'The Social Base',
+  appName: 'SOCIALKILLER',
   webDir: 'dist',
   android: {
     allowMixedContent: false,

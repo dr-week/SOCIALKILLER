@@ -2,35 +2,35 @@
   {
     "id": "phase-1-shell-audience",
     "title": "Phase 1 — Global Shell, Fuzzy Topbar Search, Zero Backend Telemetry & Audience UX",
-    "status": "proposed",
+    "status": "done",
     "dependsOn": [],
-    "exitCriteria": "Global Topbar Search (Fuse.js) supports /, Enter, and Esc; duplicate topbar Import and dead CSS removed; zero backend telemetry strings remain in Shell/Audience; Audience UI/UX surfaces (Brand Header, Sidebar, Audience Audit, Profile Scout, WorkspaceOverview) updated and type-check/build pass."
+    "exitCriteria": "Global Topbar Search supports /, Enter, and Esc; duplicate topbar Import and dead CSS removed; zero backend telemetry strings remain in Shell/Audience; Audience UI/UX surfaces (Brand Header, Sidebar, Audience Audit, Profile Scout, WorkspaceOverview) updated and type-check/build pass."
   },
   {
     "id": "phase-2-glass-motion-icons",
     "title": "Phase 2 — 4-Tier Animation System, Single-Line Headers, Symbolic Icons & Frosted Glass",
-    "status": "proposed",
+    "status": "done",
     "dependsOn": ["phase-1-shell-audience"],
-    "exitCriteria": "4-Tier Motion System (_motion-tokens.scss, @formkit/auto-animate, motion-v) active with prefers-reduced-motion support; UiCard enforces single-line icon + title headers; opaque var(--surface) and inline style holdouts migrated to frosted --glass-bg SCSS; Symbolic Icon Status System (reka-ui tooltips) and shared vue-sonner toast active."
+    "exitCriteria": "4-Tier Motion System (_motion-tokens.scss, @formkit/auto-animate) active with prefers-reduced-motion support; UiCard enforces single-line icon + title headers; frosted --glass-bg SCSS applied across workspace cards/modals; Symbolic Icon Status System (reka-ui tooltips) and shared vue-sonner toast host active."
   },
   {
     "id": "phase-3-planner-connections-create",
     "title": "Phase 3 — Planner/Connections De-Duplication & Create Studios Simplification",
-    "status": "proposed",
+    "status": "done",
     "dependsOn": ["phase-2-glass-motion-icons"],
     "exitCriteria": "availablePlatformIds re-selection bug fixed; Planner channel selector separated from Preview; PublisherNavbar single-line; nested details flattened; Queue & Content Studio bound to Global Search; Connections card actions iconified; Script Studio consolidated to one header."
   },
   {
     "id": "phase-4-operate-build-collapsible",
     "title": "Phase 4 — Operate & Build Workspaces Collapsible Consolidation",
-    "status": "proposed",
+    "status": "done",
     "dependsOn": ["phase-3-planner-connections-create"],
     "exitCriteria": "Engage uses 2-pane layout with toggleable Add drawer; Workflows displays 3-layer Visual Bot status strip; BrandProfileModal is tabbed and <150 lines; Automation Studio builder collapses cleanly; Design System, Asset Manager & Android Build Studio use single-line headers and collapsed diagnostics."
   },
   {
     "id": "phase-5-backend-architecture",
     "title": "Phase 5 — Layered Backend Organization, SQLite Single-Truth, Validation & Redaction",
-    "status": "proposed",
+    "status": "in_progress",
     "dependsOn": ["phase-4-operate-build-collapsible"],
     "exitCriteria": "server/http/ (rou3 router, valibot schemas, fast-redact logger) active; orchestrator stale in-memory arrays replaced by SQLite WAL repositories; server/jobs/ uses p-queue with fail-closed human approval; oversized server/routes, server/marketing, and server/engine files split <150 lines; all server tests pass."
   },

@@ -19,4 +19,9 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run verify
+      - run: npm run build
+      - run: npm test
+      - run: npm run uiux:hygiene
+      - run: npm run eval:agents -- --ci
+      - run: npm run planning:check
+      - run: npm run check:file-size

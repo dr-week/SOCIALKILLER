@@ -1,6 +1,6 @@
 # GitHub Toolkit & Open-Source Library Adoption Plan
 
-**Reviewed:** 2026-11-19  
+**Updated:** 2026-11-19  
 **Purpose:** Identify vetted, permissively licensed open-source GitHub repositories that directly improve **SOCIALKILLER**'s UI animations, glassmorphism UX, backend structure, secret safety, Visual Bot automation, and 5-viewport QA across our 7-phase roadmap.
 
 ---
@@ -43,3 +43,33 @@
 | **Phase 3–4** | `reka-ui` (Collapsible, Dialog, DropdownMenu, Tabs) | `PublisherAdvancedOptions.vue`, `CommunityInbox.vue`, `BrandProfileModal.vue`, `AutomationStudioWorkspace.vue` |
 | **Phase 5** | `rou3`, `valibot`, `fast-redact`, `p-queue` | `server/http/`, `server/jobs/`, `server/modules/`, `server/db/` |
 | **Phase 6–7** | `CLI-Anything` / `Stagehand` / `Midscene` patterns + `@axe-core/playwright` (dev) | `scripts/dev-supervisor.ts`, `scripts/cli-anything/`, `extension/modules/`, CI 5-width QA |
+
+---
+
+## 4. AI Agent Frameworks & Evaluation Tooling
+
+Our zero-dependency `scripts/agent-eval/` harness runs all 25 deterministic agent, automation, security, and Visual Bot scenarios offline in `<500ms`. When expanding to live multi-turn LLM grading, tracing, or multi-provider routing, these vetted open-source repositories fit cleanly on top:
+
+| Repository | License | Practical Relevance to SOCIALKILLER | Adoption Fit |
+|---|---|---|---|
+| [promptfoo/promptfoo](https://github.com/promptfoo/promptfoo) | **MIT** | Declarative CLI & Node.js library for prompt regression, red-teaming (prompt injection / PII leaks), and side-by-side model grading. | Layer over `scripts/agent-eval/` for live `GEMINI_API_KEY` prompt-injection & brand-tone evals in CI. |
+| [braintrustdata/autoevals](https://github.com/braintrustdata/autoevals) | **MIT** | TypeScript scorers (`Factuality`, heuristics, similarity) for evaluating reply accuracy against reference answers. | Plug into `assistant` scenarios when scoring live Gemini comment replies against ground-truth brand tone fixtures. |
+| [mastra-ai/mastra](https://github.com/mastra-ai/mastra) | **Apache-2.0** | TypeScript agent framework with structured workflows, memory, MCP tools, and built-in evaluation primitives. | Architecture reference for typed multi-step tool traces as SOCIALKILLER scales beyond single-turn Q&A. |
+| [vercel/ai](https://github.com/vercel/ai) | **Apache-2.0** | Unified TypeScript SDK for streaming, structured output (`generateObject`), and multi-provider routing. | Clean swap-in abstraction inside `server/integrations/ai/` when adding Groq/OpenAI alongside Gemini. |
+| [langfuse/langfuse](https://github.com/langfuse/langfuse) | **MIT** | Open-source LLM observability, span tracing, and evaluation dataset management. | Optional local trace viewer consuming `.data/eval-traces/latest.json` spans if multi-agent chains are added later. |
+| [vitest-dev/vitest](https://github.com/vitest-dev/vitest) | **MIT** | Vite-native TypeScript test runner with snapshot & watch DX (`vite` is already installed). | Complementary TS runner for Vue component + agent integration suites alongside `node:test`. |
+
+---
+
+## 5. Dual-Track Integration Strategy (Phase 2B-1 Zero-Dependency vs. Phase 2B-2 MIT Drop-In)
+
+**Status:** Phase 2B-2 active (`vue-sonner`, `@formkit/auto-animate`, `fuse.js`, `reka-ui` installed and wired behind `src/shared/` adapters):
+
+| Capability | Phase 2B-1 (Initial Adapter) | Phase 2B-2 (MIT/Apache-2.0 Drop-In Active) | Adapter Boundary & Rollback |
+|---|---|---|---|
+| **Frosted Toast Stack** | `useToast()` + `UiToastHost.vue` native queue | `vue-sonner` (`2.0.9`, **MIT**) | Wrapped in `src/shared/ui/UiToastHost.vue` & `useToast.ts`; callers keep `pushToast(msg, kind)` unchanged. |
+| **Fuzzy Topbar Search** | `scoreFuzzyMatch` substring/subsequence | `fuse.js` (`7.5.0`, **Apache-2.0**) | Combined inside `src/shared/search/fuzzy-search.ts`; typo-tolerant `'audence'` -> `'Audience Audit'` tested in `test/app-navigation.test.mjs`. |
+| **List & Drawer Micro-Motion** | CSS `@keyframes` & `<Transition>` | `@formkit/auto-animate` (`0.10.2`, **MIT**) | Registered via `autoAnimatePlugin` in `src/main.ts`; applied to Inbox & Workflow lists. |
+| **Accessible Symbolic Tooltips** | Native `title` + `aria-label` | `reka-ui` (`2.11.0`, **MIT**) | `TooltipProvider` in `App.vue` + frosted `src/shared/ui/UiTooltip.vue` on channel action icons. |
+
+- **Bundle & Rollback Guardrail:** Gzipped main JS stays `< 130 kB` via `npm run build`, and `npm run type-check`, `npm test`, and `npm run uiux:hygiene` pass cleanly.

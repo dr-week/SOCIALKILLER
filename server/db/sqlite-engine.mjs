@@ -39,8 +39,10 @@ if (!brandProfileColumns.some(column => column.name === 'archivedAt')) {
 }
 
 // Migrate existing installs without dropping campaign or credential data.
-if (!db.prepare(`PRAGMA table_info(social_posts)`).all().some(column => column.name === 'brandId')) {
-  db.exec(`ALTER TABLE social_posts ADD COLUMN brandId TEXT NOT NULL DEFAULT 'danger-labs'`)
+const postCols = new Set(db.prepare(`PRAGMA table_info(social_posts)`).all().map(c => c.name))
+if (!postCols.has('brandId')) db.exec(`ALTER TABLE social_posts ADD COLUMN brandId TEXT NOT NULL DEFAULT 'danger-labs'`)
+for (const col of ['platformsJson', 'approvalStatus', 'approvedAt', 'rejectedAt', 'confirmedAt', 'handoffUrl']) {
+  if (!postCols.has(col)) db.exec(`ALTER TABLE social_posts ADD COLUMN ${col} TEXT`)
 }
 if (!db.prepare(`PRAGMA table_info(activity_logs)`).all().some(column => column.name === 'brandId')) {
   db.exec(`ALTER TABLE activity_logs ADD COLUMN brandId TEXT NOT NULL DEFAULT 'danger-labs'`)

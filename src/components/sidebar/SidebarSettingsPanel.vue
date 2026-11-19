@@ -98,7 +98,7 @@ const accentOptions: Array<{ value: AccentTheme; label: string; color: string }>
           <RefreshCw :size="14" /> Sync
         </button>
       </div>
-      <p v-else class="settings-empty">No imported profiles</p>
+      <p v-else class="settings-empty">Import an export in Audience Audit</p>
     </section>
 
     <details class="settings-local-data">

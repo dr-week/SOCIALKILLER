@@ -6,13 +6,13 @@
  */
 
 export const PLATFORM_SESSION_RULES = [
-  { id: 'instagram', name: 'Instagram', icon: '📸', url: 'https://www.instagram.com', cookies: ['sessionid', 'ds_user_id'] },
+  { id: 'instagram', name: 'Instagram', icon: 'IG', url: 'https://www.instagram.com', cookies: ['sessionid', 'ds_user_id'] },
   { id: 'x', name: 'X / Twitter', icon: '𝕏', url: 'https://x.com', cookies: ['auth_token', 'twid'] },
-  { id: 'reddit', name: 'Reddit', icon: '👽', url: 'https://www.reddit.com', cookies: ['reddit_session', 'token_v2'] },
-  { id: 'github', name: 'GitHub', icon: '🐙', url: 'https://github.com', cookies: ['user_session', 'dotcom_user'] },
-  { id: 'linkedin', name: 'LinkedIn', icon: '💼', url: 'https://www.linkedin.com', cookies: ['li_at'] },
-  { id: 'devto', name: 'Dev.to', icon: '👩‍💻', url: 'https://dev.to', cookies: ['remember_user_token'] },
-  { id: 'discord', name: 'Discord', icon: '🎮', url: 'https://discord.com', cookies: ['__dcfduid'] }
+  { id: 'reddit', name: 'Reddit', icon: 'RD', url: 'https://www.reddit.com', cookies: ['reddit_session', 'token_v2'] },
+  { id: 'github', name: 'GitHub', icon: 'GH', url: 'https://github.com', cookies: ['user_session', 'dotcom_user'] },
+  { id: 'linkedin', name: 'LinkedIn', icon: 'IN', url: 'https://www.linkedin.com', cookies: ['li_at'] },
+  { id: 'devto', name: 'Dev.to', icon: 'DEV', url: 'https://dev.to', cookies: ['remember_user_token'] },
+  { id: 'discord', name: 'Discord', icon: 'DC', url: 'https://discord.com', cookies: ['__dcfduid'] }
 ]
 
 /**

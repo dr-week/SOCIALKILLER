@@ -2,17 +2,20 @@ import { computed, onBeforeUnmount, ref } from 'vue'
 import { APP_NAVIGATION, ROADMAP_APPS, groupAppsByCategory } from './mini-apps'
 import type { MiniApp } from './mini-apps'
 import { appHref } from './app-navigation'
+import { rankFuzzyItems } from '../../shared/search/fuzzy-search'
 import type { View } from '../../types'
 
 type OpenApp = (event: 'open-app', view: View) => void
 
-export function useMiniAppLauncher(emit: OpenApp) {
+export function useMiniAppLauncher(emit: OpenApp, getSearchQuery: () => string = () => '') {
   const expandedDescription = ref<string | null>(null)
   const activeAppId = ref<string | null>(null)
   let pressTimer: ReturnType<typeof setTimeout> | null = null
-  const availableApps = APP_NAVIGATION.filter(app => app.id !== 'home')
-  const appGroups = computed(() => groupAppsByCategory(availableApps))
-  const roadmapGroups = computed(() => groupAppsByCategory(ROADMAP_APPS))
+  const allAvailableApps = APP_NAVIGATION.filter(app => app.id !== 'home')
+  const fields = (app: Omit<MiniApp, 'view'>) => [app.label, app.category, app.description]
+  const availableApps = computed(() => rankFuzzyItems(allAvailableApps, getSearchQuery(), fields))
+  const appGroups = computed(() => groupAppsByCategory(availableApps.value))
+  const roadmapGroups = computed(() => groupAppsByCategory(rankFuzzyItems(ROADMAP_APPS, getSearchQuery(), fields)))
 
   function focusApp(appId: string) {
     activeAppId.value = appId

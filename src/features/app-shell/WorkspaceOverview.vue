@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import { BookOpen, ExternalLink, Github, Link2, Pencil, Radio, Sparkles } from 'lucide-vue-next'
+import { BookOpen, ExternalLink, Github, Link2, Radio, Sparkles, Users } from 'lucide-vue-next'
 import type { BrandProfile } from '../../types/brand'
 
-defineProps<{ brand: BrandProfile }>()
-const emit = defineEmits<{ (event: 'edit-profile'): void }>()
+defineProps<{
+  brand: BrandProfile
+  audienceHandle?: string
+  audienceFollowersCount?: number
+  audienceUnfollowersCount?: number
+}>()
+const emit = defineEmits<{
+  (event: 'edit-profile'): void
+  (event: 'open-audience'): void
+}>()
 </script>
 
 <template>
   <main class="workspace-overview">
-    <header class="workspace-heading">
-      <div><p class="eyebrow">SHARED BRAND CONTEXT</p><h1>{{ brand.name }}</h1><p>{{ brand.tagline }}</p></div>
-      <button type="button" class="edit-button" @click="emit('edit-profile')"><Pencil :size="15" /> Edit profile</button>
-    </header>
     <div class="workspace-grid">
       <section class="workspace-card">
         <h2><Sparkles :size="16" /> Brand voice</h2>
@@ -29,17 +33,21 @@ const emit = defineEmits<{ (event: 'edit-profile'): void }>()
         <a v-if="brand.purpose.githubUser" :href="`https://github.com/${encodeURIComponent(brand.purpose.githubUser)}`" target="_blank" rel="noreferrer"><Github :size="14" /> {{ brand.purpose.githubUser }} <ExternalLink :size="12" /></a>
         <p v-else><Link2 :size="14" /> Add links, notes, or a GitHub account in the profile.</p>
       </section>
+      <section class="workspace-card">
+        <h2><Users :size="16" /> Audience</h2>
+        <p>{{ audienceHandle ? `@${audienceHandle}` : 'Instagram follower & unfollower audit' }}</p>
+        <dl v-if="audienceFollowersCount">
+          <dt>Followers</dt><dd>{{ audienceFollowersCount.toLocaleString() }}</dd>
+          <dt>Unfollowers</dt><dd>{{ (audienceUnfollowersCount || 0).toLocaleString() }}</dd>
+        </dl>
+        <button type="button" class="audience-jump-btn" @click="emit('open-audience')">Open Audience Audit →</button>
+      </section>
     </div>
   </main>
 </template>
 
 <style scoped>
 .workspace-overview { max-width: 1080px; margin: 0 auto; }
-.workspace-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
-.workspace-heading h1 { margin: 7px 0 4px; font: 700 clamp(24px, 3vw, 30px) Manrope, sans-serif; letter-spacing: -.035em; }
-.workspace-heading p:not(.eyebrow) { margin: 0; color: var(--muted); font-size: 12px; }
-.eyebrow { margin: 0; color: var(--accent-primary); font-size: 9px; font-weight: 700; letter-spacing: .12em; }
-.edit-button { display: inline-flex; min-height: 38px; align-items: center; gap: 7px; padding: 0 12px; border: 1px solid var(--glass-border); border-radius: 11px; background: var(--surface-raised); color: var(--ink); cursor: pointer; font-size: 10px; }
 .workspace-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 13px; }
 .workspace-card { position: relative; min-width: 0; overflow: hidden; padding: 18px; border: 1px solid var(--glass-border); border-radius: 19px; background: radial-gradient(ellipse at 100% 0%, color-mix(in srgb, var(--accent-primary) 8%, transparent), transparent 52%), var(--glass-bg); box-shadow: var(--card-shadow); backdrop-filter: blur(18px); }
 .workspace-card h2 { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; font: 700 13px Manrope, sans-serif; }
@@ -49,6 +57,6 @@ const emit = defineEmits<{ (event: 'edit-profile'): void }>()
 .workspace-card dt { color: var(--muted); }.workspace-card dd { margin: 0; }
 .workspace-card ul { display: grid; gap: 8px; padding: 0; list-style: none; }
 .workspace-card li { display: flex; flex-wrap: wrap; gap: 7px; font-size: 10px; }.workspace-card li strong { color: var(--ink); }.workspace-card li span { margin-left: auto; color: var(--muted); }
-.workspace-card a,.workspace-card > p:last-child { display: inline-flex; align-items: center; gap: 6px; color: var(--accent-primary); font-size: 10px; text-decoration: none; }
-@media (max-width: 640px) { .workspace-grid { grid-template-columns: 1fr; }.workspace-heading { flex-direction: column; } }
+.workspace-card a,.workspace-card > p:last-child,.audience-jump-btn { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 0; border: 0; background: transparent; color: var(--accent-primary); cursor: pointer; font-size: 10px; font-weight: 600; text-decoration: none; }
+@media (max-width: 640px) { .workspace-grid { grid-template-columns: 1fr; } }
 </style>

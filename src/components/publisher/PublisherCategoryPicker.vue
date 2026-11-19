@@ -36,8 +36,8 @@ function selectCategory(event: Event) {
   </label>
 </template>
 
-<style scoped>
-@import './publisher-shared.css';
+<style scoped lang="scss">
+@use './styles/publisher-shared.scss';
 
 .category-picker { display: grid; gap: 5px; color: var(--muted, #94a3b8); font-size: 11px; }
 </style>

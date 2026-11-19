@@ -16,16 +16,12 @@ const props = defineProps<{
   configuredPlatformIds: PlatformId[]
   generatedVariants: Record<PlatformId, string>
   platformBadges: Record<PlatformId, { icon: string; color: string; bg: string; label: string }>
-  media?: {
-    imageUrl: string | null
-    webLink: string | null
-    videoUrl: string | null
-    hashtags: string[]
-    hashtagString: string
-  }
 }>()
 
-const canPublish = computed(() => props.selectedPlatforms.length > 0 && props.selectedPlatforms.every(id => props.configuredPlatformIds.includes(id)))
+const canPublish = computed(() =>
+  props.selectedPlatforms.length > 0 &&
+  props.selectedPlatforms.every(id => props.configuredPlatformIds.includes(id))
+)
 
 const emit = defineEmits<{
   (e: 'togglePlatform', id: PlatformId): void
@@ -50,7 +46,10 @@ const activePreviewPlatform = ref<PlatformId>('x')
 const previewCover = ref<string | null>(null)
 const selectedAsset = ref<string | null>(null)
 
-const { drafting: draftingRandomPost, draftId: randomDraftId, feedback: randomDraftFeedback, sendingFeedback: sendingRandomFeedback, clearDraft, randomize: randomizeDebate, rate: rateRandomDraft } = useRandomPostDraft({
+const {
+  drafting: draftingRandomPost, draftId: randomDraftId, feedback: randomDraftFeedback,
+  sendingFeedback: sendingRandomFeedback, clearDraft, randomize: randomizeDebate, rate: rateRandomDraft
+} = useRandomPostDraft({
   brandId, topic: topicInput, rawNotes: rawNotesInput, webLink: webLinkInput, imageUrl: imageUrlInput,
   previewCover, tags: tagsInput, selectedAsset,
   updateVariant: (platform, text) => emit('updateVariant', platform, text),
@@ -58,18 +57,12 @@ const { drafting: draftingRandomPost, draftId: randomDraftId, feedback: randomDr
 })
 
 const {
-  categories: contentCategories,
-  selectedCategoryId,
-  loadingCategory,
-  driveFolder: designatedDriveFolder,
-  assets: vaultAssets,
-  selectCategory,
-  changeDriveFolder: promptChangeDriveFolder,
-  selectAsset: selectVaultAsset
+  categories: contentCategories, selectedCategoryId, loadingCategory,
+  driveFolder: designatedDriveFolder, assets: vaultAssets,
+  selectCategory, changeDriveFolder: promptChangeDriveFolder, selectAsset: selectVaultAsset
 } = usePublisherComposerResources({
   brandId, topic: topicInput, rawNotes: rawNotesInput, webLink: webLinkInput, tags: tagsInput,
-  imageUrl: imageUrlInput, previewCover, selectedAsset, clearDraft,
-  triggerGenerate,
+  imageUrl: imageUrlInput, previewCover, selectedAsset, clearDraft, triggerGenerate,
   updateVariant: (platform, text) => emit('updateVariant', platform, text),
   showToast: message => emit('showToast', message)
 })
@@ -78,14 +71,9 @@ function triggerGenerate() {
   randomDraftId.value = null
   const tags = tagsInput.value.split(',').map(t => t.trim()).filter(Boolean)
   emit('generate', {
-    topic: topicInput.value,
-    rawNotes: rawNotesInput.value,
-    tone: selectedTone.value,
-    targetSubreddit: targetSubreddit.value,
-    tags,
-    includeCodeSnippet: includeCodeSnippet.value,
-    webLink: webLinkInput.value,
-    imageUrl: imageUrlInput.value || undefined
+    topic: topicInput.value, rawNotes: rawNotesInput.value, tone: selectedTone.value,
+    targetSubreddit: targetSubreddit.value, tags, includeCodeSnippet: includeCodeSnippet.value,
+    webLink: webLinkInput.value, imageUrl: imageUrlInput.value || undefined
   })
 }
 
@@ -96,65 +84,41 @@ function applyPreset(p: { topic: string; notes: string; link: string }) {
   if (p.link) webLinkInput.value = p.link
   triggerGenerate()
 }
-
 </script>
 
 <template>
   <div class="pub-grid-2">
     <PublisherComposerForm
-      v-model:topic="topicInput"
-      v-model:raw-notes="rawNotesInput"
-      v-model:web-link="webLinkInput"
-      v-model:tags="tagsInput"
-      v-model:tone="selectedTone"
-      v-model:subreddit="targetSubreddit"
-      v-model:scheduled-at="scheduledDateTime"
-      v-model:include-code-snippet="includeCodeSnippet"
-      :brand-name="brandName"
-      :loading="loading"
-      :can-publish="canPublish"
-      :selected-platforms="selectedPlatforms"
-      :available-platform-ids="availablePlatformIds"
-      :platform-badges="platformBadges"
-      :categories="contentCategories"
-      :selected-category-id="selectedCategoryId"
-      :loading-category="loadingCategory"
-      :drive-folder="designatedDriveFolder"
-      :assets="vaultAssets"
-      :selected-asset="selectedAsset"
-      :drafting-random-post="draftingRandomPost"
-      @apply-preset="applyPreset"
-      @randomize="randomizeDebate"
-      @generate="triggerGenerate"
+      v-model:topic="topicInput" v-model:raw-notes="rawNotesInput" v-model:web-link="webLinkInput"
+      v-model:tags="tagsInput" v-model:tone="selectedTone" v-model:subreddit="targetSubreddit"
+      v-model:scheduled-at="scheduledDateTime" v-model:include-code-snippet="includeCodeSnippet"
+      :brand-name="brandName" :loading="loading" :can-publish="canPublish"
+      :selected-platforms="selectedPlatforms" :available-platform-ids="availablePlatformIds"
+      :platform-badges="platformBadges" :categories="contentCategories"
+      :selected-category-id="selectedCategoryId" :loading-category="loadingCategory"
+      :drive-folder="designatedDriveFolder" :assets="vaultAssets"
+      :selected-asset="selectedAsset" :drafting-random-post="draftingRandomPost"
+      @apply-preset="applyPreset" @randomize="randomizeDebate" @generate="triggerGenerate"
       @toggle-platform="platform => { emit('togglePlatform', platform); activePreviewPlatform = platform }"
-      @submit-post="payload => emit('submitPost', payload)"
-      @select-category="selectCategory"
-      @change-drive-folder="promptChangeDriveFolder"
-      @select-vault-asset="selectVaultAsset"
+      @submit-post="payload => emit('submitPost', payload)" @select-category="selectCategory"
+      @change-drive-folder="promptChangeDriveFolder" @select-vault-asset="selectVaultAsset"
     />
 
     <PublisherVariantReview
-      :active-platform="activePreviewPlatform"
-      :brand-name="brandName"
-      :topic="topicInput"
-      :platform-badges="platformBadges"
-      :generated-variants="generatedVariants"
-      :web-link="webLinkInput"
-      :preview-cover="previewCover"
-      :random-draft-id="randomDraftId"
-      :drafting-random-post="draftingRandomPost"
-      :random-draft-feedback="randomDraftFeedback"
+      :active-platform="activePreviewPlatform" :selected-platforms="selectedPlatforms" :brand-name="brandName" :topic="topicInput"
+      :platform-badges="platformBadges" :generated-variants="generatedVariants"
+      :web-link="webLinkInput" :preview-cover="previewCover" :random-draft-id="randomDraftId"
+      :drafting-random-post="draftingRandomPost" :random-draft-feedback="randomDraftFeedback"
       :sending-random-feedback="sendingRandomFeedback"
       @update:active-platform="activePreviewPlatform = $event"
       @update-variant="(platform, text) => emit('updateVariant', platform, text)"
-      @clear-random-draft-feedback="randomDraftId = null"
-      @rate-random-draft="rateRandomDraft"
+      @clear-random-draft-feedback="randomDraftId = null" @rate-random-draft="rateRandomDraft"
       @open-intent="(platform, text) => emit('openIntent', platform, text)"
       @show-toast="msg => emit('showToast', msg)"
     />
   </div>
 </template>
 
-<style scoped>
-@import './publisher-shared.css';
+<style scoped lang="scss">
+@use './styles/publisher-shared.scss';
 </style>

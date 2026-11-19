@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Sparkles, Clapperboard, Clock, Flame, ShieldAlert, Zap, MapPin } from 'lucide-vue-next'
+import { Sparkles, Clock, Flame, ShieldAlert, Zap, MapPin, Minimize2 } from 'lucide-vue-next'
+import { summarizeCreativeText } from '../../domain/text-summarizer'
 import type { BrandProfile, ScriptFormat, ScriptPillar } from '../../types/brand'
 
 defineProps<{ activeBrand: BrandProfile; generating: boolean }>()
@@ -9,26 +10,23 @@ const topicInput = ref('')
 const selectedPillar = ref<ScriptPillar>('daily_grind')
 const selectedFormat = ref<ScriptFormat>('short_form_60s')
 const PILLARS: Array<{ id: ScriptPillar; label: string; icon: any; desc: string }> = [
-  { id: 'daily_grind', label: 'Daily Grind', icon: Clock, desc: '14h days, discipline, coding through power cuts' },
-  { id: 'family_doubts', label: 'Family Doubts', icon: ShieldAlert, desc: 'Explaining startup life vs stable IT packages' },
-  { id: 'underdog_location', label: 'Goa Underdog', icon: Flame, desc: 'Building global infra outside Bangalore/SF' },
-  { id: 'technical_breakthrough', label: 'Tech Deep Dive', icon: Zap, desc: 'Zero-overhead architecture & benchmark breakthroughs' }
+  { id: 'daily_grind', label: 'Daily Build', icon: Clock, desc: 'Behind-the-scenes process & shipping habits' },
+  { id: 'family_doubts', label: 'Founder POV', icon: ShieldAlert, desc: 'Candid trade-offs & lessons from building' },
+  { id: 'underdog_location', label: 'Indie Edge', icon: Flame, desc: 'Operating lean & punching above agency weight' },
+  { id: 'technical_breakthrough', label: 'Tech Deep Dive', icon: Zap, desc: 'Architecture wins, benchmarks & workflows' }
 ]
+function condenseTopic() {
+  if (!topicInput.value.trim()) return
+  const summary = summarizeCreativeText(topicInput.value, 2)
+  if (summary.tldr) topicInput.value = summary.tldr.slice(0, 120)
+}
 function triggerGenerate() { emit('generate', { topic: topicInput.value, pillar: selectedPillar.value, format: selectedFormat.value }) }
 </script>
 
 <template>
-    <!-- Generator Controls -->
     <div class="studio-controls-card">
       <div class="card-head">
-        <div class="head-title">
-          <Clapperboard :size="16" class="text-purple" />
-          <h4>AI Video Script Partner: {{ activeBrand.name }}</h4>
-        </div>
-        <span class="location-badge" style="display: inline-flex; align-items: center; gap: 4px;">
-          <MapPin :size="11" />
-          <span>{{ activeBrand.location }} Storytelling Arc</span>
-        </span>
+        <span class="location-badge"><MapPin :size="11" /><span>{{ activeBrand.name }} · {{ activeBrand.location }}</span></span>
       </div>
 
       <!-- Pillar Selector -->
@@ -62,6 +60,18 @@ function triggerGenerate() { emit('generate', { topic: topicInput.value, pillar:
           <option value="short_form_30s">30s Quick Hook</option>
           <option value="vlog_long_form">Daily Vlog Script</option>
         </select>
+
+        <button
+          v-if="topicInput.length > 80"
+          type="button"
+          class="pillar-btn"
+          style="padding: 0 12px; min-height: 40px;"
+          title="Condense pasted notes into a sharp video hook"
+          @click="condenseTopic"
+        >
+          <Minimize2 :size="13" />
+          <span>TL;DR Hook</span>
+        </button>
 
         <button
           class="generate-btn"

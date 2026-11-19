@@ -28,10 +28,11 @@ const { resetData, importedAt } = audience
     @maximize="openQueueModal" @pause="pauseQueue" @resume="resumeQueue"
   />
   <AudienceExportGuideModal :is-open="showExportGuide" @close="showExportGuide = false" @trigger-import="fileInput?.click()" />
-  <div class="data-note">
-    <span aria-hidden="true">●</span> Your audience export data stays in browser storage.
-    <button type="button" @click="resetData">Clear imported data</button>
-    <span class="note-right">{{ importedAt ? navigation.lastSynced.value : 'No data imported yet' }}</span>
-  </div>
-  <footer class="page-footer"><span>THE SOCIAL BASE · AUDIENCE AUDIT</span><span>Local-first workspace</span></footer>
+  <footer class="page-footer">
+    <span>SOCIALKILLER · AUDIENCE AUDIT</span>
+    <span class="data-note">
+      Local storage only
+      <template v-if="importedAt"> · {{ navigation.lastSynced.value }} · <button type="button" @click="resetData">Clear</button></template>
+    </span>
+  </footer>
 </template>

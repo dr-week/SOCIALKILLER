@@ -1,0 +1,58 @@
+.floating-batch-bar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px 8px 18px;
+  border: 1px solid var(--glass-border, rgba(120, 87, 220, 0.5));
+  border-radius: 40px;
+  background: var(--glass-bg, rgba(19, 23, 34, 0.86));
+  backdrop-filter: blur(16px);
+  box-shadow: var(--card-shadow, 0 12px 32px rgba(0, 0, 0, 0.45));
+  animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.batch-count-pill { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--ink, #fff); white-space: nowrap; }
+.batch-divider { width: 1px; height: 20px; background: rgba(255, 255, 255, 0.12); }
+.batch-actions-group { display: flex; align-items: center; gap: 8px; }
+
+.batch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+
+  &--primary { background: #ef4444; color: #fff; &:hover { background: #dc2626; } }
+  &--accent { background: rgba(234, 179, 8, 0.15); border: 1px solid rgba(234, 179, 8, 0.4); color: #facc15; &:hover { background: rgba(234, 179, 8, 0.25); } }
+  &--ghost { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--muted, #94a3b8); &:hover { color: #fff; border-color: rgba(255, 255, 255, 0.2); } }
+}
+
+.batch-close-btn {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted, #94a3b8);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  &:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+}
+
+.slide-up-enter-active, .slide-up-leave-active { transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+.slide-up-enter-from, .slide-up-leave-to { opacity: 0; transform: translate(-50%, 20px) scale(0.95); }
+@keyframes popIn { 0% { transform: translate(-50%, 15px) scale(0.96); opacity: 0; } 100% { transform: translate(-50%, 0) scale(1); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .floating-batch-bar,.batch-btn,.batch-close-btn,.slide-up-enter-active,.slide-up-leave-active { animation: none; transition: none; } }

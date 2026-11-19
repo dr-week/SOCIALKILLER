@@ -35,10 +35,10 @@ const isMobile = ref(false)
 let mobileMedia: MediaQueryList | undefined
 const updateMobile = () => { isMobile.value = mobileMedia?.matches ?? false }
 const avatarInitials = computed(() => props.currentAccountUsername.slice(0, 2).toUpperCase() || 'IG')
-const profileTitle = computed(() => props.currentAccountUsername ? `@${props.currentAccountUsername}` : 'Local workspace')
+const profileTitle = computed(() => props.currentAccountUsername ? `@${props.currentAccountUsername}` : 'Audience Audit')
 const profileSubtitle = computed(() => props.currentAccountUsername
   ? `${props.followersCount.toLocaleString()} followers`
-  : 'No data imported')
+  : 'Open audit')
 
 watch(() => props.menuOpen, isOpen => {
   if (!isOpen) showSettings.value = false
@@ -110,13 +110,13 @@ function selectView(view: View) {
           <span>Settings</span>
         </button>
 
-        <div class="profile-card">
+        <button type="button" class="profile-card" title="Open Audience Audit" @click="selectView('overview')">
           <div class="avatar">{{ avatarInitials }}</div>
           <div class="profile-info">
             <strong>{{ profileTitle }}</strong>
             <span>{{ profileSubtitle }}</span>
           </div>
-        </div>
+        </button>
       </div>
     </div>
   </aside>

@@ -3,7 +3,7 @@ import type { BrandAccount } from '../../../types/brand'
 import type { PlatformId, SocialPlatformStatus } from '../../../types'
 import { isReadyForImmediatePublishing } from '../../../features/social-accounts'
 
-const AVAILABLE_IDS = ['instagram', 'x', 'linkedin', 'reddit', 'github', 'discord', 'devto', 'hashnode', 'medium', 'ai_registry']
+const AVAILABLE_IDS: readonly PlatformId[] = ['instagram', 'x', 'linkedin', 'reddit', 'github', 'discord', 'devto', 'hashnode', 'medium', 'ai_registry']
 
 export function usePublisherPlatforms(
   accounts: Readonly<Ref<BrandAccount[]>>,
@@ -12,7 +12,7 @@ export function usePublisherPlatforms(
 ) {
   const selectAccounts = (items: BrandAccount[]) => items
     .map(account => account.platformId)
-    .filter((id): id is PlatformId => AVAILABLE_IDS.includes(id))
+    .filter((id): id is PlatformId => AVAILABLE_IDS.includes(id as PlatformId))
   const selectedPlatforms = ref<PlatformId[]>(selectAccounts(accounts.value))
   const generatedVariants = ref<Record<PlatformId, string>>({
     instagram: '', x: '', linkedin: '', reddit: '', github: '', discord: '',
@@ -35,6 +35,7 @@ export function usePublisherPlatforms(
     selectedPlatforms.value = selectAccounts(value)
     onAccountsChanged()
   }, { deep: true })
+  const availablePlatformIds = computed<PlatformId[]>(() => [...AVAILABLE_IDS])
   const readyIds = computed(() => platforms.value.filter(isReadyForImmediatePublishing).map(platform => platform.id))
   const activeChannelCount = computed(() => platforms.value.filter(platform =>
     isReadyForImmediatePublishing(platform) && platform.id !== 'ai_registry' && selectedPlatforms.value.includes(platform.id)
@@ -51,5 +52,5 @@ export function usePublisherPlatforms(
     generatedVariants.value[id] = text
   }
 
-  return { selectedPlatforms, generatedVariants, platformBadges, readyIds, activeChannelCount, togglePlatformSelection, updateVariant }
+  return { availablePlatformIds, selectedPlatforms, generatedVariants, platformBadges, readyIds, activeChannelCount, togglePlatformSelection, updateVariant }
 }

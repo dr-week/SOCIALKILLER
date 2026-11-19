@@ -65,24 +65,24 @@
 
     if (isMutual) {
       directAnswer = 'YES • Mutual Friend'
-      label = 'Mutual Friend 🟢 • Follows You'
+      label = '● Mutual Friend • Follows You'
       color = '#10b981'
     } else if (isFollower) {
       directAnswer = 'YES • Follows You Back'
-      label = 'Follows You (Fan) 🔵'
+      label = '◆ Follows You (Fan)'
       color = '#3b82f6'
     } else if (doesNotFollow) {
       directAnswer = "NO • Doesn't Follow Back"
-      label = "Doesn't Follow Back ⚠️"
+      label = "▲ Doesn't Follow Back"
       color = '#f59e0b'
     }
 
     if (statusData?.whitelisted) {
-      label = 'Whitelisted (Protected) ⭐'
+      label = '★ Whitelisted (Protected)'
       color = '#eab308'
     }
 
-    const tooltip = `Follow Check for @${targetUsername}: ${directAnswer}. Powered by The Social Base.`
+    const tooltip = `Follow Check for @${targetUsername}: ${directAnswer}. Powered by SOCIALKILLER.`
     pill.title = tooltip
     pill.innerHTML = `
       <div style="

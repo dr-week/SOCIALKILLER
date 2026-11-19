@@ -55,14 +55,10 @@ const emit = defineEmits<{
 
 <template>
   <div class="panel connections-panel">
-    <div class="panel-heading">
-      <div>
-        <span class="section-kicker">AUDIENCE BREAKDOWN</span>
-        <h2>{{ viewTitle }}</h2>
-      </div>
+    <div v-if="activeView === 'overview'" class="panel-heading">
       <button
-        v-if="activeView === 'overview'"
         class="text-link"
+        style="margin-left: auto;"
         @click="emit('update:activeView', 'not-following-back'); emit('update:currentPage', 1)"
       >
         View not following back <ArrowUpRight :size="12" style="display:inline;" />

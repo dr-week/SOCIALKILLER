@@ -18,13 +18,13 @@ function readRepoVersion(): string {
 export function getPresetPayload(
   preset: PresetName,
   defaultUrl = 'https://github.com/danger-labs/followdesk',
-  brandName = 'The Social Base'
+  brandName = 'SOCIALKILLER'
 ): SocialPostPayload {
   const versionTag = readRepoVersion()
 
   if (preset === 'benchmark') {
     return {
-      title: `The Social Base ${versionTag} — Audience & Social Publishing`,
+      title: `SOCIALKILLER ${versionTag} — Audience & Social Publishing`,
       summary:
         'Zero-latency O(N) follower graph diffs + automated multi-platform publishing across Discord, Telegram, X, LinkedIn, GitHub, Instagram & Reddit.',
       detailed: [
@@ -80,7 +80,7 @@ export function getPresetPayload(
       '',
       '### What’s New in This Release',
       '• **Autonomous Multi-Platform Publisher (`scripts/social/`)**: Broadcast release notes, benchmarks, and creative assets to Discord, Telegram, Twitter/X, LinkedIn, GitHub Releases, Instagram/Threads (Buffer & Meta Graph), and Reddit.',
-      '• **Unified Creative Studio Integration**: Trigger live or dry-run multi-platform broadcasts directly from The Social Base dashboard or CLI.',
+      '• **Unified Creative Studio Integration**: Trigger live or dry-run multi-platform broadcasts directly from SOCIALKILLER dashboard or CLI.',
       '• **Zero-Copy Formatting & Safety**: Automatic 280-char micro-threading for X, rich embeds for Discord, MarkdownV2/HTML for Telegram, and exponential backoff rate-limit resilience.'
     ].join('\n'),
     imagePath:

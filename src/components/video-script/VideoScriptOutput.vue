@@ -20,9 +20,9 @@ async function copyScript() {
     <div v-if="currentScript" class="script-output-card">
       <div class="output-topbar">
         <div class="script-meta">
-          <span class="retention-score" style="display: inline-flex; align-items: center; gap: 4px;">
+          <span class="retention-score" title="Estimated retention score" style="display: inline-flex; align-items: center; gap: 4px;">
             <Flame :size="11" />
-            <span>Retention Score: {{ currentScript.retentionScore }}%</span>
+            <span>{{ currentScript.retentionScore }}%</span>
           </span>
           <span class="format-pill">{{ currentScript.durationEstimate }}</span>
           <span class="pillar-pill">{{ currentScript.pillar.replace('_', ' ') }}</span>

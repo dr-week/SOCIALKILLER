@@ -1,0 +1,94 @@
+/**
+ * Guided Flow & Next-Action Wayfinding SCSS (<95 lines)
+ * Uses subtle specular glass highlights, directional halos, and step-complete morphing
+ * to show the creator what to do next without adding cluttered text banners.
+ */
+
+/* Specular Top-Edge Rim Light for Active Glass Surfaces */
+.glass-surface--active,
+.pub-card:focus-within,
+.studio-controls-card:focus-within,
+.journey-controls-card:focus-within {
+  border-color: color-mix(in srgb, var(--accent-primary) 46%, var(--glass-border)) !important;
+  box-shadow:
+    inset 0 1px 0 0 color-mix(in srgb, var(--accent-primary) 32%, rgba(255, 255, 255, 0.14)),
+    0 16px 40px color-mix(in srgb, var(--accent-primary) 12%, rgba(0, 0, 0, 0.28)) !important;
+  transition: border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+/* Next-Action Directional Pulse (Guides the eye to the next logical button) */
+.next-action-pulse,
+.pub-btn.primary:not(:disabled),
+.generate-btn:not(:disabled) {
+  position: relative;
+  isolation: isolate;
+  animation: socialkillerNextStepPulse 2.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+/* Step-Flow Connector Arrow Animation on Hover */
+.next-action-pulse svg,
+.pub-btn.primary:not(:disabled) svg,
+.launch-link svg {
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.next-action-pulse:hover svg,
+.pub-btn.primary:not(:disabled):hover svg,
+.app-card:hover .launch-link svg {
+  transform: translateX(2.5px) scale(1.06);
+}
+
+/* De-cluttered Progressive Step Indicator Rail */
+.guided-step-rail {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  font-size: 10px;
+  color: var(--muted);
+
+  .step-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    box-shadow: 0 0 10px var(--accent-primary);
+    animation: socialkillerBeaconDot 1.8s ease-in-out infinite;
+  }
+
+  strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+}
+
+@keyframes socialkillerNextStepPulse {
+  0%, 100% {
+    box-shadow:
+      0 4px 18px var(--accent-glow),
+      0 0 0 0 color-mix(in srgb, var(--accent-primary) 38%, transparent);
+  }
+  50% {
+    box-shadow:
+      0 6px 24px var(--accent-glow),
+      0 0 0 5px color-mix(in srgb, var(--accent-primary) 0%, transparent);
+  }
+}
+
+@keyframes socialkillerBeaconDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 0.65; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .next-action-pulse,
+  .pub-btn.primary:not(:disabled),
+  .generate-btn:not(:disabled),
+  .guided-step-rail .step-dot {
+    animation: none !important;
+  }
+}

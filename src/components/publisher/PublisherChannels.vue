@@ -28,13 +28,10 @@ function assignAccount(platformId: string, handle: string) {
     <MetaAccountManager :brand-id="brandId" @updated="emit('metaUpdated')" />
     <div class="channels-top-bar">
       <div class="top-title">
-        <Flame :size="18" class="amber-icon" />
-        <div>
-          <h4>Company channels and credentials</h4>
-          <p>Assign a channel handle to this company, then add credentials and test the connection.</p>
-        </div>
+        <Flame :size="16" class="amber-icon" />
+        <h4>Channels ({{ platforms.length }})</h4>
       </div>
-      <button class="pulse-all-btn" @click="emit('triggerKeepAlive')"><Zap :size="14" /><span>Pulse All Active Accounts</span></button>
+      <button class="pulse-all-btn" @click="emit('triggerKeepAlive')"><Zap :size="13" /><span>Pulse All</span></button>
     </div>
 
     <div class="channels-grid">
@@ -55,7 +52,7 @@ function assignAccount(platformId: string, handle: string) {
 
 <style scoped>
 .channels-section { display:flex; flex-direction:column; gap:14px; }
-.channels-top-bar { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:14px 16px; border-radius:12px; border:1px solid var(--line); background:var(--surface); }
+.channels-top-bar { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:14px 16px; border-radius:14px; border:1px solid var(--glass-border); background:var(--glass-bg); backdrop-filter:blur(16px); }
 .top-title { display:flex; align-items:center; gap:10px; }.amber-icon { color:#f59e0b; }.top-title h4 { margin:0; font-size:13px; font-weight:700; }.top-title p { margin:2px 0 0; font-size:11px; color:var(--muted); }
 .pulse-all-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border-radius:8px; border:none; background:var(--purple); color:#fff; font-size:11px; font-weight:700; cursor:pointer; }
 .channels-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px; }

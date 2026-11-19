@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
-import { ExternalLink, RefreshCw, Save, Trash2, Workflow } from 'lucide-vue-next'
+import { Activity, ExternalLink, Layers, RefreshCw, Save, ScanEye, Trash2 } from 'lucide-vue-next'
 
 interface WorkflowStep {
   id: string
@@ -80,17 +80,26 @@ onMounted(loadWorkflows)
 
 <template>
   <section class="workflow-studio">
-    <header class="studio-heading">
-      <div><Workflow :size="17" /><h2>Page workflows</h2></div>
-      <button class="icon-button" :disabled="loading" aria-label="Refresh workflows" @click="loadWorkflows"><RefreshCw :size="15" /></button>
-    </header>
-
-    <p class="studio-note">Record on a website with The Social Base companion. Review steps here; replay from the companion on that same site. Values you add are stored locally; avoid passwords and codes.</p>
+    <div class="studio-bar">
+      <div class="bot-layers" title="3-Layer Visual Bot Engine">
+        <span class="layer-chip" title="Layer 1: Semantic DOM"><Layers :size="12" /><span>DOM</span></span>
+        <span class="layer-chip" title="Layer 2: Sobel + 2D NCC Contour"><ScanEye :size="12" /><span>Contour</span></span>
+        <span class="layer-chip" title="Layer 3: Box-Muller Human Cadence"><Activity :size="12" /><span>Cadence</span></span>
+      </div>
+      <div class="bar-controls">
+        <select v-if="workflows.length > 1" v-model="selectedId" class="wf-select" aria-label="Select workflow">
+          <option v-for="wf in workflows" :key="wf.id" :value="wf.id">{{ wf.name }}</option>
+        </select>
+        <button class="icon-button" :disabled="loading" title="Refresh workflows" aria-label="Refresh workflows" @click="loadWorkflows">
+          <RefreshCw :size="13" />
+        </button>
+      </div>
+    </div>
     <p v-if="status" class="studio-status" role="status">{{ status }}</p>
 
     <div v-if="!workflows.length && !loading" class="workflow-empty">
-      <p>No workflows saved for this company.</p>
-      <span>Open a website, start recording from the extension, then stop and save.</span>
+      <p>No workflows recorded yet.</p>
+      <span>Record steps from the browser companion extension.</span>
     </div>
 
     <div v-else-if="selected" class="workflow-editor">
@@ -99,7 +108,7 @@ onMounted(loadWorkflows)
         <span><ExternalLink :size="13" /> {{ selectedHost }}</span>
       </div>
 
-      <ol class="workflow-steps">
+      <ol v-auto-animate class="workflow-steps">
         <li v-for="(step, index) in selected.steps" :key="step.id" class="workflow-step">
           <span class="step-index">{{ index + 1 }}</span>
           <div class="step-detail">
@@ -120,33 +129,4 @@ onMounted(loadWorkflows)
   </section>
 </template>
 
-<style scoped lang="scss">
-.workflow-studio { display: grid; gap: 14px; }
-.studio-heading { display: flex; align-items: center; justify-content: space-between; padding: 15px 17px; border: 1px solid var(--surface-border); border-radius: 10px; background: var(--surface-card); }
-.studio-heading > div { display: flex; align-items: center; gap: 9px; color: var(--purple); }
-.studio-heading h2 { margin: 0; color: var(--ink); font-size: 15px; }
-.icon-button, .delete-button { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--surface-border); border-radius: 7px; background: var(--surface-raised); color: var(--ink); cursor: pointer; }
-.icon-button { width: 32px; height: 32px; justify-content: center; }
-.studio-note, .studio-status { margin: 0; color: var(--muted); font-size: 12px; }
-.studio-status { color: var(--purple); }
-.workflow-empty, .workflow-editor { padding: 17px; border: 1px solid var(--surface-border); border-radius: 10px; background: var(--surface-card); }
-.workflow-empty p { margin: 0 0 5px; color: var(--ink); font-weight: 700; }
-.workflow-empty span { color: var(--muted); font-size: 12px; }
-.workflow-editor { display: grid; gap: 14px; }
-.workflow-meta { display: flex; align-items: end; justify-content: space-between; gap: 12px; }
-.workflow-meta label { display: grid; flex: 1; gap: 6px; color: var(--muted); font-size: 11px; }
-.workflow-meta input, .step-value { min-width: 0; padding: 9px 10px; border: 1px solid var(--surface-border); border-radius: 7px; background: var(--input-bg); color: var(--ink); font: inherit; }
-.workflow-meta > span { display: inline-flex; align-items: center; gap: 5px; padding-bottom: 9px; color: var(--muted); font-size: 11px; }
-.workflow-steps { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
-.workflow-step { display: flex; align-items: center; gap: 10px; padding: 9px; border: 1px solid var(--surface-border); border-radius: 8px; background: var(--surface-raised); }
-.step-index { display: grid; width: 23px; height: 23px; flex: 0 0 auto; place-items: center; border-radius: 7px; background: var(--purple-soft); color: var(--purple); font-size: 10px; font-weight: 700; }
-.step-detail { display: grid; min-width: 100px; gap: 3px; color: var(--ink); font-size: 11px; }
-.step-detail small { overflow: hidden; color: var(--muted); text-overflow: ellipsis; white-space: nowrap; }
-.step-value { flex: 1; }
-.workflow-actions { display: flex; justify-content: space-between; gap: 8px; }
-.save-button, .delete-button { min-height: 34px; padding: 0 11px; font: inherit; font-size: 11px; font-weight: 600; }
-.save-button { display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 7px; background: var(--purple); color: #fff; cursor: pointer; }
-.delete-button { color: #c64453; }
-.save-button:disabled { opacity: .55; cursor: wait; }
-@media (max-width: 600px) { .workflow-meta { align-items: stretch; flex-direction: column; }.workflow-meta > span { padding-bottom: 0; }.workflow-step { flex-wrap: wrap; }.step-value { flex-basis: calc(100% - 34px); margin-left: 33px; } }
-</style>
+<style scoped lang="scss" src="./styles/publisher-autopilot.scss"></style>

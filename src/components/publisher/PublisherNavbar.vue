@@ -1,14 +1,7 @@
 <script setup lang="ts">
-import {
-  Layers,
-  Radio,
-  Send
-} from 'lucide-vue-next'
+import { Layers, Radio, Send } from 'lucide-vue-next'
 
-export type PublisherTab =
-  | 'compose'
-  | 'campaigns'
-  | 'channels'
+export type PublisherTab = 'compose' | 'campaigns'
 
 defineProps<{
   activeTab: PublisherTab
@@ -17,9 +10,10 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:activeTab', tab: PublisherTab): void
+  (e: 'open-connections'): void
 }>()
 
-const TABS: Array<{ id: PublisherTab; label: string; icon: any; badge?: string }> = [
+const TABS: Array<{ id: PublisherTab; label: string; icon: any }> = [
   { id: 'compose', label: 'Create', icon: Send },
   { id: 'campaigns', label: 'Queue', icon: Layers }
 ]
@@ -27,23 +21,12 @@ const TABS: Array<{ id: PublisherTab; label: string; icon: any; badge?: string }
 
 <template>
   <header class="publisher-minimal-header">
-    <div class="header-top">
-      <div class="brand-badge">
-        <div class="pulse-dot"></div>
-        <span class="brand-title">Publish</span>
-      </div>
-
-      <div class="stats-pills">
-        <div class="stat-pill" title="Channels with credentials configured for this company">
-          <Radio class="pill-icon text-emerald" />
-          <span class="pill-val">{{ activeCount }}</span>
-          <span class="pill-lbl">Channels</span>
-        </div>
-      </div>
+    <div class="brand-badge">
+      <div class="pulse-dot"></div>
+      <span class="brand-title">Planner</span>
     </div>
 
-    <!-- Minimal Icon-Driven Tab Bar -->
-    <nav class="publisher-tabs">
+    <nav class="publisher-tabs" aria-label="Planner views">
       <button
         v-for="t in TABS"
         :key="t.id"
@@ -53,9 +36,19 @@ const TABS: Array<{ id: PublisherTab; label: string; icon: any; badge?: string }
       >
         <component :is="t.icon" class="tab-icon" />
         <span class="tab-label">{{ t.label }}</span>
-        <span v-if="t.badge" class="tab-badge">{{ t.badge }}</span>
       </button>
     </nav>
+
+    <button
+      type="button"
+      class="stat-pill"
+      title="Open Connections"
+      @click="emit('open-connections')"
+    >
+      <Radio class="pill-icon text-emerald" />
+      <span class="pill-val">{{ activeCount }}</span>
+      <span class="pill-lbl">Channels</span>
+    </button>
   </header>
 </template>
 

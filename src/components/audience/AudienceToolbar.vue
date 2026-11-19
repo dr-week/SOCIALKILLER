@@ -35,16 +35,7 @@ const emit = defineEmits<{
 
 <template>
   <div class="list-toolbar">
-    <label class="searchbox">
-      <Search :size="15" />
-      <input
-        :value="searchQuery"
-        type="search"
-        placeholder="Search usernames..."
-        aria-label="Search usernames"
-        @input="emit('update:searchQuery', ($event.target as HTMLInputElement).value)"
-      >
-    </label>
+    <span class="guided-step-rail"><strong>{{ filteredCount }}</strong> Audience accounts</span>
     <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
       <button
         v-if="selectedCount > 0"

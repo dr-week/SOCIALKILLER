@@ -1,6 +1,7 @@
 # UI/UX Validation Notes
 
-> These notes describe the pre-redesign UI and contain no participant study. The current workspace map is documented in [Mini-app architecture](../../MINI_APP_ARCHITECTURE.md); mini-app usability and responsive validation still require fresh evidence.
+**Updated:** 2026-11-19  
+> These notes record both the earlier baseline inspection and verified code/UI checks. Mini-app participant usability and live 5-width runtime DOM sweeps still require dedicated participant/browser sessions.
 
 **Purpose:** Evidence log for Phase 0 baseline and Phase 1 responsive audit.  
 **Rule:** Observed product behavior is separated from hypotheses and participant findings. Mark any unvalidated assumption explicitly — never invent research data.
@@ -146,3 +147,21 @@ The app opens in the publishing workspace on **Compose**. The shell shows:
 - Participant sessions for P0.1 / P0.3 / P0.5
 - Inspect Queue, Channels, Audience Audit + expanded composer for P0.2 / P0.4
 - Resolve Vite build EPERM, rebuild, and run exact viewport audit for P1.4
+
+---
+
+## 2026-11-19 Engineering & UI/UX Verification Update
+
+Automated verification executed against the updated source build (no live participant study conducted):
+- **Build & Bundle Code-Splitting:** `npm run type-check` (`0` errors) and `npm run build` pass cleanly (main bundle `~427 kB`, lazy-loaded workspace chunks).
+- **UI Declutter & Glassmorphism Slices Implemented:**
+  - Flattened double-nested disclosure in `PublisherContentOptions` / `PublisherAdvancedOptions` with frosted glass styling.
+  - Replaced text button walls in `PublisherChannelCard` with labeled symbolic action icons (`Save`, `Test API`, `Pulse`, `Intent`).
+  - Simplified `CommunityInbox` to a 2-pane glass layout with toggleable `+ Add` composer drawer and removed static non-interactive badge pills.
+  - Consolidated `VideoScriptControls` header & replaced hardcoded founder copy with brand-agnostic creative pillars; compacted `VideoScriptOutput` retention badge.
+  - Collapsed Automation Builder form (`AutomationStudioWorkspace`), raw runtime PID/UUID telemetry (`AndroidBuildStudioWorkspace` with symbolic status icons), and Asset attribution `<dl>` (`AssetManagerWorkspace`); added workflow switcher and 3-Layer Visual Bot readiness strip (`DOM · Contour · Cadence`) to `PublisherAutopilot`.
+  - Split `BrandProfileModal` into tabbed frosted glass modules (`<149` lines each) and deleted 15 dead unmounted prototype files.
+- **Automated Hygiene, Eval & Modularity Gates:** `npm run uiux:hygiene` (`0` `.css`, `0` forbidden strings), `npm run eval:agents` (`25/25` passed), and `npm run check:file-size` reduced legacy violations from `51` → `43`.
+- **Phase 2B-1 Frontend Modularity & Shared UX Primitives:** Eliminated all `6` remaining oversized files in `src/` (`src/` now has **`0` file-size violations**; total repo violations reduced `43` → `37`), mounted shared frosted `<UiToastHost />` across Inbox, Automation, and Android Build Studio, added adapter-ready `rankFuzzyItems` fuzzy Global Search with unit tests in `test/app-navigation.test.mjs`, and documented the Dual-Track MIT upgrade blueprint.
+- **Phase 2B-2 & 4A Upgrades:** Wired vetted MIT/Apache-2.0 libraries (`vue-sonner`, `@formkit/auto-animate`, `fuse.js`, `reka-ui`), eliminated stale in-memory arrays in `orchestrator.mjs` (SQLite WAL single-source-of-truth), split `scheduler.mjs` into fail-closed `server/jobs/` modules (total legacy violations `37` → `35`), and expanded `eval:agents` to `28` scenarios across `5` suites.
+- **Remaining Validation:** Live 5-width (`360/390/768/1024/1280` CSS px) DOM overflow/focus sweep and participant task timing sessions remain pending.

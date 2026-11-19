@@ -130,7 +130,7 @@ export async function initPopupScannerController({ showAlert }) {
           metadata: { scrollPosition: pageData.scrollPosition }
         })
       })
-      if (resp.ok) showAlert('success', 'Cloned DOM snapshot saved to The Social Base!')
+      if (resp.ok) showAlert('success', 'Cloned DOM snapshot saved to SOCIALKILLER!')
     } catch (e) {
       showAlert('error', e instanceof Error ? e.message : 'Clone failed.')
     } finally {
@@ -169,7 +169,7 @@ export async function initPopupScannerController({ showAlert }) {
         followers: [{ username: 'alex_creator', href: 'https://www.instagram.com/alex_creator/' }],
         following: [{ username: 'alex_creator', href: 'https://www.instagram.com/alex_creator/' }]
       })
-      if (synced) showAlert('success', 'Synced test payload to The Social Base!')
+      if (synced) showAlert('success', 'Synced test payload to SOCIALKILLER!')
       else throw new Error('Backend offline on port 4174.')
     } catch (err) {
       showAlert('error', err instanceof Error ? err.message : 'Sync failed')

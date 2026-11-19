@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { Clock, Cpu, Flame, Rocket, Bot, RefreshCw, Send, Dices, Check, Bookmark } from 'lucide-vue-next'
+import { computed, ref } from 'vue'
+import { Clock, Cpu, Flame, Rocket, Bot, RefreshCw, Send, Dices, Check, Bookmark, Minimize2, Sparkles, Wand2 } from 'lucide-vue-next'
+import { summarizeCreativeText } from '../../domain/text-summarizer'
+import { formatAestheticText, type AestheticPreset } from '../../domain/aesthetic-text'
 import type { PlatformId } from '../../types'
 import PlatformIcon from '../common/PlatformIcon.vue'
 import PublisherAdvancedOptions from './PublisherAdvancedOptions.vue'
@@ -49,12 +51,36 @@ const emit = defineEmits<{
   (e: 'selectVaultAsset', name: string): void
 }>()
 
+const aestheticStyle = ref<AestheticPreset>('editorial')
 const presets = computed(() => [
-  { icon: Rocket, label: 'Product update', topic: `${props.brandName} product update`, notes: `Share a specific improvement or result from ${props.brandName}. Explain who benefits and how.`, link: '' },
-  { icon: Bot, label: 'Launch', topic: `${props.brandName} launch announcement`, notes: `Describe what ${props.brandName} launched, who it is for, and the next step for interested people.`, link: '' },
-  { icon: Cpu, label: 'Customer story', topic: `${props.brandName} customer story`, notes: `Describe a customer problem, the solution, and the outcome. Use verified details only.`, link: '' },
-  { icon: Flame, label: 'Weekly recap', topic: `${props.brandName} weekly recap`, notes: `Summarize this week's progress, one useful lesson, and what comes next at ${props.brandName}.`, link: '' }
+  { icon: Rocket, label: 'Update', topic: `${props.brandName} product update`, notes: `Share a specific improvement or result from ${props.brandName}. Explain who benefits and how.`, link: '' },
+  { icon: Bot, label: 'Launch', topic: `${props.brandName} launch`, notes: `Describe what ${props.brandName} launched, who it is for, and the next step.`, link: '' },
+  { icon: Cpu, label: 'Case Study', topic: `${props.brandName} customer story`, notes: `Describe a customer problem, the solution, and the verified outcome.`, link: '' },
+  { icon: Flame, label: 'Recap', topic: `${props.brandName} weekly recap`, notes: `Summarize this week's progress, one useful lesson, and what comes next.`, link: '' }
 ])
+
+const nextStepGuidance = computed(() => {
+  if (!props.topic.trim() || !props.rawNotes.trim()) return { step: '1/4', action: 'Write headline & notes' }
+  if (props.rawNotes.length > 220) return { step: '2/4', action: 'Click Clean & TL;DR' }
+  if (props.selectedPlatforms.length === 0) return { step: '3/4', action: 'Select channels' }
+  return { step: '4/4', action: props.canPublish ? 'Ready to Publish' : 'Save Draft or Connect' }
+})
+
+function condenseAndDedupe() {
+  const result = summarizeCreativeText(props.rawNotes, 3, aestheticStyle.value)
+  if (result.tldr) {
+    emit('update:topic', result.tldr.slice(0, 90))
+    emit('update:rawNotes', result.aestheticText)
+    emit('generate')
+  }
+}
+
+function cycleAestheticFormat() {
+  const order: AestheticPreset[] = ['editorial', 'cyber_glyph', 'minimal_mono', 'punchy_hooks']
+  aestheticStyle.value = order[(order.indexOf(aestheticStyle.value) + 1) % order.length]
+  emit('update:rawNotes', formatAestheticText(props.rawNotes, aestheticStyle.value))
+  emit('generate')
+}
 </script>
 
 <template>
@@ -69,7 +95,7 @@ const presets = computed(() => [
     </div>
 
     <input :value="topic" class="pub-input" placeholder="Post headline" @input="emit('update:topic', ($event.target as HTMLInputElement).value)" />
-    <textarea :value="rawNotes" rows="3" class="pub-textarea" aria-label="Post details" placeholder="Key facts and takeaway" @input="emit('update:rawNotes', ($event.target as HTMLTextAreaElement).value)"></textarea>
+    <textarea :value="rawNotes" rows="3" class="pub-textarea" aria-label="Post details" placeholder="Paste raw notes (duplicates are removed automatically on TL;DR)" @input="emit('update:rawNotes', ($event.target as HTMLTextAreaElement).value)"></textarea>
 
     <PublisherAdvancedOptions
       :web-link="webLink" :tags="tags" :tone="tone" :subreddit="subreddit" :scheduled-at="scheduledAt" :include-code-snippet="includeCodeSnippet"
@@ -83,7 +109,12 @@ const presets = computed(() => [
     />
 
     <div class="pub-row-between composer-generate-row">
-      <button class="pub-btn" :disabled="loading" @click="emit('generate')"><RefreshCw :size="13" /> Adapt text</button>
+      <span class="guided-step-rail" role="status"><i class="step-dot"></i><strong>{{ nextStepGuidance.step }}</strong> {{ nextStepGuidance.action }}</span>
+      <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+        <button class="pub-btn" type="button" :class="{ 'next-action-pulse': rawNotes.length > 220 }" :disabled="loading || !rawNotes.trim()" title="Remove repeated lines & summarize into TL;DR" @click="condenseAndDedupe"><Minimize2 :size="13" /> Clean &amp; TL;DR</button>
+        <button class="pub-btn" type="button" :disabled="loading || !rawNotes.trim()" title="Cycle aesthetic glyph bullets & typography" @click="cycleAestheticFormat"><Wand2 :size="13" /> Aesthetic</button>
+        <button class="pub-btn" :disabled="loading" @click="emit('generate')"><RefreshCw :size="13" /> Adapt</button>
+      </div>
     </div>
 
     <div class="channel-grid">
@@ -95,21 +126,15 @@ const presets = computed(() => [
     </div>
 
     <div class="composer-actions">
-      <button class="pub-btn" :disabled="loading" title="Save this post as an uncommitted draft" @click="emit('submitPost', { title: topic, rawNotes, scheduledAt: '', publishNow: false, isDraft: true, webLink, tags: tags.split(',').map(tag => tag.trim()) })">
-        <Bookmark :size="13" /> Save Draft
-      </button>
-      <button class="pub-btn" :disabled="loading || selectedPlatforms.length === 0" :title="selectedPlatforms.length ? 'Schedule post for selected channels' : 'Select at least one channel first'" @click="emit('submitPost', { title: topic, rawNotes, scheduledAt, publishNow: false, isDraft: false, webLink, tags: tags.split(',').map(tag => tag.trim()) })">
-        <Clock :size="13" /> Schedule
-      </button>
-      <button class="pub-btn primary" :disabled="loading || !canPublish" :title="canPublish ? 'Publish to configured channels' : 'Configure and select every channel first'" @click="emit('submitPost', { title: topic, rawNotes, scheduledAt, publishNow: true, isDraft: false, webLink, tags: tags.split(',').map(tag => tag.trim()) })">
-        <Send :size="13" /> {{ canPublish ? `Publish (${selectedPlatforms.length})` : 'Connect' }}
-      </button>
+      <button class="pub-btn" :disabled="loading" @click="emit('submitPost', { title: topic, rawNotes, scheduledAt: '', publishNow: false, isDraft: true, webLink, tags: tags.split(',').map(tag => tag.trim()) })"><Bookmark :size="13" /> Draft</button>
+      <button class="pub-btn" :disabled="loading || selectedPlatforms.length === 0" @click="emit('submitPost', { title: topic, rawNotes, scheduledAt, publishNow: false, isDraft: false, webLink, tags: tags.split(',').map(tag => tag.trim()) })"><Clock :size="13" /> Schedule</button>
+      <button class="pub-btn primary" :disabled="loading || !canPublish" @click="emit('submitPost', { title: topic, rawNotes, scheduledAt, publishNow: true, isDraft: false, webLink, tags: tags.split(',').map(tag => tag.trim()) })"><Send :size="13" /> {{ canPublish ? `Publish (${selectedPlatforms.length})` : 'Connect' }}</button>
     </div>
   </div>
 </template>
 
-<style scoped>
-@import './publisher-shared.css';
+<style scoped lang="scss">
+@use './styles/publisher-shared.scss';
 .composer-form { min-width: 0; }
 .channel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 7px; }
 .channel-grid .pub-tab-btn { min-width: 0; }

@@ -116,7 +116,7 @@
             target.click()
           } else if (step.action === 'fill') {
             if (!(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target.isContentEditable) || isSensitiveField(target)) throw new Error('This field is not replayable.')
-            if (!String(step.value || '').trim()) throw new Error('Add reviewed text in The Social Base before replaying this field.')
+            if (!String(step.value || '').trim()) throw new Error('Add reviewed text in SOCIALKILLER before replaying this field.')
             target.focus()
             if (target.isContentEditable) target.textContent = step.value
             else {

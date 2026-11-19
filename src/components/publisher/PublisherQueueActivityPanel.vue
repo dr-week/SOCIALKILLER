@@ -57,8 +57,9 @@ const hasMoreActivity = computed(() => props.activityLogs.length > recentActivit
 
 <style scoped>
 .queue-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px);
   border-radius: 12px;
   padding: 16px;
   display: flex;

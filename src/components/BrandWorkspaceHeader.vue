@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import {
-  Building2,
   ChevronDown,
-  Sparkles,
   MapPin,
   CheckCircle2,
-  Radio,
-  ExternalLink,
-  FolderGit2
+  FolderGit2,
+  Users
 } from 'lucide-vue-next'
 import type { BrandProfile } from '../types/brand'
 
@@ -16,12 +13,16 @@ const props = defineProps<{
   brands: BrandProfile[]
   archivedBrands: BrandProfile[]
   activeBrand: BrandProfile
+  audienceHandle?: string
+  audienceFollowersCount?: number
+  audienceUnfollowersCount?: number
 }>()
 
 const emit = defineEmits<{
   (e: 'selectBrand', brandId: string): void
   (e: 'createBrand', name: string, focus: string, githubUser?: string): void
   (e: 'openProfileModal'): void
+  (e: 'openAudience'): void
   (e: 'archiveBrand', brandId: string): void
   (e: 'restoreBrand', brandId: string): void
 }>()
@@ -68,7 +69,6 @@ function submitCreate() {
               <MapPin :size="10" /> {{ activeBrand.location }}
             </span>
           </div>
-          <span class="brand-tagline">{{ activeBrand.tagline }}</span>
         </div>
         <ChevronDown :size="14" class="chevron-icon" :class="{ open: dropdownOpen }" />
       </button>
@@ -115,15 +115,16 @@ function submitCreate() {
     </div>
 
     <div class="brand-actions-right">
-      <button type="button" class="brand-profile-btn" @click="emit('openProfileModal')" title="Open company profile, repositories and knowledge vault" aria-label="Open company profile">
-        <FolderGit2 :size="13" />
-        <span>Profile</span>
-        <span v-if="activeBrand.purpose.repos?.length" class="repos-badge">{{ activeBrand.purpose.repos.length }} repos</span>
+      <button type="button" class="brand-profile-btn" @click="emit('openAudience')" title="Open Audience Audit">
+        <Users :size="13" />
+        <span>Audience</span>
+        <span class="repos-badge">{{ audienceFollowersCount ? `${audienceFollowersCount.toLocaleString()} · ${audienceUnfollowersCount || 0} unfollowers` : (audienceHandle ? `@${audienceHandle}` : 'Audit') }}</span>
       </button>
-
-      <div class="brand-mission-pill" title="Linked social handles for this workspace">
-        {{ activeBrand.accounts.length }} linked handles
-      </div>
+      <button type="button" class="brand-profile-btn" @click="emit('openProfileModal')" title="Open brand profile, repositories and knowledge vault" aria-label="Open brand profile">
+        <FolderGit2 :size="13" />
+        <span>Brand Profile</span>
+        <span v-if="activeBrand.accounts.length" class="repos-badge">{{ activeBrand.accounts.length }} channels</span>
+      </button>
     </div>
   </div>
 </template>

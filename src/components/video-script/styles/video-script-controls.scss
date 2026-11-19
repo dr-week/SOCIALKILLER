@@ -31,10 +31,13 @@
 }
 
 .location-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   font-size: 10px;
   color: #34d399;
   background: rgba(16, 185, 129, 0.1);
-  padding: 2px 8px;
+  padding: 3px 9px;
   border-radius: 999px;
   font-weight: 600;
 }

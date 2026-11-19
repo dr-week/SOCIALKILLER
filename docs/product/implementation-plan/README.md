@@ -1,6 +1,6 @@
-# Social Base implementation plan
+# SOCIALKILLER implementation plan
 
-**Reviewed:** 2026-11-05  
+**Reviewed:** 2026-11-19  
 **Status:** Ordered backlog; tasks are not complete until their evidence is linked. Owners remain unassigned unless noted.
 
 This plan consolidates the active work found in the agency, UI/UX, acceptance, and Visual Bot documents. Those source plans remain authoritative for their detailed acceptance criteria. Each workstream is in a separate file to keep this index short.
@@ -13,6 +13,7 @@ This plan consolidates the active work found in the agency, UI/UX, acceptance, a
 | 1 | [Agency workspace foundation](./02_AGENCY_FOUNDATION.md) | Deployment model and ownership map are agreed; one workspace vertical slice is migrated safely. |
 | 2 | [Product and responsive validation](./03_PRODUCT_VALIDATION.md) | Core journeys and five viewport sizes have recorded evidence; only observed defects are fixed. |
 | 3 | [Engineering enablement and modularity](./04_ENGINEERING_ENABLEMENT.md) | CI runs in hosted repository; focused lint/browser checks are adopted; oversized modules shrink by responsibility. |
+| 4 | [SOCIALKILLER Master Upgrade Plan](./05_SOCIALKILLER_MASTER_PLAN.md) | `<100-150` line TS/SCSS modularity, CLI-Anything harness, Text Summarizer, Scripting Studio, and 3-layer Visual Bot upgrades. |
 
 ## Current completed items
 

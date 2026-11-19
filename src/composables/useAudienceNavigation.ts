@@ -80,7 +80,7 @@ export function useAudienceNavigation(data: AudienceNavigationData) {
   const pagedPeople = computed(() => filteredPeople.value.slice((data.currentPage.value - 1) * pageSize, data.currentPage.value * pageSize))
   const lastSynced = computed(() => data.importedAt.value
     ? new Date(data.importedAt.value).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
-    : 'No data imported yet')
+    : '')
 
   return { displayedNav, isZuariWorkspace, viewTitle, filteredPeople, totalPages, pagedPeople, lastSynced }
 }

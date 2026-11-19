@@ -1,30 +1,27 @@
 <script setup lang="ts">
-import { ArrowRight, Check, Clock3, ExternalLink, Info } from 'lucide-vue-next'
+import { ArrowRight, Clock3, ExternalLink, Info, Layers, Sparkles } from 'lucide-vue-next'
 import { useMiniAppLauncher } from './useMiniAppLauncher'
 import type { View } from '../../types'
 
-defineProps<{ activeBrandName: string }>()
+const props = defineProps<{ activeBrandName: string; searchQuery?: string }>()
 const emit = defineEmits<{ (event: 'open-app', view: View): void }>()
 const {
   activeAppId, appGroups, appStyle, appUrl, availableApps, clearAppFocus,
   endPress, expandedDescription, focusApp, onCardFocusOut, onPointerEnter,
   onPointerLeave, roadmapGroups, startPress, toggleDescription
-} = useMiniAppLauncher(emit)
+} = useMiniAppLauncher(emit, () => props.searchQuery || '')
 </script>
 
 <template>
   <main class="app-launcher">
     <header class="launcher-heading">
       <div>
-        <p class="launcher-eyebrow">SOCIALKILLER · APP LAUNCHER</p>
-        <h1>Kill the middleman. <span class="heading-highlight">Keep 100% of your craft.</span></h1>
-        <p class="launcher-copy">One solo creator, every agency capability. Your active brand and local settings stay shared as you move between apps.</p>
+        <h1><Sparkles :size="20" style="vertical-align: -3px; margin-right: 8px; color: var(--accent-primary);" />Kill the middleman. <span class="heading-highlight">Keep 100% of your craft.</span></h1>
       </div>
-      <div class="workspace-chip"><span class="workspace-chip-status"></span><span class="workspace-chip-name">{{ activeBrandName }}</span></div>
     </header>
 
     <section aria-labelledby="available-apps">
-      <div class="section-heading"><h2 id="available-apps">Available apps</h2><span>{{ availableApps.length }} workspaces</span></div>
+      <div class="section-heading"><h2 id="available-apps"><Layers :size="15" style="vertical-align: -2px; margin-right: 6px; color: var(--accent-primary);" />Workspaces</h2><span>{{ availableApps.length }} active</span></div>
       <div v-for="group in appGroups" :key="group.category" class="app-category">
         <h3>{{ group.category }}</h3>
         <div class="app-grid">
@@ -50,8 +47,7 @@ const {
             <span class="app-card-art" aria-hidden="true"></span>
             <button class="app-card-open" type="button" :aria-describedby="`app-description-${app.id}`" @click="emit('open-app', app.view)">
               <span class="app-icon"><component :is="app.icon" :size="20" /></span>
-              <span class="app-status"><Check :size="12" /> {{ app.status }}</span>
-              <span class="app-category">{{ app.category }}</span>
+              <span class="app-status-dot" :title="app.status" aria-hidden="true"></span>
               <strong>{{ app.label }}</strong>
               <span class="launch-link">Open workspace <ArrowRight :size="14" /></span>
             </button>

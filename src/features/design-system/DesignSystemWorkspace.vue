@@ -26,9 +26,7 @@ const previewText = ref('')
 <template>
   <main class="design-studio">
     <header class="design-studio__hero">
-      <p>SHARED FOUNDATION · LIVE PREVIEW</p>
       <h1>Design System <span>Studio</span></h1>
-      <div>One accessible visual language for every workspace, with controlled app-specific accents.</div>
     </header>
 
     <div class="design-studio__grid">

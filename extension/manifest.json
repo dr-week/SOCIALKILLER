@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "The Social Base Companion - Audience & Social Publisher",
+  "name": "SOCIALKILLER Companion - Audience & Social Publisher",
   "version": "1.4.0",
   "description": "Export Instagram followers, recognize logged-in handles, inject DOM reply chips, and auto-publish across X, Reddit, LinkedIn, GitHub, Dev.to & Discord.",
   "permissions": [

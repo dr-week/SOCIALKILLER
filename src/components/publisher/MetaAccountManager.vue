@@ -65,8 +65,8 @@ async function unlink() {
 <template>
   <section class="meta-manager" aria-label="Meta account management">
     <div class="meta-heading">
-      <div><strong>Meta account management</strong><p>Link Facebook Pages and connected Instagram professional accounts for this workspace.</p></div>
-      <a class="meta-connect" target="_blank" rel="noopener noreferrer" :href="`/api/social/meta/connect?brandId=${encodeURIComponent(brandId)}`">{{ connected ? 'Link another account' : 'Connect Meta' }}</a>
+      <strong>Meta OAuth (Facebook &amp; Instagram)</strong>
+      <a class="meta-connect" target="_blank" rel="noopener noreferrer" :href="`/api/social/meta/connect?brandId=${encodeURIComponent(brandId)}`">{{ connected ? 'Relink Meta' : 'Connect Meta' }}</a>
     </div>
     <div v-if="connected && pages.length" class="meta-controls">
       <label>Facebook Page
@@ -82,7 +82,7 @@ async function unlink() {
 </template>
 
 <style scoped>
-.meta-manager { display:grid; gap:10px; padding:14px 16px; border:1px solid var(--line); border-radius:12px; background:var(--surface); }
+.meta-manager { display:grid; gap:10px; padding:14px 16px; border:1px solid var(--glass-border); border-radius:14px; background:var(--glass-bg); backdrop-filter:blur(16px); }
 .meta-heading,.meta-controls { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
 .meta-heading strong { font-size:13px; }.meta-heading p,.meta-note,.meta-error { margin:3px 0 0; color:var(--muted); font-size:11px; }
 .meta-controls label { display:flex; align-items:center; gap:8px; color:var(--muted); font-size:11px; }

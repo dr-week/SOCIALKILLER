@@ -1,5 +1,6 @@
 import { savePageCloneSession, listPageCloneSessions, getHtmlClone } from './clone-service.mjs'
 import { addFeedback, getFeedbackLogs } from './sync-store.mjs'
+import { readJsonBody } from './http/read-json.mjs'
 import { handleInstagramRoutes } from './routes/instagram-routes.mjs'
 import { handleSocialAndMarketingRoutes } from './routes/social-routes.mjs'
 import { handleBrandRoutes } from './routes/brand-routes.mjs'
@@ -90,18 +91,12 @@ export async function routeRequest(req, res) {
 
   // 4. Developer Feedback Endpoint
   if (req.method === 'POST' && url.pathname === '/api/dev/feedback') {
-    let body = ''
-    req.on('data', chunk => { body += chunk })
-    req.on('end', () => {
-      try {
-        const item = JSON.parse(body)
-        const entry = addFeedback(item)
-        return json(res, 201, { success: true, feedback: entry })
-      } catch {
-        return json(res, 400, { error: 'Invalid feedback data' })
-      }
-    })
-    return
+    try {
+      const item = await readJsonBody(req)
+      return json(res, 201, { success: true, feedback: addFeedback(item) })
+    } catch (err) {
+      return json(res, err.statusCode || 400, { error: err.message || 'Invalid feedback data' })
+    }
   }
 
   if (req.method === 'GET' && url.pathname === '/api/dev/feedback') {
@@ -111,18 +106,13 @@ export async function routeRequest(req, res) {
 
   // 5. Page Clone & Developer Session Endpoints
   if (req.method === 'POST' && url.pathname === '/api/dev/clone') {
-    let body = ''
-    req.on('data', chunk => { body += chunk })
-    req.on('end', () => {
-      try {
-        const payload = JSON.parse(body)
-        const session = savePageCloneSession(payload)
-        return json(res, 201, { success: true, session })
-      } catch (err) {
-        return json(res, 400, { error: 'Failed to save page clone', details: err.message })
-      }
-    })
-    return
+    try {
+      const payload = await readJsonBody(req)
+      const session = savePageCloneSession(payload)
+      return json(res, 201, { success: true, session })
+    } catch (err) {
+      return json(res, err.statusCode || 400, { error: 'Failed to save page clone', details: err.message })
+    }
   }
 
   if (req.method === 'GET' && url.pathname === '/api/dev/clone') {

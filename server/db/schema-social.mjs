@@ -15,7 +15,13 @@ export function initializeSocialSchema(db) {
     imageUrl TEXT,
     webLink TEXT,
     videoUrl TEXT,
-    hashtagsJson TEXT
+    hashtagsJson TEXT,
+    platformsJson TEXT,
+    approvalStatus TEXT,
+    approvedAt TEXT,
+    rejectedAt TEXT,
+    confirmedAt TEXT,
+    handoffUrl TEXT
   );
 
 

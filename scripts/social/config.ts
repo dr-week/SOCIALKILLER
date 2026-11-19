@@ -62,7 +62,7 @@ export function loadSocialConfig(
     parseModeRaw === 'MarkdownV2' ? 'MarkdownV2' : 'HTML'
 
   return {
-    brandName: get('SOCIAL_BRAND_NAME', 'The Social Base'),
+    brandName: get('SOCIAL_BRAND_NAME', 'SOCIALKILLER'),
     defaultUrl: get('SOCIAL_DEFAULT_URL', 'https://github.com/danger-labs/followdesk'),
     discord: {
       webhookUrl: get('DISCORD_WEBHOOK_URL'),

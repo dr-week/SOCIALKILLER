@@ -1,9 +1,9 @@
-# The Social Base — Agency Product Roadmap
+# SOCIALKILLER — Anti-Agency & Solo Creator Product Roadmap
 
-> Historical agency roadmap. The active application is one website with focused mini-apps; consult [Mini-app architecture](docs/product/MINI_APP_ARCHITECTURE.md) for implemented features and current IA. Listed Leads, Email, Projects, Studio, full Automations, Analytics, and AI department work remains roadmap scope unless marked available there.
+> Historical agency roadmap updated for **SOCIALKILLER**. The active application is one website with focused mini-apps; consult [Mini-app architecture](docs/product/MINI_APP_ARCHITECTURE.md) for implemented features and current IA. Listed Leads, Email, Projects, Studio, full Automations, Analytics, and AI department work remains roadmap scope unless marked available there.
 
-> **Vision:** One website. Focused workspaces. Shared brand context.
-> **Design Law:** App launcher. Task-specific workspaces. Zero clutter.
+> **Vision:** Kill the middleman agency. One website. Focused workspaces. Shared brand context.
+> **Design Law:** App launcher. Task-specific workspaces. Strict `<100-150` line modular TypeScript & SCSS files. Zero clutter.
 
 ---
 

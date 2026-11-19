@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { CheckCircle2, Loader2, XCircle } from 'lucide-vue-next'
 import UiButton from '../../shared/ui/UiButton.vue'
 import UiCard from '../../shared/ui/UiCard.vue'
+import { useToast } from '../../shared/ui/useToast'
 
 interface Toolchain {
   javaAvailable: boolean
@@ -20,6 +22,7 @@ interface BuildJob {
 const toolchain = ref<Toolchain | null>(null)
 const runtime = ref<Runtime | null>(null)
 const jobs = ref<BuildJob[]>([])
+const { pushToast } = useToast()
 const busy = ref('')
 const error = ref('')
 const message = ref('')
@@ -55,13 +58,14 @@ async function build(target: 'debug-apk' | 'release-aab') {
     const data = await response.json()
     if (!response.ok) throw new Error(data.error || `Build request failed (${response.status}).`)
     message.value = 'Build started. Output and artifact status update here.'
+    pushToast(message.value, 'success')
     await refresh()
   } catch (reason) {
     error.value = reason instanceof Error ? reason.message : 'Android build could not start.'
+    pushToast(error.value, 'error')
   } finally { busy.value = '' }
 }
 
-function state(ready: boolean) { return ready ? 'Ready' : 'Missing' }
 onMounted(() => {
   void refresh().catch(reason => { error.value = reason instanceof Error ? reason.message : 'Android status could not load.' })
   timer = setInterval(() => {
@@ -74,18 +78,26 @@ onUnmounted(() => clearInterval(timer))
 <template>
   <main class="android-studio">
     <header class="android-studio__hero">
-      <p>NATIVE PLATFORM · CAPACITOR</p><h1>Android <span>Build Studio</span></h1>
-      <div>Inspect the local Android toolchain, build debug APKs or release bundles, and follow build output.</div>
+      <h1>Android <span>Build Studio</span></h1>
     </header>
     <p v-if="error" class="android-studio__message android-studio__message--error" role="alert">{{ error }}</p>
     <p v-if="message" class="android-studio__message" role="status">{{ message }}</p>
     <div class="android-studio__grid">
       <UiCard eyebrow="TOOLCHAIN" title="Build prerequisites">
         <ul class="android-studio__checks">
-          <li>Java JDK <strong>{{ toolchain ? state(toolchain.javaAvailable) : 'Checking' }}</strong></li>
-          <li>Android SDK platforms & build-tools <strong>{{ toolchain ? state(toolchain.androidSdkAvailable) : 'Checking' }}</strong></li>
-          <li>Gradle wrapper <strong>{{ toolchain ? state(toolchain.gradleWrapperAvailable) : 'Checking' }}</strong></li>
-          <li>Signed release configuration <strong>{{ toolchain ? state(toolchain.signedReleaseReady) : 'Checking' }}</strong></li>
+          <li v-for="item in [
+            { label: 'Java JDK', ok: toolchain?.javaAvailable },
+            { label: 'Android SDK & build-tools', ok: toolchain?.androidSdkAvailable },
+            { label: 'Gradle wrapper', ok: toolchain?.gradleWrapperAvailable },
+            { label: 'Signed release config', ok: toolchain?.signedReleaseReady }
+          ]" :key="item.label">
+            <span>{{ item.label }}</span>
+            <span class="android-studio__status-icon" :title="!toolchain ? 'Checking' : item.ok ? 'Available' : 'Missing'">
+              <Loader2 v-if="!toolchain" :size="14" class="spin-icon muted" aria-label="Checking" />
+              <CheckCircle2 v-else-if="item.ok" :size="14" class="status-ok" aria-label="Available" />
+              <XCircle v-else :size="14" class="status-miss" aria-label="Missing" />
+            </span>
+          </li>
         </ul>
         <p v-if="toolchain?.missingPrerequisites.length" class="android-studio__hint">
           Install or configure: {{ toolchain.missingPrerequisites.join(', ') }}. Build tasks remain disabled until available.
@@ -100,14 +112,17 @@ onUnmounted(() => clearInterval(timer))
         </div>
         <p v-if="toolchain && !toolchain.signedReleaseReady" class="android-studio__hint">Release signing is not configured; do not distribute unsigned release output.</p>
       </UiCard>
-      <UiCard eyebrow="RUNTIME" title="Active application instance">
-        <dl v-if="runtime" class="android-studio__runtime">
-          <dt>Environment</dt><dd>{{ runtime.current.environment }}</dd>
-          <dt>Instance ID</dt><dd>{{ runtime.current.instanceId }}</dd>
-          <dt>API process / port</dt><dd>{{ runtime.current.pid }} / {{ runtime.current.port }}</dd>
-          <dt>Launcher managed</dt><dd>{{ runtime.managed ? 'Yes' : 'No' }}</dd>
-        </dl>
-        <p v-else class="android-studio__hint">Checking local runtime identity…</p>
+      <UiCard eyebrow="RUNTIME" title="Environment">
+        <details v-if="runtime" class="android-studio__diag">
+          <summary>Runtime diagnostics ({{ runtime.current.environment }})</summary>
+          <dl class="android-studio__runtime">
+            <dt>Environment</dt><dd>{{ runtime.current.environment }}</dd>
+            <dt>Instance ID</dt><dd>{{ runtime.current.instanceId }}</dd>
+            <dt>API process / port</dt><dd>{{ runtime.current.pid }} / {{ runtime.current.port }}</dd>
+            <dt>Launcher managed</dt><dd>{{ runtime.managed ? 'Yes' : 'No' }}</dd>
+          </dl>
+        </details>
+        <p v-else class="android-studio__hint">Checking runtime…</p>
       </UiCard>
     </div>
     <UiCard eyebrow="BUILD HISTORY" title="Recent builds">

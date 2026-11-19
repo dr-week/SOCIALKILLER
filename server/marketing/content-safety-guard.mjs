@@ -54,7 +54,8 @@ export function validatePostQuality({
   body = '',
   topic = '',
   webLink = null,
-  tags = []
+  tags = [],
+  historicalPosts = null
 } = {}) {
   const combinedText = `${title} ${topic} ${body}`.trim()
   const candidateTokens = tokenize(combinedText)
@@ -77,8 +78,8 @@ export function validatePostQuality({
     }
   }
 
-  // 3. Historical Repetition Check (Scan past 50 posts from SQLite)
-  const allHistoricalPosts = dbService.getAllPosts()
+  // 3. Historical Repetition Check (Scan injected posts or past 50 posts from SQLite)
+  const allHistoricalPosts = Array.isArray(historicalPosts) ? historicalPosts : dbService.getAllPosts()
   for (const past of allHistoricalPosts.slice(0, 50)) {
     const pastText = `${past.title} ${past.topic} ${Object.values(past.variants || {}).join(' ')}`
     const pastTokens = tokenize(pastText)

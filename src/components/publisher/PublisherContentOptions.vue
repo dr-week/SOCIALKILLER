@@ -19,8 +19,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <details class="text-options">
-    <summary>Text &amp; timing</summary>
+  <div class="text-options">
     <div class="text-options-content">
       <div class="pub-grid-2">
         <input :value="webLink" class="pub-input" placeholder="Reference URL" @input="emit('update:webLink', ($event.target as HTMLInputElement).value)" />
@@ -42,17 +41,13 @@ const emit = defineEmits<{
         <span>Code snippet</span>
       </label>
     </div>
-  </details>
+  </div>
 </template>
 
-<style scoped>
-@import './publisher-shared.css';
+<style scoped lang="scss">
+@use './styles/publisher-shared.scss';
 
-.text-options { border-top: 1px solid var(--line, rgba(255, 255, 255, 0.12)); }
-.text-options > summary { min-height: 38px; padding: 8px 0; color: var(--muted, #94a3b8); cursor: pointer; font-size: 11px; list-style: none; }
-.text-options > summary::-webkit-details-marker { display: none; }
-.text-options > summary::after { float: right; content: '+'; font-size: 16px; }
-.text-options[open] > summary::after { content: '−'; }
+.text-options { padding-top: 8px; border-top: 1px solid var(--line, rgba(255, 255, 255, 0.12)); }
 .text-options-content { display: grid; gap: 8px; padding-bottom: 4px; }
 .code-option { justify-self: start; }
 </style>

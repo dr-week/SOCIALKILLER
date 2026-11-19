@@ -1,6 +1,6 @@
 # Unified mini-app architecture
 
-The Social Base is one website and one application, organized as focused workspaces inside a shared shell. The primary mini-app action uses internal Vue navigation in the existing browser tab; a separate launcher link can open that same first-party route in another browser tab. No workspace is a separate application, window, or deployment. The selected app is reflected in the current URL as `?app=<id>` so refresh, browser Back, and browser Forward keep working.
+SOCIALKILLER is one website and one application, organized as focused workspaces inside a shared shell. The primary mini-app action uses internal Vue navigation in the existing browser tab; a separate launcher link can open that same first-party route in another browser tab. No workspace is a separate application, window, or deployment. The selected app is reflected in the current URL as `?app=<id>` so refresh, browser Back, and browser Forward keep working.
 
 This document is the current feature inventory and grouping decision. It supersedes the earlier 12-department concept in `product/uiux/README.md`; see the [UX guide](./UX_GUIDE.md) for interaction rules and the [engineering architecture](../engineering/ARCHITECTURE.md) for runtime boundaries.
 

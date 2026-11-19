@@ -48,12 +48,7 @@ function downloadProfileAvatar(url: string, username: string) {
 <template>
   <section class="profile-scanner" aria-labelledby="profile-scanner-title">
     <div class="profile-scanner-copy">
-      <span class="section-kicker">
-        <Radio :size="12" style="display:inline; vertical-align: middle; margin-right: 4px;" />
-        LIVE PUBLIC PROFILE SCANNER
-      </span>
-      <h2 id="profile-scanner-title">Live Follower Counter & DP Downloader</h2>
-      <p>Fetches publicly visible follower counts and HD profile pictures directly (e.g. <code>hyperdrive_studio</code>).</p>
+      <h2 id="profile-scanner-title"><Radio :size="15" style="vertical-align: -2px; margin-right: 6px; color: var(--purple);" />Profile Scout</h2>
     </div>
     <form class="profile-scanner-form" @submit.prevent="scanPublicProfile">
       <label class="visually-hidden" for="profile-username">Instagram username</label>

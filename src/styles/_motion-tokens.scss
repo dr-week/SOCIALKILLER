@@ -1,0 +1,32 @@
+:root {
+  --dur-fast: 140ms;
+  --dur-base: 220ms;
+  --dur-slow: 340ms;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.workspace-fade-enter-active,
+.workspace-fade-leave-active {
+  transition:
+    opacity var(--dur-fast) var(--ease-out-expo),
+    transform var(--dur-fast) var(--ease-out-expo);
+}
+
+.workspace-fade-enter-from {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+.workspace-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workspace-fade-enter-active,
+  .workspace-fade-leave-active {
+    transition-duration: 0.01ms !important;
+    transform: none !important;
+  }
+}

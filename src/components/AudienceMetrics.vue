@@ -6,8 +6,7 @@ import {
   Users,
   UserRound,
   ArrowUpRight,
-  Sparkles,
-  UserMinus
+  Sparkles
 } from 'lucide-vue-next'
 import type { View } from '../types'
 
@@ -82,47 +81,12 @@ const followBackRate = computed(() => {
       </button>
     </section>
 
-    <!-- Actionable Network Intelligence -->
-    <section class="panel" style="margin-bottom: 24px; padding: 18px 20px; background: radial-gradient(ellipse at 100% 0%, color-mix(in srgb, var(--accent-primary) 12%, transparent), transparent 48%), linear-gradient(135deg, var(--surface-raised), var(--surface)); border: 1px solid var(--glass-border); border-radius: 18px;">
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 14px;">
-        <div>
-          <span class="section-kicker" style="color: var(--purple);">
-            <Sparkles :size="12" style="display:inline; margin-right: 4px;" />
-            ACTIONABLE NETWORK INTELLIGENCE
-          </span>
-          <h3 style="font-size: 16px; font-weight: 700; color: var(--ink); margin-top: 4px;">
-            Audience Health Score: 
-            <span :style="{ color: followersCount && (mutualsCount / followersCount) > 0.4 ? 'var(--status-success)' : 'var(--status-warning)' }">
-              {{ healthScore }}/100
-            </span>
-          </h3>
-          <p style="font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.5;">
-            Follower-to-Following Ratio: 
-            <strong style="color: var(--ink);">{{ ratio }}</strong> 
-            <span v-if="followingCount && followersCount / followingCount > 1.2" style="color: var(--status-success);"> (Healthy Creator Ratio)</span>
-            <span v-else-if="followingCount && followersCount / followingCount < 0.8" style="color: var(--status-warning);"> (High Following Ratio)</span>
-            <span v-else style="color: var(--muted);"> (Balanced Connection Ratio)</span>
-            · <strong>{{ notFollowingBackCount }}</strong> accounts ready for unfollow review.
-          </p>
-        </div>
-        <div style="display: flex; gap: 8px;">
-          <button
-            class="button button--outline button--small"
-            @click="emit('selectView', 'not-following-back')"
-            title="Review accounts you follow that don't follow back"
-          >
-            <UserX :size="13" />
-            <span>Review Unfollowers ({{ notFollowingBackCount }})</span>
-          </button>
-          <button
-            class="button button--outline button--small"
-            @click="emit('selectView', 'lost-followers')"
-            title="See users who recently unfollowed you"
-          >
-            <UserMinus :size="13" />
-            <span>Recent Losses ({{ hasPrevious ? lostFollowersCount : 0 }})</span>
-          </button>
-        </div>
+    <section class="panel" style="margin-bottom: 18px; padding: 12px 16px; background: var(--glass-bg); backdrop-filter: blur(18px); border: 1px solid var(--glass-border); border-radius: 14px;">
+      <div style="display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700;">
+        <Sparkles :size="14" style="color: var(--purple);" />
+        <span>Audience Health <strong :style="{ color: followersCount && (mutualsCount / followersCount) > 0.4 ? 'var(--status-success)' : 'var(--status-warning)' }">{{ healthScore }}/100</strong></span>
+        <span style="color: var(--muted);">·</span>
+        <span>Audience Ratio <strong style="color: var(--ink);">{{ ratio }}</strong></span>
       </div>
     </section>
   </div>

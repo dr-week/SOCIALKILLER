@@ -34,7 +34,7 @@ export function buildContextualChatReplies(threadContext = '', platform = 'x') {
   return [
     {
       id: 'arch_insight',
-      icon: '🧠',
+      icon: '✦',
       label: 'Architecture Insight',
       text:
         platform === 'reddit'
@@ -43,19 +43,19 @@ export function buildContextualChatReplies(threadContext = '', platform = 'x') {
     },
     {
       id: 'wasm_benchmark',
-      icon: '🦀',
+      icon: '◈',
       label: 'Wasm / 120FPS Hook',
       text: `If you're hitting serialization overhead here, try binding shared \`Float64Array\` WebAssembly memory directly to reactive signals instead of \`JSON.stringify\`. We open-sourced our zero-copy Rust/Zig Wasm FFI in \`dr-week/fast-framework\` (<2.5KB) and it runs at a locked 120 FPS.`
     },
     {
       id: 'ai_agent_ready',
-      icon: '🤖',
+      icon: '▹',
       label: 'AI Agent / llms.txt',
-      text: `Pro tip for making this discoverable to both human devs and AI coding agents (Cursor, Claude, Windsurf): expose a root \`/llms.txt\` + MCP tool schema alongside your repo. We ship both out of the box in The Social Base & Zuari.`
+      text: `Pro tip for making this discoverable to both human devs and AI coding agents (Cursor, Claude, Windsurf): expose a root \`/llms.txt\` + MCP tool schema alongside your repo. We ship both out of the box in SOCIALKILLER & Zuari.`
     },
     {
       id: 'collab_dm',
-      icon: '🤝',
+      icon: '→',
       label: 'Collab / DM Opener',
       text: `Hey! Loved your work on "${cleanTopic}". We're building open-source <2.5KB zero-VDOM & WebXR tooling at Danger.Labs (\`dr-week/fast-framework\`) and would love to feature a benchmark comparison or collaborate!`
     }

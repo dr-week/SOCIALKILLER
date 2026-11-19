@@ -3,13 +3,15 @@ import { createSvgElement } from '@zuari/glyphs'
 
 export interface AppTopbarProps {
   menuOpen: boolean
-  hasData: boolean
+  hasData?: boolean
+  searchQuery?: string
 }
 
 export interface AppTopbarHandlers {
   toggleMenu: () => void
   openWorkspace: () => void
-  triggerImport: () => void
+  onSearch?: (query: string) => void
+  onSearchSubmit?: (query: string) => void
 }
 
 export interface AppTopbarIsland {
@@ -26,72 +28,91 @@ export function mountAppTopbar(
     <header class="topbar">
       <button
         type="button"
-        class="mobile-menu"
-        aria-label="Open navigation"
+        class="mobile-brand"
+        aria-label="Open navigation drawer"
         aria-expanded="false"
         aria-controls="navigation-drawer"
         data-menu-button
+        data-workspace-link
         @click=${handlers.toggleMenu}
       >
-        ${createIcon(initial.menuOpen ? 'close' : 'menu', 20)}
-      </button>
-      <button type="button" class="mobile-brand" data-workspace-link @click=${handlers.openWorkspace}>
         <img class="brand-mark" src="/branding/social-base-logo.png" alt="" />
         <span>SOCIAL<span class="brand-accent">KILLER</span></span>
       </button>
-      <div class="breadcrumbs">
-        ${createIcon('dashboard', 14)}
-        <span>Workspace</span>
-      </div>
-      <div class="top-actions">
-        <span class="sync-status">
-          <i></i><span data-sync-message>${initial.hasData ? 'Data synced' : 'Ready to import'}</span>
-        </span>
-        <button type="button" class="button button--primary button--small" data-import-button @click=${handlers.triggerImport}>
-          ${createIcon('upload', 13)}<span>Import</span>
-        </button>
-      </div>
+
+      <label class="topbar-search" aria-label="Search workspaces and accounts">
+        ${createIcon('search', 14)}
+        <input
+          type="search"
+          placeholder="Search apps, accounts, or workflows..."
+          value=${initial.searchQuery || ''}
+          data-topbar-search
+        />
+        <kbd aria-hidden="true">/</kbd>
+      </label>
+
+      <div class="top-actions"></div>
     </header>
   `, host)
 
   const menuButton = host.querySelector<HTMLButtonElement>('[data-menu-button]')
-  const workspaceLink = host.querySelector<HTMLButtonElement>('[data-workspace-link]')
-  const syncMessage = host.querySelector<HTMLElement>('[data-sync-message]')
-  const importButton = host.querySelector<HTMLButtonElement>('[data-import-button]')
-  if (!menuButton || !workspaceLink || !syncMessage || !importButton) {
+  const searchInput = host.querySelector<HTMLInputElement>('[data-topbar-search]')
+  if (!menuButton || !searchInput) {
     view.destroy()
     throw new Error('Zuari topbar did not render all required controls.')
   }
+
+  const onInput = () => handlers.onSearch?.(searchInput.value)
+  const onSearchKeydown = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      searchInput.value = ''
+      handlers.onSearch?.('')
+      searchInput.blur()
+    } else if (event.key === 'Enter') {
+      handlers.onSearchSubmit?.(searchInput.value)
+    }
+  }
+  const onWindowKeydown = (event: KeyboardEvent) => {
+    if (event.key !== '/' || event.ctrlKey || event.metaKey || event.altKey) return
+    const target = event.target as HTMLElement | null
+    if (target && (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable)) return
+    event.preventDefault()
+    searchInput.focus()
+    searchInput.select()
+  }
+
+  searchInput.addEventListener('input', onInput)
+  searchInput.addEventListener('keydown', onSearchKeydown)
+  window.addEventListener('keydown', onWindowKeydown)
+
   const updateMenuState = (menuOpen: boolean) => {
-    menuButton.setAttribute('aria-label', menuOpen ? 'Close navigation' : 'Open navigation')
+    menuButton.setAttribute('aria-label', menuOpen ? 'Close navigation drawer' : 'Open navigation drawer')
     menuButton.setAttribute('aria-expanded', String(menuOpen))
-    menuButton.replaceChildren(createIcon(menuOpen ? 'close' : 'menu', 20))
+    menuButton.classList.toggle('mobile-brand--drawer-open', menuOpen)
   }
   updateMenuState(initial.menuOpen)
-  importButton.hidden = !initial.hasData
 
   let destroyed = false
   return {
     update(props) {
       if (destroyed) return
       updateMenuState(props.menuOpen)
-      syncMessage.textContent = props.hasData ? 'Data synced' : 'Ready to import'
-      importButton.hidden = !props.hasData
+      if (typeof props.searchQuery === 'string' && searchInput.value !== props.searchQuery) {
+        searchInput.value = props.searchQuery
+      }
     },
     destroy() {
       if (destroyed) return
       destroyed = true
+      searchInput.removeEventListener('input', onInput)
+      searchInput.removeEventListener('keydown', onSearchKeydown)
+      window.removeEventListener('keydown', onWindowKeydown)
       view.destroy()
     }
   }
 }
 
-function createIcon(name: 'menu' | 'close' | 'dashboard' | 'upload', size: number): SVGElement {
-  const paths = {
-    menu: '<path d="M4 6h16M4 12h16M4 18h16"></path>',
-    close: '<path d="m18 6-12 12M6 6l12 12"></path>',
-    dashboard: '<rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M3 9h18M9 21V9"></path>',
-    upload: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m17 8-5-5-5 5M12 3v12"></path>'
-  } satisfies Record<typeof name, string>
+function createIcon(name: 'search', size: number): SVGElement {
+  const paths = { search: '<circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path>' } satisfies Record<typeof name, string>
   return createSvgElement('0 0 24 24', paths[name], { size, class: 'topbar-icon' })
 }

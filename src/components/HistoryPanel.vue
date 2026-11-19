@@ -3,9 +3,7 @@ import {
   History,
   FileText,
   TrendingUp,
-  TrendingDown,
-  Sparkles,
-  Star
+  TrendingDown
 } from 'lucide-vue-next'
 import type { Snapshot } from '../domain/followers'
 import type { View } from '../types'
@@ -30,10 +28,7 @@ const emit = defineEmits<{
   <div class="right-column">
     <div class="panel activity-panel">
       <div class="panel-heading">
-        <div>
-          <span class="section-kicker">HISTORY & UNFOLLOWERS</span>
-          <h2>Follower Changes</h2>
-        </div>
+        <h2>Follower Changes</h2>
         <History :size="18" class="round-icon-svg" />
       </div>
       <div class="snapshot-card">
@@ -42,9 +37,8 @@ const emit = defineEmits<{
         </div>
         <div class="snapshot-info">
           <strong>{{ previous ? 'Comparison Snapshot' : 'Baseline Snapshot' }}</strong>
-          <span>{{ previous ? new Date(previous.date).toLocaleDateString() : importedAt ? new Date(importedAt).toLocaleDateString() : 'Awaiting first export' }}</span>
+          <span v-if="previous || importedAt">{{ previous ? new Date(previous.date).toLocaleDateString() : new Date(importedAt).toLocaleDateString() }}</span>
         </div>
-        <span class="snapshot-live">{{ previous ? 'DIFF ACTIVE' : 'ACTIVE' }}</span>
       </div>
 
       <div class="change-row" style="cursor: pointer;" @click="emit('selectView', 'new-followers')">
@@ -70,21 +64,9 @@ const emit = defineEmits<{
       </div>
 
       <div class="panel-footer">
-        <span>LAST SYNCED <strong>{{ lastSynced }}</strong></span>
+        <span v-if="lastSynced">LAST SYNCED <strong>{{ lastSynced }}</strong></span>
         <button @click="emit('triggerImport')">Update with new export →</button>
       </div>
-    </div>
-
-    <div class="tip-card">
-      <div class="tip-top">
-        <div class="tip-icon"><Sparkles :size="14" /></div>
-        <span class="tip-tag">WHITELIST PROTECTION</span>
-      </div>
-      <h3>Protect Favorite Accounts</h3>
-      <p>Click the <Star :size="11" style="display:inline; vertical-align:middle; color:#eab308;" /> star next to celebrities, influencers, or news accounts to keep them on your Whitelist so they never clutter your "Don't follow back" list.</p>
-      <button @click="emit('loadDemo')">
-        <Sparkles :size="12" /> Reload Demo Data
-      </button>
     </div>
   </div>
 </template>

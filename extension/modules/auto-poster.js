@@ -5,11 +5,11 @@
 
 export const SUPPORTED_EXTENSION_CHANNELS = [
   { id: 'x', name: 'X (Twitter)', icon: '𝕏', postUrl: 'https://twitter.com/intent/tweet?text=' },
-  { id: 'reddit', name: 'Reddit', icon: '👽', postUrl: 'https://www.reddit.com/r/webdev/submit?title=' },
-  { id: 'linkedin', name: 'LinkedIn', icon: '💼', postUrl: 'https://www.linkedin.com/feed/?shareActive=true&text=' },
-  { id: 'github', name: 'GitHub Gist', icon: '🐙', postUrl: 'https://gist.github.com/' },
-  { id: 'discord', name: 'Discord', icon: '🎮', postUrl: 'https://discord.com/app' },
-  { id: 'devto', name: 'Dev.to Blog', icon: '👩‍💻', postUrl: 'https://dev.to/new' }
+  { id: 'reddit', name: 'Reddit', icon: 'RD', postUrl: 'https://www.reddit.com/r/webdev/submit?title=' },
+  { id: 'linkedin', name: 'LinkedIn', icon: 'IN', postUrl: 'https://www.linkedin.com/feed/?shareActive=true&text=' },
+  { id: 'github', name: 'GitHub Gist', icon: 'GH', postUrl: 'https://gist.github.com/' },
+  { id: 'discord', name: 'Discord', icon: 'DC', postUrl: 'https://discord.com/app' },
+  { id: 'devto', name: 'Dev.to Blog', icon: 'DEV', postUrl: 'https://dev.to/new' }
 ]
 
 /**

@@ -28,7 +28,7 @@ function openChannel(platformId: PlatformId) {
 
 <template>
   <main class="connections-workspace">
-    <header><p>ACTIVE BRAND · {{ brandName }}</p><h1>Connections</h1><span>Manage this brand’s channel configuration. A handle or saved credential is not proof of an authorized connection.</span></header>
+    <header><h1>Connections</h1></header>
     <p v-if="statusMessage" class="connection-message" role="status">{{ statusMessage }}</p>
     <PublisherChannels
       :brand-id="brandId" :platforms="platforms"
@@ -49,8 +49,6 @@ function openChannel(platformId: PlatformId) {
   background: radial-gradient(ellipse at 100% 0%, rgba(84, 214, 238, .14), transparent 48%), linear-gradient(130deg, var(--surface-card), var(--surface));
   box-shadow: var(--card-shadow);
 }
-.connections-workspace header p { margin: 0; color: #54d6ee; font-size: 9px; font-weight: 700; letter-spacing: .12em; }
 .connections-workspace h1 { margin: 8px 0 5px; font: 700 clamp(24px, 3vw, 30px) Manrope, sans-serif; letter-spacing: -.03em; }
-.connections-workspace header span { color: var(--muted); font-size: 11px; line-height: 1.6; }
 .connection-message { padding: 10px 13px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface-raised); color: var(--ink); font-size: 11px; }
 </style>

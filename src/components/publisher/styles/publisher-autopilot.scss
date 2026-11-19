@@ -1,0 +1,28 @@
+.workflow-studio { display: grid; gap: 14px; }
+.studio-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 14px; border: 1px solid var(--glass-border); border-radius: 12px; background: var(--glass-bg); backdrop-filter: blur(16px); }
+.bot-layers,.bar-controls { display: flex; align-items: center; gap: 6px; }
+.layer-chip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface-raised); color: var(--ink); font-size: 10px; font-weight: 600; }
+.wf-select { padding: 6px 10px; border: 1px solid var(--surface-border); border-radius: 8px; background: var(--input-bg); color: var(--ink); font: inherit; font-size: 11px; }
+.icon-button, .delete-button { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--surface-border); border-radius: 7px; background: var(--surface-raised); color: var(--ink); cursor: pointer; }
+.icon-button { width: 32px; height: 32px; justify-content: center; }
+.studio-status { margin: 0; color: var(--purple); font-size: 12px; }
+.workflow-empty, .workflow-editor { padding: 17px; border: 1px solid var(--glass-border); border-radius: 14px; background: var(--glass-bg); backdrop-filter: blur(16px); }
+.workflow-empty p { margin: 0 0 5px; color: var(--ink); font-weight: 700; }
+.workflow-empty span { color: var(--muted); font-size: 12px; }
+.workflow-editor { display: grid; gap: 14px; }
+.workflow-meta { display: flex; align-items: end; justify-content: space-between; gap: 12px; }
+.workflow-meta label { display: grid; flex: 1; gap: 6px; color: var(--muted); font-size: 11px; }
+.workflow-meta input, .step-value { min-width: 0; padding: 9px 10px; border: 1px solid var(--surface-border); border-radius: 7px; background: var(--input-bg); color: var(--ink); font: inherit; }
+.workflow-meta > span { display: inline-flex; align-items: center; gap: 5px; padding-bottom: 9px; color: var(--muted); font-size: 11px; }
+.workflow-steps { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
+.workflow-step { display: flex; align-items: center; gap: 10px; padding: 9px; border: 1px solid var(--surface-border); border-radius: 8px; background: var(--surface-raised); }
+.step-index { display: grid; width: 23px; height: 23px; flex: 0 0 auto; place-items: center; border-radius: 7px; background: var(--purple-soft); color: var(--purple); font-size: 10px; font-weight: 700; }
+.step-detail { display: grid; min-width: 100px; gap: 3px; color: var(--ink); font-size: 11px; }
+.step-detail small { overflow: hidden; color: var(--muted); text-overflow: ellipsis; white-space: nowrap; }
+.step-value { flex: 1; }
+.workflow-actions { display: flex; justify-content: space-between; gap: 8px; }
+.save-button, .delete-button { min-height: 34px; padding: 0 11px; font: inherit; font-size: 11px; font-weight: 600; }
+.save-button { display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 7px; background: var(--purple); color: #fff; cursor: pointer; }
+.delete-button { color: #c64453; }
+.save-button:disabled { opacity: .55; cursor: wait; }
+@media (max-width: 600px) { .workflow-meta { align-items: stretch; flex-direction: column; }.workflow-meta > span { padding-bottom: 0; }.workflow-step { flex-wrap: wrap; }.step-value { flex-basis: calc(100% - 34px); margin-left: 33px; } }

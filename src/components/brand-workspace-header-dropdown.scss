@@ -4,8 +4,9 @@
   left: 0;
   margin-top: 6px;
   width: 290px;
-  background: var(--surface-card);
-  border: 1px solid var(--surface-border);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(18px) saturate(130%);
   border-radius: 10px;
   box-shadow: var(--card-shadow);
   z-index: 100;

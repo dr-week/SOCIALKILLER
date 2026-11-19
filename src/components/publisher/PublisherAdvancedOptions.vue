@@ -71,9 +71,10 @@ const emit = defineEmits<{
 <style scoped>
 .advanced-options {
   min-width: 0;
-  border: 1px solid var(--line, rgba(255, 255, 255, 0.12));
-  border-radius: 9px;
-  background: var(--bg-app, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.12));
+  border-radius: 12px;
+  background: var(--glass-bg, rgba(255, 255, 255, 0.03));
+  backdrop-filter: blur(14px);
 }
 
 summary {

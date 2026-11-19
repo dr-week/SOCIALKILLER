@@ -11,8 +11,7 @@ The publisher composes channel selection, content variants, connection settings,
 - `composables/usePublisherPlatforms.ts` owns selected channels, per-channel variants, labels, and immediate-publish readiness.
 - `PublisherChannelCard.vue` presents one channel and delegates its connectivity check to `composables/useChannelConnectionCheck.ts`.
 - `components/` files contain the publisher's focused navigation, composer, channel list, queue, and supporting panels.
-- `publisher-layout.css` and `publisher-controls.css` provide shared section layout and form/action styles.
-- `news/` owns the trend/remodel workflow: API state, source filters, story list, remodel controls, and result variants.
+- `publisher-layout.scss` and `publisher-controls.scss` provide shared section layout and form/action styles.
 
 Immediate publishing requires saved credentials and a successful connection check in the current publisher session. Editing credentials or reloading channel state clears the check. Scheduled drafts remain available without a successful check; scheduling does not imply platform delivery.
 
@@ -20,4 +19,4 @@ Immediate publishing requires saved credentials and a successful connection chec
 
 The module uses Vue, the shared API routes under `/api/social` and `/api/marketing`, and shared types under `src/types`. Session verification is held in UI state and is not persisted as a credential or server authorization grant.
 
-Run the focused readiness check with `node --experimental-strip-types --test test/social-account-readiness.test.mjs`.
+Run the focused readiness check with `npm test`.

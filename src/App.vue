@@ -1,30 +1,49 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { TooltipProvider } from 'reka-ui'
 import AppSidebar from './components/AppSidebar.vue'
 import AppTopbar from './components/AppTopbar.vue'
 import BrandWorkspaceHeader from './components/BrandWorkspaceHeader.vue'
 import BrandProfileModal from './components/BrandProfileModal.vue'
 import AppWorkspaceContent from './features/app-shell/AppWorkspaceContent.vue'
+import UiToastHost from './shared/ui/UiToastHost.vue'
+import { rankFuzzyItems } from './shared/search/fuzzy-search'
 import { appIdForView } from './features/app-shell/mini-app-routes'
 import { APP_NAVIGATION } from './features/app-shell/mini-apps'
 import { useAppController } from './features/app-shell/useAppController'
 
 const controller = useAppController()
 const {
-  activeView, menuOpen, fileInput, backupFileInput, currentTheme, setTheme, currentAccent, setAccent,
+  activeView, menuOpen, search, fileInput, backupFileInput, currentTheme, setTheme, currentAccent, setAccent,
   createCompanyWorkspace, updateWorkspaceArchive, handleSaveBrandContext,
   handleRunBrandResearch, onFilesChange, showProfileModal
 } = controller
 const activeMiniApp = computed(() => APP_NAVIGATION.find(app => app.id === appIdForView(activeView.value)))
 const {
-  currentAccountUsername, followers, following, savedAccountsList,
+  currentAccountUsername, followers, following, notFollowingBack, savedAccountsList,
   switchAccount, removeAccount, refreshCurrentAccount, resetData
 } = controller.audience
 const { databaseStats, cleanExpiredCache, exportDatabaseBackup, restoreDatabaseBackup } = controller.database
 const { brands, archivedBrands, activeBrand, selectBrand } = controller.workspaces
+
+function handleSearchSubmit(query: string) {
+  if (activeView.value !== 'app-launcher') return
+  const q = query.trim()
+  if (!q) return
+  const [match] = rankFuzzyItems(
+    APP_NAVIGATION.filter(app => app.id !== 'home'),
+    q,
+    app => [app.label, app.category, app.description]
+  )
+  if (match) {
+    activeView.value = match.view
+    search.value = ''
+  }
+}
 </script>
 
 <template>
+  <TooltipProvider :delay-duration="220">
   <div
     class="app-shell"
     :data-theme="currentTheme"
@@ -55,20 +74,25 @@ const { brands, archivedBrands, activeBrand, selectBrand } = controller.workspac
     <main class="main-area">
       <AppTopbar
         v-model:menuOpen="menuOpen"
+        v-model:searchQuery="search"
         :has-data="followers.length > 0 || following.length > 0"
         @update:active-view="activeView = $event"
-        @trigger-import="fileInput?.click()"
+        @search-submit="handleSearchSubmit"
       />
       <div class="content-wrap">
         <BrandWorkspaceHeader
           :brands="brands"
           :archived-brands="archivedBrands"
           :active-brand="activeBrand"
+          :audience-handle="currentAccountUsername"
+          :audience-followers-count="followers.length"
+          :audience-unfollowers-count="notFollowingBack.length"
           @select-brand="selectBrand"
           @create-brand="createCompanyWorkspace"
           @archive-brand="brandId => updateWorkspaceArchive(brandId, true)"
           @restore-brand="brandId => updateWorkspaceArchive(brandId, false)"
           @open-profile-modal="showProfileModal = true"
+          @open-audience="activeView = 'overview'"
         />
         <BrandProfileModal
           v-if="showProfileModal"
@@ -83,5 +107,7 @@ const { brands, archivedBrands, activeBrand, selectBrand } = controller.workspac
 
     <input ref="fileInput" class="visually-hidden" type="file" accept=".zip,.json,application/zip,application/json" multiple @change="onFilesChange">
     <input ref="backupFileInput" type="file" accept=".json" style="display: none;" @change="restoreDatabaseBackup">
+    <UiToastHost />
   </div>
+  </TooltipProvider>
 </template>

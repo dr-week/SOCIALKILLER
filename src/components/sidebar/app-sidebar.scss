@@ -23,7 +23,8 @@
 .sidebar-footer-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
 .settings-toggle-btn { display: inline-flex; min-height: 36px; align-items: center; gap: 5px; padding: 5px 8px; border: 1px solid var(--glass-border); border-radius: 10px; background: var(--surface-raised); color: var(--muted); cursor: pointer; font-size: 11px; transition: border-color .16s, color .16s, background .16s; }
 .settings-toggle-btn:hover { border-color: var(--accent-primary); color: var(--accent-primary); background: color-mix(in srgb, var(--accent-primary) 9%, var(--surface-raised)); }
-.profile-card { display: flex; min-width: 0; flex: 1; align-items: center; gap: 8px; }
+.profile-card { display: flex; min-width: 0; flex: 1; align-items: center; gap: 8px; padding: 4px 6px; border: 0; border-radius: 10px; background: transparent; cursor: pointer; text-align: left; transition: background .16s; }
+.profile-card:hover { background: var(--surface-raised); }
 .avatar { display: grid; width: 32px; height: 32px; flex: 0 0 auto; place-items: center; border-radius: 50%; background: linear-gradient(140deg, var(--accent-primary), var(--accent-secondary)); box-shadow: 0 0 18px var(--accent-glow); color: #fff; font-size: 12px; font-weight: 700; }
 .profile-info { display: flex; min-width: 0; flex-direction: column; }
 .profile-info strong { overflow: hidden; color: var(--ink); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }

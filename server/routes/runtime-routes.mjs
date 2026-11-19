@@ -9,7 +9,7 @@ export async function handleRuntimeRoutes(req, res, url, json) {
     const port = Number(process.env.API_PORT || 4174)
     return json(res, 200, {
       status: 'healthy',
-      service: 'The Social Base API',
+      service: 'SOCIALKILLER API',
       version: '1.4.0',
       uptime: process.uptime(),
       timestamp: new Date().toISOString(),

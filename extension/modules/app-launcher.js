@@ -8,7 +8,7 @@ export async function focusOrOpenFollowDeskApp(path = '') {
   const targetUrl = `http://127.0.0.1:${activeFrontendPort}/${path.replace(/^\//, '')}`
   try {
     const tabs = await chrome.tabs.query({ url: ['http://127.0.0.1/*', 'http://localhost/*'] })
-    const appTab = tabs.find(tab => /The Social Base/i.test(tab.title || ''))
+    const appTab = tabs.find(tab => /SOCIALKILLER|The Social Base/i.test(tab.title || ''))
     if (appTab?.id) {
       await chrome.tabs.update(appTab.id, { active: true })
       if (appTab.windowId) await chrome.windows.update(appTab.windowId, { focused: true })
@@ -34,10 +34,10 @@ export async function verifyAppBackendOnline(apiUrl = 'http://127.0.0.1:4174/api
 export async function ensureAppOnlineWithAutoLaunch(syncStatusElement = null) {
   const isOnline = await verifyAppBackendOnline()
   if (isOnline) {
-    if (syncStatusElement) syncStatusElement.textContent = 'App Online 🟢'
+    if (syncStatusElement) syncStatusElement.textContent = 'App Online ●'
     return true
   }
 
-  if (syncStatusElement) syncStatusElement.textContent = 'App Offline ⚪'
+  if (syncStatusElement) syncStatusElement.textContent = 'App Offline ○'
   return false
 }

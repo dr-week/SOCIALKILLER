@@ -73,7 +73,7 @@ export function useAppActions(context: AppActionContext) {
       try {
         const filename = `followdesk-${activeView.value}-${Date.now()}.csv`
         const { uri } = await Filesystem.writeFile({ path: filename, data: csv, directory: Directory.Cache, encoding: Encoding.UTF8 })
-        await Share.share({ title: 'The Social Base CSV export', text: `${navigation.viewTitle.value} list`, files: [uri], dialogTitle: 'Share CSV' })
+        await Share.share({ title: 'SOCIALKILLER CSV export', text: `${navigation.viewTitle.value} list`, files: [uri], dialogTitle: 'Share CSV' })
       } catch (cause) {
         error.value = cause instanceof Error ? cause.message : 'Could not share this CSV file.'
       }

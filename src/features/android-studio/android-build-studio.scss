@@ -8,6 +8,12 @@
 .android-studio__checks { display: grid; gap: 10px; margin: 0 0 14px; padding: 0; list-style: none; }
 .android-studio__checks li,.android-studio__runtime { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); font-size: 11px; }
 .android-studio__checks strong { color: var(--ink); }
+.android-studio__status-icon { display: inline-flex; align-items: center; }
+.android-studio__status-icon .status-ok { color: var(--status-success, #10b981); }
+.android-studio__status-icon .status-miss { color: var(--status-warning, #f59e0b); }
+.android-studio__status-icon .spin-icon { color: var(--muted); animation: android-spin .9s linear infinite; }
+.android-studio__diag summary { cursor: pointer; font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 10px; }
+@keyframes android-spin { to { transform: rotate(360deg); } }
 .android-studio__actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .android-studio__runtime { display: grid; grid-template-columns: minmax(110px,.7fr) minmax(0,1fr); margin: 0; }
 .android-studio__runtime dd { margin: 0; overflow-wrap: anywhere; color: var(--ink); }

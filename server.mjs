@@ -10,7 +10,7 @@ const server = createServer(async (req, res) => {
 
 server.on('error', (err) => {
   if (err.code === 'EADDRINUSE') {
-    console.error(`[The Social Base API] Port ${port} is already in use; this process did not start.`)
+    console.error(`[SOCIALKILLER API] Port ${port} is already in use; this process did not start.`)
     process.exit(1)
   } else {
     console.error('❌ Server startup error:', err)
@@ -20,6 +20,6 @@ server.on('error', (err) => {
 
 server.listen(port, '127.0.0.1', () => {
   startAutomationScheduler()
-  console.log(`The Social Base API listening on http://127.0.0.1:${port}`)
+  console.log(`SOCIALKILLER API listening on http://127.0.0.1:${port}`)
 })
 

@@ -50,8 +50,8 @@ function selectAsset(event: Event) {
   </section>
 </template>
 
-<style scoped>
-@import './publisher-shared.css';
+<style scoped lang="scss">
+@use './styles/publisher-shared.scss';
 
 .media-picker { display: grid; gap: 6px; min-width: 0; }
 .media-folder { display: flex; min-width: 0; align-items: center; gap: 8px; }

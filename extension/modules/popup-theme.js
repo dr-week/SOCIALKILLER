@@ -3,13 +3,13 @@
  */
 
 export const ALGORITHM_TIPS = {
-  x: '💡 X Algorithm: Bookmarks (10x) & Replies with author (75x+) boost reach. Keep links in replies.',
-  reddit: '💡 Reddit Rule: Upvote ratio & comment depth in first 60m dictate rank. Focus on real technical value.',
-  github: '💡 GitHub Tip: Star velocity & release changelogs drive trending feed discovery.',
-  linkedin: '💡 LinkedIn Tip: Dwell time & 12+ word constructive comments trigger network expansion.',
-  devto: '💡 Dev.to Tip: Meaningful code snippets & #webdev tags maximize reading list bookmarks.',
-  discord: '💡 Discord Tip: Live release drops keep community members engaged.',
-  instagram: '💡 Instagram Tip: Reels watch-through & direct saves outweigh passive likes.'
+  x: '✦ X Algorithm: Bookmarks (10x) & Replies with author (75x+) boost reach. Keep links in replies.',
+  reddit: '✦ Reddit Rule: Upvote ratio & comment depth in first 60m dictate rank. Focus on real technical value.',
+  github: '✦ GitHub Tip: Star velocity & release changelogs drive trending feed discovery.',
+  linkedin: '✦ LinkedIn Tip: Dwell time & 12+ word constructive comments trigger network expansion.',
+  devto: '✦ Dev.to Tip: Meaningful code snippets & #webdev tags maximize reading list bookmarks.',
+  discord: '✦ Discord Tip: Live release drops keep community members engaged.',
+  instagram: '✦ Instagram Tip: Reels watch-through & direct saves outweigh passive likes.'
 }
 
 export function detectActivePlatform(url = '') {
