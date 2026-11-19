@@ -1,36 +1,41 @@
-# UI/UX architecture and roadmap
+# UI/UX Architecture and Roadmap — SOCIALKILLER
 
-The current product architecture is a unified website with focused mini-app workspaces. This replaces the earlier 12-department sidebar concept. The source-backed app inventory and grouping decisions live in [Mini-app architecture](../MINI_APP_ARCHITECTURE.md); current interaction rules are in the [UX guide](../UX_GUIDE.md).
+**Updated:** 2026-11-19
 
-## Current interaction model
+The current product architecture is a unified local-first website with focused mini-app workspaces. The source-backed app inventory and grouping decisions live in [Mini-app architecture](../MINI_APP_ARCHITECTURE.md), interaction rules, **4-Tier Animation & Motion System**, and Audience UI/UX standards live in the [UX guide](../UX_GUIDE.md), and the active 16-surface declutter audit and 7-phase execution plan live in the [UI/UX Declutter & Efficiency Plan](../UIUX_DECLUTTER_AND_EFFICIENCY_PLAN.md).
 
-- One app launcher and one shared website; mini-app selection uses same-tab internal navigation.
-- Available apps are grouped as Plan & publish, Community & audience, Create, and Operate.
-- Each app gets a focused workspace while sharing active brand context, theme, local settings, and common infrastructure.
-- The sidebar keeps visible labels; mobile uses the responsive drawer. The old icons-only desktop rail and mobile bottom bar were not implemented.
-- Roadmap-only apps remain visually separate and cannot be opened as if they were functional.
+See also:
+- **[Backend & Code Organization Plan](../../engineering/BACKEND_ORGANIZATION_PLAN.md)**
+- **[GitHub Toolkit & Library Adoption Plan](../../research/GITHUB_TOOLKIT_ADOPTION_PLAN.md)**
+
+## Current Interaction Model
+
+- One app launcher and one shared website; mini-app selection uses same-tab internal navigation (`?app=<id>`, plus `?view=<subview>` in Audience Audit).
+- Available apps are grouped across 5 categories: **Plan & publish** (Planner, Connections), **Community & audience** (Engage, Audience Audit, Profile Scout), **Create** (Content Studio, Script Studio), **Operate** (Workflows, Workspaces, Automation Studio), and **Build** (Design System, Asset Manager, Android Build Studio).
+- Each app gets a focused glassmorphic workspace while sharing active brand context, Global Topbar Search, theme, local settings, and common infrastructure.
+- Roadmap-only apps remain visibly separated inside a collapsed `<details>` section and cannot be opened as functional workspaces.
 - Existing external provider handoffs remain explicit workflow actions, not app navigation.
-- Product claims, data boundaries, identity limitations, and integration states must match the [feature inventory](../MINI_APP_ARCHITECTURE.md).
 
-## Design and engineering guardrails
+## Design and Engineering Guardrails
 
-1. Keep available mini-apps inside the existing SPA and origin; preserve browser Back/Forward.
-2. Share brand context rather than copying account configuration into every workspace.
-3. Keep provider actions explicit and accurately label draft, approval, queue, handoff, failure, and confirmed delivery states.
-4. Do not invent metrics, AI capabilities, connections, team permissions, client approvals, or workflows.
-5. Support phone, tablet, and desktop sizes without horizontal overflow; maintain keyboard access and visible focus.
-6. Keep features within modular source boundaries and follow `.github/instructions/modular-code.instructions.md`.
+1. **Zero Backend Telemetry:** Never show `"Ready to import"`, `"No data imported"`, `"DIFF ACTIVE"`, PIDs, or similar backend state strings in the UI.
+2. **Single-Line Headers & Symbolic Status Icons:** One `<Icon />` + concise title per section/card; replace multi-word status text with semantic Lucide icons and tooltips.
+3. **Single-Level Collapsibles & No Duplicate Controls:** Collapse secondary options/forms into one `<details>` or drawer toggle; bind views to the single Global Topbar Search.
+4. **Frosted Glassmorphism & Responsive Safety:** Use `--glass-bg` / `--glass-border` consistently and ensure zero horizontal overflow across `360 / 390 / 768 / 1024 / 1280` CSS px with full keyboard access.
+5. **Modular Code Rule (`<150` lines):** Keep all TypeScript, Vue, SCSS, server, extension, and script files under 149 lines (`npm run check:file-size`).
 
-## Historical research and planning artifacts
+## Active Planning & Historical Discovery Artifacts
 
-The research and planning documents below describe the earlier department-first proposal. They remain useful as prior discovery/evidence, but their old IA, task lists, and shell specifications are not current product requirements:
+The active 7-phase declutter, Animation, Audience UI/UX, Backend Organization, dev-script, and Visual Bot program is tracked in:
 
-- [Competitor research](./research/COMPETITOR_RESEARCH.md)
-- [Source register](./research/sources.json)
+- **[UI/UX Declutter, Animation, Audience & Visual Bot Master Plan](../UIUX_DECLUTTER_AND_EFFICIENCY_PLAN.md)**
+- **[7-Phase UI/UX & Engineering Roadmap](./planning/ROADMAP.md)**
+- **[Machine-readable phase dependency graph](./planning/phases.json)**
+
+Historical research and prior department-first discovery notes remain archived for evidence only (not current IA requirements):
+
+- [Competitor research](./research/COMPETITOR_RESEARCH.md) & [Source register](./research/sources.json)
 - [Prior workbench concept](./concept/WORKSPACE_WORKBENCH.md)
-- [Prior phased roadmap](./planning/ROADMAP.md)
-- [Prior next-task tracker](./planning/NEXT_TASKS.md)
-- [Prior validation notes](./planning/VALIDATION_NOTES.md)
-- [Machine-readable phase tracker](./planning/phases.json)
+- [Prior next-task tracker](./planning/NEXT_TASKS.md) & [Validation notes](./planning/VALIDATION_NOTES.md)
 
-`npm run uiux:check` validates the research source register and phase dependency graph. It does not certify usability, responsive behavior, or a release.
+`npm run uiux:check` validates the research source register and active 7-phase dependency graph in `phases.json`.

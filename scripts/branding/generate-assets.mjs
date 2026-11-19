@@ -102,12 +102,22 @@ async function writeWebVariants(masterPath) {
   }
 }
 
+async function writeRoundLogo(relativePath, size = 512) {
+  const half = size / 2
+  const circleMask = Buffer.from(`<svg width="${size}" height="${size}"><circle cx="${half}" cy="${half}" r="${half - 4}" fill="#ffffff"/></svg>`)
+  const rimSvg = Buffer.from(`<svg width="${size}" height="${size}"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ff7b88"/><stop offset="50%" stop-color="#b495ff"/><stop offset="100%" stop-color="#54d6ee"/></linearGradient></defs><circle cx="${half}" cy="${half}" r="${half - 7}" fill="none" stroke="url(#g)" stroke-opacity="0.65" stroke-width="6"/></svg>`)
+  const masked = await sharp(sourcePath).resize(size, size, { kernel: 'lanczos3' }).ensureAlpha().composite([{ input: circleMask, blend: 'dest-in' }]).png().toBuffer()
+  const round = await sharp(masked).composite([{ input: rimSvg, blend: 'over' }]).png().toBuffer()
+  await writeGeneratedFile(await outputPath(relativePath), round)
+}
+
 const source = await readFile(sourcePath)
 const shape = await logoShape()
 const processedMasterPath = await outputPath('src/assets/branding/generated/social-base-logo.png')
 await writeGeneratedFile(processedMasterPath, await renderMark(shape, 1024, 0.86))
 await writeWebVariants(processedMasterPath)
 await writeMark(shape, 'public/branding/social-base-logo.png', 512, 0.86)
+await writeRoundLogo('public/branding/socialkiller-logo-round.png', 512)
 await writeMark(shape, 'public/branding/favicon.png', 48, 0.72, iconBackground)
 for (const size of [16, 48, 128]) {
   await writeMark(shape, `extension/icons/icon-${size}.png`, size, 0.86, iconBackground)
@@ -121,4 +131,4 @@ for (const [density, size] of Object.entries(foregroundSizes)) {
 }
 for (const [path, width, height] of splashSizes) await writeSplash(shape, `android/app/src/main/res/${path}`, width, height)
 if (!source.equals(await readFile(sourcePath))) throw new Error('Logo source changed during asset generation.')
-console.log('Generated The Social Base logo, extension icons, Android launch icons, and splash assets.')
+console.log('Generated SOCIALKILLER logo, extension icons, Android launch icons, and splash assets.')
