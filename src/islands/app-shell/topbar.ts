@@ -36,7 +36,7 @@ export function mountAppTopbar(
         data-workspace-link
         @click=${handlers.toggleMenu}
       >
-        <img class="brand-mark" src="/branding/social-base-logo.png" alt="" />
+        <img class="brand-mark" src="./branding/social-base-logo.png" alt="" />
         <span>SOCIAL<span class="brand-accent">KILLER</span></span>
       </button>
 

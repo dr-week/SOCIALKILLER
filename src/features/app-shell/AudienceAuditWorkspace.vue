@@ -6,6 +6,7 @@ import AudienceMetrics from '../../components/AudienceMetrics.vue'
 import AudienceTable from '../../components/AudienceTable.vue'
 import HistoryPanel from '../../components/HistoryPanel.vue'
 import ImportBanner from '../../components/ImportBanner.vue'
+import AudienceSmartUnfollowCard from '../../components/audience/AudienceSmartUnfollowCard.vue'
 import AudienceAuditOverlays from './AudienceAuditOverlays.vue'
 
 const props = defineProps<{ controller: AppController }>()
@@ -16,12 +17,19 @@ const {
 const {
   followers, following, previous, whitelist, importedAt, loading, error,
   notFollowingBack, notFollowedBack, mutuals, newFollowers, lostFollowers,
-  ghostFollowers, allAccounts, whitelistedPeople, toggleWhitelist, loadSampleData
+  ghostFollowers, allAccounts, toggleWhitelist, loadSampleData
 } = audience
 const { accountStatusMap, isBatchChecking, batchProgress, checkAccountHealth, checkBatch } = health
 const { getUserCategory } = userCategories
-const { selectedUsernames, toggleSelect, selectAll, clearSelection, openQueueModal } = queueState
+const { selectedUsernames, sessionLimit, toggleSelect, selectAll, clearSelection, openQueueModal } = queueState
 const { viewTitle, filteredPeople, totalPages, pagedPeople, lastSynced } = navigation
+
+function handleQueueSmartBatch(usernames: string[]) {
+  clearSelection()
+  if (usernames.length > sessionLimit.value) sessionLimit.value = usernames.length
+  selectAll(usernames)
+  openQueueModal()
+}
 </script>
 
 <template>
@@ -33,6 +41,11 @@ const { viewTitle, filteredPeople, totalPages, pagedPeople, lastSynced } = navig
       :mutuals-count="mutuals.length" :followers-count="followers.length" :following-count="following.length"
       :lost-followers-count="lostFollowers.length" :has-previous="!!previous"
       @select-view="(view) => { activeView = view; currentPage = 1 }"
+    />
+    <AudienceSmartUnfollowCard
+      :not-following-back="notFollowingBack" :ghost-followers="ghostFollowers"
+      :whitelist-set="whitelist" :account-status-map="accountStatusMap"
+      @queue-smart-batch="handleQueueSmartBatch"
     />
     <section class="dashboard-grid">
       <AudienceTable

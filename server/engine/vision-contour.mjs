@@ -49,22 +49,34 @@ export function matchTemplateEdge(sceneEdges, sceneWidth, sceneHeight, tmplEdges
   for (let i = 0; i < tmplEdges.length; i++) tmplEnergy += tmplEdges[i] * tmplEdges[i]
   if (tmplEnergy === 0) tmplEnergy = 0.0001
 
-  for (let y = 0; y <= maxY; y += 2) {
-    for (let x = 0; x <= maxX; x += 2) {
-      let crossCorr = 0
-      let sceneEnergy = 0
-      for (let ty = 0; ty < tmplHeight; ty++) {
-        const sRow = (y + ty) * sceneWidth + x
-        const tRow = ty * tmplWidth
-        for (let tx = 0; tx < tmplWidth; tx++) {
-          const sVal = sceneEdges[sRow + tx]
-          const tVal = tmplEdges[tRow + tx]
-          crossCorr += sVal * tVal
-          sceneEnergy += sVal * sVal
-        }
+  const scoreAt = (x, y) => {
+    let crossCorr = 0
+    let sceneEnergy = 0
+    for (let ty = 0; ty < tmplHeight; ty++) {
+      const sRow = (y + ty) * sceneWidth + x
+      const tRow = ty * tmplWidth
+      for (let tx = 0; tx < tmplWidth; tx++) {
+        const sVal = sceneEdges[sRow + tx]
+        const tVal = tmplEdges[tRow + tx]
+        crossCorr += sVal * tVal
+        sceneEnergy += sVal * sVal
       }
-      if (sceneEnergy > 0) {
-        const ncc = crossCorr / Math.sqrt(sceneEnergy * tmplEnergy)
+    }
+    return sceneEnergy > 0 ? crossCorr / Math.sqrt(sceneEnergy * tmplEnergy) : 0
+  }
+
+  const stride = maxX * maxY <= 20000 ? 1 : 2
+  for (let y = 0; y <= maxY; y += stride) {
+    for (let x = 0; x <= maxX; x += stride) {
+      const ncc = scoreAt(x, y)
+      if (ncc > bestScore) { bestScore = ncc; bestX = x; bestY = y }
+    }
+  }
+
+  if (stride > 1 && bestX >= 0 && bestY >= 0) {
+    for (let y = Math.max(0, bestY - stride); y <= Math.min(maxY, bestY + stride); y++) {
+      for (let x = Math.max(0, bestX - stride); x <= Math.min(maxX, bestX + stride); x++) {
+        const ncc = scoreAt(x, y)
         if (ncc > bestScore) { bestScore = ncc; bestX = x; bestY = y }
       }
     }

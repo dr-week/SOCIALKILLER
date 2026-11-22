@@ -48,15 +48,16 @@ Creative workers are taking back 100% control for themselves. This is just the s
 
 ---
 
-## 🧩 13 Mini-App Workspaces
+## 🧩 14 Mini-App Workspaces
 
 SOCIALKILLER opens to one shared **Apps** launcher (`?app=<id>`). Selecting a workspace switches views in the same site and tab while keeping your active brand context, Global Search, and theme synced across every tool.
 
 | Category | Workspace | Core Capability |
 |---|---|---|
-| **Plan & Publish** | **Planner** | Channel-specific post composer, clean TL;DR summarizer, drafts, approval queue, calendar/list views, and export/handoff |
+| **Plan & Publish** | **Planner** | Multi-framework copy studio (`Hook-Story-Offer`, `Short & Punchy`, `Carousel Slides`, `Launch Promo`), clean TL;DR summarizer, QUBO schedule optimizer, approval queue, and calendar/list views |
 | **Plan & Publish** | **Connections** | Per-brand channel configuration, encrypted credential checks, Meta OAuth linking, and account assignment |
-| **Community & Audience** | **Engage** | Locally organized comments/messages and human-reviewed reply drafts |
+| **Community & Audience** | **Engage** | Locally organized comments/messages, instant intent badges (`Hot Lead`, `Inquiry`, `Complaint`, `Praise`), human-reviewed reply drafts, and 1-click **Promote Lead** |
+| **Community & Audience** | **Leads CRM** | Solo Creator CRM Kanban pipeline (`New` → `Contacted` → `Qualified` → `Proposal` → `Won`) backed by local SQLite WAL (`POST/PATCH/DELETE /api/leads`) |
 | **Community & Audience** | **Audience Audit** | Local Instagram export (`.zip` / `.json`) analysis, follower diffs, categories, whitelist, account health, and safe queue |
 | **Community & Audience** | **Profile Scout** | Public Instagram follower-count lookup and HD avatar download utility |
 | **Create** | **Content Studio** | Curated short-form inspiration, caption variations, and viral/hook scoring |
@@ -70,12 +71,14 @@ SOCIALKILLER opens to one shared **Apps** launcher (`?app=<id>`). Selecting a wo
 
 ---
 
-## ⚙️ Architecture & 3-Layer Visual Bot
+## ⚙️ Architecture, QUBO Scheduler & 3-Layer Visual Bot
 
 ```mermaid
 flowchart LR
   UI["Vue 3 + TS + SCSS Shell (5199)"] -->|"/api"| API["Node.js Local Service (4174)"]
+  UI -.->|"$0 Edge Mode"| CF["Cloudflare Workers Gateway"]
   API --> DB[("SQLite WAL + AES-256-GCM Vault")]
+  API --> QUBO["QUBO Simulated Annealing Scheduler (<2.5ms)"]
   EXT["Chrome Extension Companion"] -->|"Local Sync & Safe DOM Replay"| API
   AND["Capacitor Android Host"] --> UI
   CLI["CLI-Anything Harness (Layer 1)"] -->|"JSON Envelopes"| API
@@ -83,6 +86,8 @@ flowchart LR
   API -->|"Sobel Edge + 2D NCC + Human Cadence (Layer 3)"| VB
 ```
 
+- **Strict `<150` LOC Modularity Law:** Every source file across `src/`, `server/`, `extension/`, `scripts/`, and `workers/` (516/516 files) is strictly enforced below 150 lines via `npm run check:file-size`.
+- **QUBO Simulated Annealing Optimizer (`POST /api/social/optimize-schedule`):** Formulates multi-platform posting slots as a Quadratic Unconstrained Binary Optimization problem and converges classically in `<2.5ms` at $0 cost (see [`server/marketing/qubo-scheduler.mjs`](./server/marketing/qubo-scheduler.mjs)).
 - **Layer 1 — `CLI-Anything` JSON Harness (`<10ms`):** Deterministic JSON commands (`manifest`, `summarize`, `score`, `visual-bot`, `status`) for both creators and coding agents.
 - **Layer 2 — Semantic DOM & Accessibility Bridge (`<50ms`):** Role/ARIA/test-id targeting and cached site locators inside the optional Chrome extension, excluding password and payment controls.
 - **Layer 3 — Theme-Invariant Sobel Vision & Human Cadence (`<120ms`):** Zero-dependency Sobel gradient + 2D Normalized Cross-Correlation (`server/engine/vision-contour.mjs`) paired with Box-Muller log-normal cognitive delays.
@@ -100,12 +105,14 @@ Or double-click `Launch FoundryDesk.cmd` in the repository root. It starts and m
 
 > Legacy fallback launcher: [`launcher/launch-legacy.cmd`](./launcher/launch-legacy.cmd).
 
-### Verify & Test
+### Verify, Lint & Static Analysis
 
 ```sh
-npm run type-check
-npm run build
-npm test
+npm run verify           # Full gate: check:file-size (0 violations) + Vite build + all test suites
+npm run lint             # Runs 4-part static analysis: vue-tsc, UI/UX hygiene, modularity, 31-scenario evals
+npm run type-check       # Strict Vue 3 + TypeScript verification via vue-tsc
+npm run eval:agents      # Runs 31-scenario AI Agent evaluation suite (P95 < 25ms, fail-closed policy)
+npm test                 # Run all backend (56), dev-tools (23), extension (9), social (8), and adapter tests
 ```
 
 ### 💻 CLI & Developer Tooling
@@ -114,7 +121,25 @@ npm test
 npm run dev:doctor       # Full runtime, SQLite, Visual Bot & TypeScript health check
 npm run cli-anything     # Emit agent-native CLI-Anything tool manifest (JSON)
 npm run planning:check   # Validate UI/UX research register, docs freshness & modularity plan
+npm run check:file-size  # Enforces architectural law: strict 100–150 LOC maximum per file (516/516 passing)
 ```
+
+### 🌐 GitHub Pages Deployment & $0 Free-Tier Serverless Backend
+
+- **Live Web App & Status Portal:** Deployed automatically to GitHub Pages via [`.github/workflows/deploy-pages.yml`](./.github/workflows/deploy-pages.yml) (`https://dr-week.github.io/SOCIALKILLER/` and [`public/status.html`](./public/status.html) at `https://dr-week.github.io/SOCIALKILLER/status.html`).
+- **Automated CI/CD:** Runs `npm run lint`, `npm run check:file-size`, production build, and test suites on every push and pull request via [`.github/workflows/ci.yml`](./.github/workflows/ci.yml).
+- **$0 Cloudflare Workers Edge Gateway:** Ready-to-deploy serverless API in [`workers/api-gateway/worker.mjs`](./workers/api-gateway/worker.mjs) + [`wrangler.toml`](./workers/api-gateway/wrangler.toml) (100,000 req/day free tier + optional free Cloudflare D1 SQLite binding):
+  ```sh
+  cd workers/api-gateway && npx wrangler deploy
+  ```
+- **Free-Tier Architecture Guide:** Full comparison of Turso (libSQL 9GB / 500 DBs), Cloudflare Workers, Cloudflare R2 ($0 egress), and Render/Fly.io in [`FREE_TIER_BACKEND_AND_GITHUB_DEPLOYMENT.md`](./docs/deployment/FREE_TIER_BACKEND_AND_GITHUB_DEPLOYMENT.md).
+
+### 🛠️ Troubleshooting & Dev Tips
+
+- **Port in use (4174 / 5199):** Run `npm run ports` to check active listeners. The port arbiter automatically falls back to alternative free ports.
+- **Missing Vault Key:** Ensure `FOLLOWDESK_VAULT_KEY` is configured with at least 32 characters in your `.env` for AES-256-GCM credential encryption.
+- **Offline Mode:** If cloud backends are unreachable, the client automatically buffers all drafts, leads, and workflows into local SQLite WAL without data loss.
+- **File-size check failed:** Any new or modified source file must stay strictly below 150 lines (`npm run check:file-size`). Split data presets, API builders, or UI subcomponents into sibling modules.
 
 ---
 
@@ -145,6 +170,10 @@ Configure Meta linking per workspace from **Connections**:
 | Guide | Purpose |
 |---|---|
 | [Documentation Index](./docs/README.md) | Central sitemap across product, UX, engineering, and API specs |
+| [Live Status Web Portal](./public/status.html) | Platform health, AI evaluation metrics, and quick workspace links |
+| [Free-Tier Backend & Deployment](docs/deployment/FREE_TIER_BACKEND_AND_GITHUB_DEPLOYMENT.md) | Zero-dollar cloud architecture: Turso libSQL, Cloudflare Workers & R2 |
+| [Quantum SDKs & QUBO Evaluation](docs/research/QUANTUM_AND_ADVANCED_SDK_EVALUATION.md) | Quantum toolkits feasibility, simulated annealing & scheduling algorithms |
+| [Phased Development Roadmap](docs/roadmap/PHASED_DEVELOPMENT_ROADMAP.md) | 7-phase execution roadmap from foundation through solo creator CRM |
 | [Mini-App Architecture](./docs/product/MINI_APP_ARCHITECTURE.md) | Audited feature map across all 13 shipped workspaces and roadmap scope |
 | [UX Guide](./docs/product/UX_GUIDE.md) | 4-Tier Animation architecture, Audience UX, glassmorphism & symbolic icon rules |
 | [UI/UX Declutter & Efficiency Plan](./docs/product/UIUX_DECLUTTER_AND_EFFICIENCY_PLAN.md) | 16-surface clutter audit, dev supervisor & 3-Layer Visual Bot blueprint |

@@ -6,13 +6,16 @@ export function createPendingDispatchPoller(openAndAutoFillPlatform, reportExten
     if (isPollingFast) return
     isPollingFast = true
     try {
-      const response = await fetch(`${LOCAL_APP_ORIGIN}/api/social/pending-dispatches`)
+      const response = await fetch(`${LOCAL_APP_ORIGIN}/api/social/pending-dispatches`, {
+        signal: AbortSignal.timeout(3000)
+      })
       if (!response.ok) return
       const item = (await response.json())?.items?.[0]
       if (!item) return
       const pop = await fetch(`${LOCAL_APP_ORIGIN}/api/social/pending-dispatches`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: item.id })
+        body: JSON.stringify({ id: item.id }),
+        signal: AbortSignal.timeout(3000)
       })
       const popped = pop.ok ? (await pop.json())?.item : null
       if (popped) await dispatchOne(item, openAndAutoFillPlatform, reportExtensionLog)

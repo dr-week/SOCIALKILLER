@@ -7,13 +7,15 @@ import { contentCliScenarios } from './scenarios/content-cli-scenarios.mjs'
 import { workflowVisualScenarios } from './scenarios/workflow-visual-scenarios.mjs'
 import { securityOrchestrationScenarios } from './scenarios/security-orchestration-scenarios.mjs'
 import { persistenceSchedulerScenarios } from './scenarios/persistence-scheduler-scenarios.mjs'
+import { advancedOrchestrationScenarios } from './scenarios/advanced-orchestration-scenarios.mjs'
 
 const ALL_SCENARIOS = [
   ...assistantScenarios,
   ...contentCliScenarios,
   ...workflowVisualScenarios,
   ...securityOrchestrationScenarios,
-  ...persistenceSchedulerScenarios
+  ...persistenceSchedulerScenarios,
+  ...advancedOrchestrationScenarios
 ]
 
 async function readPreviousReport(tracePath) {

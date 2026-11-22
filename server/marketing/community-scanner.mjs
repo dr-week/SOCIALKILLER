@@ -1,11 +1,7 @@
 /**
- * Community Scanner & SDK Integration Engine (<220 lines)
- * 
- * Scans developer communities (Reddit, Stack Overflow, Dev.to, Hacker News)
- * using their official APIs / SDKs to discover authentic trending developer discussions,
- * benchmarks, and high-value technical pain points.
+ * Community Scanner & SDK Integration Engine (<149 lines)
+ * Scans developer communities (Stack Overflow, Reddit, Dev.to) via REST APIs.
  */
-
 export const COMMUNITY_CHANNELS = {
   STACK_OVERFLOW: 'stackoverflow',
   REDDIT: 'reddit',
@@ -13,10 +9,6 @@ export const COMMUNITY_CHANNELS = {
   HACKER_NEWS: 'hackernews'
 }
 
-/**
- * Stack Overflow / Stack Exchange API Client (Official REST API v2.3)
- * Fetches hot, high-engagement engineering questions across web, systems, and performance tags.
- */
 export async function scanStackOverflow({ tag = 'javascript', minVotes = 10, limit = 5 } = {}) {
   const url = `https://api.stackexchange.com/2.3/questions?pagesize=${limit}&order=desc&sort=hot&tagged=${encodeURIComponent(tag)}&site=stackoverflow&filter=default`
   try {
@@ -45,10 +37,6 @@ export async function scanStackOverflow({ tag = 'javascript', minVotes = 10, lim
   }
 }
 
-/**
- * Reddit API Scanner (Official JSON Feeds: r/webdev, r/programming, r/node)
- * Harvests authentic discussions with strict karma and discussion thresholds.
- */
 export async function scanRedditSubreddits({ subreddits = ['webdev', 'programming'], limit = 5 } = {}) {
   const results = []
   for (const sub of subreddits) {
@@ -83,10 +71,6 @@ export async function scanRedditSubreddits({ subreddits = ['webdev', 'programmin
   return results
 }
 
-/**
- * Dev.to API Scanner (Official Articles API v0)
- * Scans top technical tutorials and architecture write-ups.
- */
 export async function scanDevToArticles({ tag = 'webdev', limit = 5 } = {}) {
   const url = `https://dev.to/api/articles?tag=${encodeURIComponent(tag)}&top=2&per_page=${limit}`
   try {

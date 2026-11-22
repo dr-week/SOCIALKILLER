@@ -1,14 +1,7 @@
 /**
- * Android Device & Emulator Visual Automation Bridge (<240 lines)
- * 
- * Interacts with local Android emulators/devices via ADB & Android CLI:
- * 1. Checks device / emulator connection state (`adb devices`).
- * 2. Captures viewport screencaps (`adb exec-out screencap -p`).
- * 3. Inspects UI view hierarchy & node bounds via `uiautomator dump` or `android layout`.
- * 4. Executes humanized touch inputs (`adb shell input tap x y`, `adb shell input text`).
- * 5. Launches native social apps (X/Twitter, Reddit, Instagram, Threads, LinkedIn).
+ * Android Device & Emulator Visual Automation Bridge (<149 lines)
+ * Interacts with local Android emulators/devices via ADB & Android CLI.
  */
-
 import { exec } from 'node:child_process'
 import { promisify } from 'node:util'
 

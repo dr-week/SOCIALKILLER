@@ -1,54 +1,32 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Clock, Cpu, Flame, Rocket, Bot, RefreshCw, Send, Dices, Check, Bookmark, Minimize2, Sparkles, Wand2 } from 'lucide-vue-next'
+import { Clock, Cpu, Flame, Rocket, Bot, RefreshCw, Send, Dices, Check, Bookmark, Minimize2, Wand2 } from 'lucide-vue-next'
 import { summarizeCreativeText } from '../../domain/text-summarizer'
 import { formatAestheticText, type AestheticPreset } from '../../domain/aesthetic-text'
+import { applyCopyFramework, type CopyFrameworkId } from '../../domain/copy-frameworks'
 import type { PlatformId } from '../../types'
 import PlatformIcon from '../common/PlatformIcon.vue'
 import PublisherAdvancedOptions from './PublisherAdvancedOptions.vue'
+import PublisherFrameworkBar from './PublisherFrameworkBar.vue'
 import type { ContentCategory, PlatformBadge, VaultAsset } from './publisher-types'
 
 const props = defineProps<{
-  brandName: string
-  loading: boolean
-  canPublish: boolean
-  selectedPlatforms: PlatformId[]
-  availablePlatformIds: PlatformId[]
-  platformBadges: Record<PlatformId, PlatformBadge>
-  topic: string
-  rawNotes: string
-  webLink: string
-  tags: string
-  tone: string
-  subreddit: string
-  scheduledAt: string
-  includeCodeSnippet: boolean
-  categories: ContentCategory[]
-  selectedCategoryId: string | null
-  loadingCategory: boolean
-  driveFolder: string
-  assets: VaultAsset[]
-  selectedAsset: string | null
-  draftingRandomPost: boolean
+  brandName: string; loading: boolean; canPublish: boolean
+  selectedPlatforms: PlatformId[]; availablePlatformIds: PlatformId[]; platformBadges: Record<PlatformId, PlatformBadge>
+  topic: string; rawNotes: string; webLink: string; tags: string; tone: string; subreddit: string; scheduledAt: string
+  includeCodeSnippet: boolean; categories: ContentCategory[]; selectedCategoryId: string | null; loadingCategory: boolean
+  driveFolder: string; assets: VaultAsset[]; selectedAsset: string | null; draftingRandomPost: boolean
 }>()
 
 const emit = defineEmits<{
-  (e: 'update:topic', value: string): void
-  (e: 'update:rawNotes', value: string): void
-  (e: 'update:webLink', value: string): void
-  (e: 'update:tags', value: string): void
-  (e: 'update:tone', value: string): void
-  (e: 'update:subreddit', value: string): void
-  (e: 'update:scheduledAt', value: string): void
-  (e: 'update:includeCodeSnippet', value: boolean): void
+  (e: 'update:topic', value: string): void; (e: 'update:rawNotes', value: string): void
+  (e: 'update:webLink', value: string): void; (e: 'update:tags', value: string): void
+  (e: 'update:tone', value: string): void; (e: 'update:subreddit', value: string): void
+  (e: 'update:scheduledAt', value: string): void; (e: 'update:includeCodeSnippet', value: boolean): void
   (e: 'applyPreset', preset: { topic: string; notes: string; link: string }): void
-  (e: 'randomize'): void
-  (e: 'generate'): void
-  (e: 'togglePlatform', platform: PlatformId): void
+  (e: 'randomize'): void; (e: 'generate'): void; (e: 'togglePlatform', platform: PlatformId): void
   (e: 'submitPost', payload: { title: string; rawNotes: string; scheduledAt: string; publishNow: boolean; isDraft?: boolean; webLink: string; tags: string[] }): void
-  (e: 'selectCategory', category: ContentCategory): void
-  (e: 'changeDriveFolder'): void
-  (e: 'selectVaultAsset', name: string): void
+  (e: 'selectCategory', category: ContentCategory): void; (e: 'changeDriveFolder'): void; (e: 'selectVaultAsset', name: string): void
 }>()
 
 const aestheticStyle = ref<AestheticPreset>('editorial')
@@ -68,17 +46,20 @@ const nextStepGuidance = computed(() => {
 
 function condenseAndDedupe() {
   const result = summarizeCreativeText(props.rawNotes, 3, aestheticStyle.value)
-  if (result.tldr) {
-    emit('update:topic', result.tldr.slice(0, 90))
-    emit('update:rawNotes', result.aestheticText)
-    emit('generate')
-  }
+  if (result.tldr) { emit('update:topic', result.tldr.slice(0, 90)); emit('update:rawNotes', result.aestheticText); emit('generate') }
 }
 
 function cycleAestheticFormat() {
   const order: AestheticPreset[] = ['editorial', 'cyber_glyph', 'minimal_mono', 'punchy_hooks']
   aestheticStyle.value = order[(order.indexOf(aestheticStyle.value) + 1) % order.length]
   emit('update:rawNotes', formatAestheticText(props.rawNotes, aestheticStyle.value))
+  emit('generate')
+}
+
+function applyFramework(id: CopyFrameworkId) {
+  const out = applyCopyFramework(id, props.brandName, props.topic, props.rawNotes)
+  emit('update:topic', out.topic)
+  emit('update:rawNotes', out.notes)
   emit('generate')
 }
 </script>
@@ -93,6 +74,8 @@ function cycleAestheticFormat() {
         <Dices :size="13" /> {{ draftingRandomPost ? 'Drafting...' : 'Idea' }}
       </button>
     </div>
+
+    <PublisherFrameworkBar :disabled="loading" @select="applyFramework" />
 
     <input :value="topic" class="pub-input" placeholder="Post headline" @input="emit('update:topic', ($event.target as HTMLInputElement).value)" />
     <textarea :value="rawNotes" rows="3" class="pub-textarea" aria-label="Post details" placeholder="Paste raw notes (duplicates are removed automatically on TL;DR)" @input="emit('update:rawNotes', ($event.target as HTMLTextAreaElement).value)"></textarea>

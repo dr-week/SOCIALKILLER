@@ -3,8 +3,8 @@
  * Displays live cookie/DOM-recognized usernames & login states across all 7+ platforms,
  * and provides 1-click contextual chat/comment replies with human cadence jitter.
  */
-import { detectAllPlatformSessions } from './account-recognizer.js'
-import { buildContextualChatReplies, cognitivePause } from './human-cadence.js'
+import { detectAllPlatformSessions } from '../session/account-recognizer.js'
+import { buildContextualChatReplies, cognitivePause } from '../session/human-cadence.js'
 
 export async function initPopupAccountsChatController({ showAlert }) {
   const accountsListEl = document.getElementById('extAccountsMatrix')

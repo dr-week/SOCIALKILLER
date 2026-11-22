@@ -1,0 +1,10 @@
+name = "socialkiller-edge-api"
+main = "worker.mjs"
+compatibility_date = "2026-01-01"
+
+# Free Tier: 100,000 requests/day at $0/month.
+# Optional: Bind a free Cloudflare D1 SQLite database (5 GB storage, 5M reads/day):
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "socialkiller-db"
+# database_id = "<YOUR_D1_DATABASE_ID>"

@@ -9,7 +9,8 @@ export function createRuntimeIdentity(root, environment = 'development', instanc
     throw new Error(`Unsupported runtime environment: ${environment}`)
   }
   const resolvedRoot = resolve(root).normalize('NFC')
-  const canonicalRoot = process.platform === 'win32' ? resolvedRoot.toLocaleLowerCase('en-US') : resolvedRoot
+  const isWindowsStyle = /^[a-zA-Z]:[\\/]/.test(root) || process.platform === 'win32'
+  const canonicalRoot = isWindowsStyle ? resolvedRoot.toLocaleLowerCase('en-US') : resolvedRoot
   const workspaceId = createHash('sha256').update(canonicalRoot).digest('hex').slice(0, 20)
   return { applicationId: APPLICATION_ID, workspaceId, environment, instanceId }
 }

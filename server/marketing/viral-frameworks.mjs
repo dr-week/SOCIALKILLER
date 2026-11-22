@@ -1,12 +1,5 @@
 /**
- * Viral Framework Formatter & Multi-Angle Developer Matrix (<240 lines)
- * 
- * 5 High-Converting Contrarian & Developer Frameworks:
- * 1. CONTRARIAN_VDOM: "Why the Virtual DOM was a 10-year architectural mistake"
- * 2. SIGNALS_VS_RERENDERS: "How fine-grained signals eliminate 90% of re-render waste"
- * 3. HYDRATION_TAX: "Why full-page hydration is destroying mobile and spatial WebXR battery life"
- * 4. VIBE_CODING_DEBT: "Why AI-generated syntax makes mechanical sympathy more critical than ever"
- * 5. BENCHMARK_REALITY: "Hard reproducible numbers: 120 FPS in <2.5KB vs 180KB monolithic runtimes"
+ * Viral Framework Formatter & Multi-Angle Developer Matrix (<149 lines)
  */
 
 import { formatForX, formatForReddit, formatForTechnicalBlog } from './platform-formatter.mjs'

@@ -1,11 +1,14 @@
 /**
- * FollowDesk Companion Popup — Instagram Scanner & Target Profile Controller
- * Dedicated module (<240 lines) handling Instagram session detection, target profile
- * switching, full network follower scanning, and onscreen modal harvesting.
+ * FollowDesk Companion Popup — Instagram Scanner & Target Profile Controller (<130 lines)
  */
-import { resolveInstagramTab, extractProfileUsernameFromUrl } from './tab-service.js'
-import { resolveSessionCookies } from './cookie-service.js'
-import { syncToBackend, injectDirectToAppTabs, triggerJsonDownload, focusFollowDeskApp } from './sync-service.js'
+import { resolveInstagramTab, extractProfileUsernameFromUrl } from '../session/tab-service.js'
+import { resolveSessionCookies } from '../session/cookie-service.js'
+import { syncToBackend } from '../session/sync-service.js'
+import {
+  cloneInstagramPageSnapshot,
+  executeFullFollowerExtraction,
+  fetchLoggedInUsernameLabel
+} from './popup-scanner-helpers.js'
 
 export async function initPopupScannerController({ showAlert }) {
   const tabStatus = document.getElementById('tabStatus')
@@ -32,36 +35,14 @@ export async function initPopupScannerController({ showAlert }) {
   const progressBarFill = document.getElementById('progressBarFill')
 
   let igTab = await resolveInstagramTab()
-  let { dsUserId, csrfToken } = await resolveSessionCookies()
+  const { dsUserId, csrfToken } = await resolveSessionCookies()
   let targetUsername = extractProfileUsernameFromUrl(igTab?.url)
 
-  async function resolveLoggedInUsername() {
-    if (!loggedInUsername) return
-    if (!dsUserId) {
-      loggedInUsername.textContent = 'Ready'
-      return
-    }
-    try {
-      const resp = await fetch(`https://www.instagram.com/api/v1/users/${dsUserId}/info/`, {
-        headers: {
-          'X-IG-App-ID': '936619743392459',
-          Accept: 'application/json',
-          ...(csrfToken ? { 'X-CSRFToken': csrfToken } : {})
-        },
-        credentials: 'include'
-      })
-      if (resp.ok) {
-        const data = await resp.json()
-        if (data?.user?.username) {
-          loggedInUsername.textContent = `@${data.user.username}`
-          return
-        }
-      }
-    } catch {}
-    loggedInUsername.textContent = `ID:${dsUserId.slice(0, 6)}`
+  if (loggedInUsername) {
+    fetchLoggedInUsernameLabel(dsUserId, csrfToken).then((label) => {
+      loggedInUsername.textContent = label
+    })
   }
-
-  resolveLoggedInUsername()
 
   function updateTargetCard(user, isOpenedTab = false) {
     if (user) {
@@ -96,41 +77,16 @@ export async function initPopupScannerController({ showAlert }) {
     if (val) updateTargetCard(val, false)
   })
 
-  if (targetUsername) updateTargetCard(targetUsername, true)
-  else updateTargetCard(null, false)
-
+  updateTargetCard(targetUsername || null, Boolean(targetUsername))
   if (extractBtn) extractBtn.disabled = !igTab
 
   clonePageBtn?.addEventListener('click', async () => {
-    if (!igTab?.id) {
-      showAlert('error', 'Open an Instagram tab first to snapshot.')
-      return
-    }
+    if (!igTab?.id) return showAlert('error', 'Open an Instagram tab first to snapshot.')
     clonePageBtn.disabled = true
     try {
-      const results = await chrome.scripting.executeScript({
-        target: { tabId: igTab.id },
-        func: () => ({
-          url: window.location.href,
-          title: document.title,
-          html: document.documentElement.outerHTML,
-          scrollPosition: { x: window.scrollX, y: window.scrollY }
-        })
-      })
-      const pageData = results?.[0]?.result
-      if (!pageData) throw new Error('Could not capture page DOM.')
-      const resp = await fetch('http://127.0.0.1:4174/api/dev/clone', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          url: pageData.url,
-          title: pageData.title,
-          username: targetUsername || 'instagram_tab',
-          html: pageData.html,
-          metadata: { scrollPosition: pageData.scrollPosition }
-        })
-      })
-      if (resp.ok) showAlert('success', 'Cloned DOM snapshot saved to SOCIALKILLER!')
+      if (await cloneInstagramPageSnapshot(igTab, targetUsername)) {
+        showAlert('success', 'Cloned DOM snapshot saved to SOCIALKILLER!')
+      }
     } catch (e) {
       showAlert('error', e instanceof Error ? e.message : 'Clone failed.')
     } finally {
@@ -138,7 +94,7 @@ export async function initPopupScannerController({ showAlert }) {
     }
   })
 
-  harvestModalBtn?.addEventListener('click', async () => {
+  harvestModalBtn?.addEventListener('click', () => {
     showAlert('info', 'Automatic follower-dialog scanning is unavailable. Import your Instagram data export for a complete, account-scoped snapshot.')
   })
 
@@ -180,22 +136,8 @@ export async function initPopupScannerController({ showAlert }) {
     extractBtn.disabled = true
     if (stopBtn) stopBtn.style.display = 'flex'
     try {
-      igTab = await resolveInstagramTab()
-      if (!igTab?.id) throw new Error('Open https://www.instagram.com first.')
-      await chrome.scripting.executeScript({ target: { tabId: igTab.id }, files: ['extractor.js'] })
-      const results = await chrome.scripting.executeScript({
-        target: { tabId: igTab.id },
-        func: async (payload) => window.__followdeskExtractor(payload),
-        args: [{ userId: dsUserId, csrfToken, targetUsername }]
-      })
-      const output = results?.[0]?.result
-      if (!output?.success) throw new Error(output?.error || 'Extraction failed.')
-      const syncPayload = { followers: output.followers, following: output.following, username: output.username, partial: output.partial || false }
-      await syncToBackend(syncPayload)
-      await injectDirectToAppTabs(syncPayload)
-      triggerJsonDownload(output, output.username)
+      const output = await executeFullFollowerExtraction({ dsUserId, csrfToken, targetUsername })
       showAlert('success', `Synced ${output.followers.length} followers & ${output.following.length} following!`)
-      await focusFollowDeskApp()
     } catch (err) {
       showAlert('error', err instanceof Error ? err.message : String(err))
     } finally {

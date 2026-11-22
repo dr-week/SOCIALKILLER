@@ -1,12 +1,23 @@
-// Crashproof & Optimized FollowDesk Extractor for Instagram Web (<210 lines)
-import { IG_APP_ID, getJitterDelay, reportProgress, resolveInstagramIdentity } from './modules/extractor-identity.js'
-import { saveExtractionCheckpoint, loadExtractionCheckpoint, clearExtractionCheckpoint } from './modules/extractor-checkpoint.js'
+// Crashproof & Optimized FollowDesk Extractor for Instagram Web (<150 lines)
+import { IG_APP_ID, getJitterDelay, reportProgress, resolveInstagramIdentity } from './modules/extractor/extractor-identity.js'
+import { saveExtractionCheckpoint, loadExtractionCheckpoint, clearExtractionCheckpoint } from './modules/extractor/extractor-checkpoint.js'
+
+function assertResponseOk(res, endpointName, isPrivateAccount, targetUsername, username) {
+  if (res.ok) return
+  if (res.status === 400 || res.status === 403) {
+    if (isPrivateAccount || targetUsername) {
+      throw new Error(`@${targetUsername || username} is private. Instagram blocks member lists unless they approve your follow request.`)
+    }
+    throw new Error(`Instagram access restricted (HTTP ${res.status}). Refresh the tab and log in again.`)
+  }
+  if (res.status === 401) throw new Error('Instagram session expired (HTTP 401). Please log in to Instagram again.')
+  throw new Error(`Instagram returned HTTP ${res.status} while fetching ${endpointName}.`)
+}
 
 window.__followdeskExtractor = async function runFollowDeskExtractor(options = {}) {
   window.__followdeskExtractorStopRequested = false
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
-  // 1. Resolve identity
   const identity = await resolveInstagramIdentity(options)
   const { userId, username, csrfToken, isPrivateAccount, targetUsername } = identity
 
@@ -24,13 +35,11 @@ window.__followdeskExtractor = async function runFollowDeskExtractor(options = {
     'X-ASBD-ID': '198387',
     'X-Requested-With': 'XMLHttpRequest',
     'X-IG-WWW-Claim': '0',
-    'Accept': '*/*'
+    Accept: '*/*',
+    ...(csrfToken ? { 'X-CSRFToken': csrfToken } : {})
   }
-  if (csrfToken) baseHeaders['X-CSRFToken'] = csrfToken
-
   const accountScope = (username || userId || 'account').toLowerCase()
 
-  // 2. Paginated list fetcher with checkpointing & exponential backoff
   async function fetchList(endpointName) {
     const peopleMap = new Map()
     let hasNext = true
@@ -59,8 +68,7 @@ window.__followdeskExtractor = async function runFollowDeskExtractor(options = {
       try {
         res = await fetch(url, { headers: baseHeaders, credentials: 'include' })
       } catch (networkErr) {
-        consecutiveNetworkErrors++
-        if (consecutiveNetworkErrors >= 4) {
+        if (++consecutiveNetworkErrors >= 4) {
           throw new Error(`Connection dropped while fetching ${endpointName}: ${networkErr.message}`)
         }
         reportProgress(`Network blip, retrying (${consecutiveNetworkErrors}/4)...`)
@@ -69,8 +77,7 @@ window.__followdeskExtractor = async function runFollowDeskExtractor(options = {
       }
 
       if (res.status === 429) {
-        rateLimitRetries++
-        if (rateLimitRetries > 3) {
+        if (++rateLimitRetries > 3) {
           throw new Error(`Instagram rate limit reached for ${endpointName}. Progress saved. Please wait 5 minutes and click resume.`)
         }
         const backoffSeconds = Math.min(15 * Math.pow(2, rateLimitRetries - 1), 60)
@@ -79,17 +86,7 @@ window.__followdeskExtractor = async function runFollowDeskExtractor(options = {
         continue
       }
 
-      if (!res.ok) {
-        if (res.status === 400 || res.status === 403) {
-          if (isPrivateAccount || targetUsername) {
-            throw new Error(`@${targetUsername || username} is private. Instagram blocks member lists unless they approve your follow request.`)
-          }
-          throw new Error(`Instagram access restricted (HTTP ${res.status}). Refresh the tab and log in again.`)
-        }
-        if (res.status === 401) throw new Error(`Instagram session expired (HTTP 401). Please log in to Instagram again.`)
-        throw new Error(`Instagram returned HTTP ${res.status} while fetching ${endpointName}.`)
-      }
-
+      assertResponseOk(res, endpointName, isPrivateAccount, targetUsername, username)
       consecutiveNetworkErrors = 0
       rateLimitRetries = 0
 
@@ -98,10 +95,7 @@ window.__followdeskExtractor = async function runFollowDeskExtractor(options = {
         if (u?.username) {
           const norm = u.username.toLowerCase()
           if (!peopleMap.has(norm)) {
-            peopleMap.set(norm, {
-              username: u.username,
-              href: `https://www.instagram.com/${encodeURIComponent(u.username)}/`
-            })
+            peopleMap.set(norm, { username: u.username, href: `https://www.instagram.com/${encodeURIComponent(u.username)}/` })
           }
         }
       }
@@ -111,9 +105,7 @@ window.__followdeskExtractor = async function runFollowDeskExtractor(options = {
 
       if (window.__followdeskExtractorStopRequested) {
         reportProgress(`Stopped by user. Preserving ${peopleMap.size} ${endpointName}...`, {
-          stage: endpointName,
-          count: peopleMap.size,
-          stopped: true
+          stage: endpointName, count: peopleMap.size, stopped: true
         })
         break
       }
@@ -122,9 +114,8 @@ window.__followdeskExtractor = async function runFollowDeskExtractor(options = {
       reportProgress(`Fetched ${peopleMap.size} ${endpointName}...`, { stage: endpointName, count: peopleMap.size })
 
       if (hasNext) {
-        batchCount = (batchCount || 0) + 1
-        if (batchCount % 5 === 0) {
-          reportProgress(`Pacing safety pause (simulating human scroll)...`, { stage: 'pacing', count: peopleMap.size })
+        if (++batchCount % 5 === 0) {
+          reportProgress('Pacing safety pause (simulating human scroll)...', { stage: 'pacing', count: peopleMap.size })
           await sleep(getJitterDelay(2800, 1200))
         } else {
           await sleep(getJitterDelay(1400, 800))
@@ -135,39 +126,22 @@ window.__followdeskExtractor = async function runFollowDeskExtractor(options = {
     if (!window.__followdeskExtractorStopRequested) {
       await clearExtractionCheckpoint(accountScope, endpointName)
     }
-
     return [...peopleMap.values()]
   }
 
   try {
     const followers = await fetchList('followers')
     if (window.__followdeskExtractorStopRequested) {
-      return {
-        success: true,
-        username: username || 'instagram_user',
-        followers,
-        following: [],
-        partial: true,
-        extractedAt: new Date().toISOString()
-      }
+      return { success: true, username: username || 'instagram_user', followers, following: [], partial: true, extractedAt: new Date().toISOString() }
     }
-
-    reportProgress(`Followers complete. Taking human breather before following list...`, { stage: 'breather', count: followers.length })
+    reportProgress('Followers complete. Taking human breather before following list...', { stage: 'breather', count: followers.length })
     await sleep(getJitterDelay(2500, 1300))
     const following = await fetchList('following')
-
     return {
-      success: true,
-      username: username || 'instagram_user',
-      followers,
-      following,
-      partial: window.__followdeskExtractorStopRequested || false,
-      extractedAt: new Date().toISOString()
+      success: true, username: username || 'instagram_user', followers, following,
+      partial: window.__followdeskExtractorStopRequested || false, extractedAt: new Date().toISOString()
     }
   } catch (err) {
-    return {
-      success: false,
-      error: err instanceof Error ? err.message : String(err)
-    }
+    return { success: false, error: err instanceof Error ? err.message : String(err) }
   }
 }

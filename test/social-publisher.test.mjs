@@ -1,28 +1,14 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {
-  getPlatformReadiness,
-  loadSocialConfig,
-  parseEnvFileContent
-} from '../scripts/social/config.ts'
-import {
-  buildTwitterMicroThread,
-  escapeHtml,
-  escapeTelegramMarkdownV2,
-  hexToDiscordColorInt,
-  normalizeTags
-} from '../scripts/social/utils.ts'
+import { getPlatformReadiness, loadSocialConfig, parseEnvFileContent } from '../scripts/social/config.ts'
+import { buildTwitterMicroThread, escapeHtml, escapeTelegramMarkdownV2, hexToDiscordColorInt, normalizeTags } from '../scripts/social/utils.ts'
 import { buildDiscordWebhookPayload } from '../scripts/social/adapters/discord.ts'
 import { buildTelegramRequest } from '../scripts/social/adapters/telegram.ts'
 import { buildLinkedInUgcPayload } from '../scripts/social/adapters/linkedin.ts'
 import { buildBufferPreview } from '../scripts/social/adapters/buffer.ts'
 import { buildGitHubReleasePayload } from '../scripts/social/adapters/github.ts'
 import { buildRedditSubmission } from '../scripts/social/adapters/reddit.ts'
-import {
-  broadcastSocialPost,
-  parseCliArgs,
-  parsePlatformsList
-} from '../scripts/social/index.ts'
+import { broadcastSocialPost, parseCliArgs, parsePlatformsList } from '../scripts/social/index.ts'
 import { getPresetPayload } from '../scripts/social/presets.ts'
 
 test('parseEnvFileContent parses key-value pairs and strips quotes safely', () => {

@@ -53,15 +53,19 @@
       "js": [
         "modules/fiber/react-fiber-bridge.js",
         "modules/fiber/network-interceptor.js",
-        "modules/ghost-mode.js",
-        "modules/media-downloader.js",
-        "modules/profile-badge.js",
+        "modules/session/ghost-mode.js",
+        "modules/harvester/media-downloader.js",
+        "modules/harvester/profile-badge.js",
         "modules/injections/search-injector.js",
         "modules/injections/whitelist-injector.js",
         "modules/injections/creator-hud-injector.js",
         "modules/injections/modal-harvester.js",
+        "modules/injections/social-autoposter-ui.js",
+        "modules/injections/social-autoposter-fillers.js",
         "modules/injections/social-autoposter.js",
-        "modules/injections/dom-chat-banner.js"
+        "modules/injections/dom-chat-banner-config.js",
+        "modules/injections/dom-chat-banner.js",
+        "modules/injections/unfollow-highlight.js"
       ],
       "run_at": "document_start"
     },
@@ -79,7 +83,10 @@
         "https://*.discord.com/*"
       ],
       "js": [
+        "modules/injections/social-autoposter-ui.js",
+        "modules/injections/social-autoposter-fillers.js",
         "modules/injections/social-autoposter.js",
+        "modules/injections/dom-chat-banner-config.js",
         "modules/injections/dom-chat-banner.js"
       ],
       "run_at": "document_idle"

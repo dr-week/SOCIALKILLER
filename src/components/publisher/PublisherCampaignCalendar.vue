@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { SocialPostItem } from '../../types'
+import PublisherQuboSchedule from './PublisherQuboSchedule.vue'
 
 const props = defineProps<{ posts: SocialPostItem[]; weekOffset: number }>()
 const emit = defineEmits<{ (event: 'update:weekOffset', value: number): void }>()
@@ -23,6 +24,7 @@ const groups = computed(() => {
 
 <template>
   <div class="calendar-list">
+    <PublisherQuboSchedule />
     <nav class="calendar-nav" aria-label="Calendar week">
       <button @click="emit('update:weekOffset', weekOffset - 1)">Previous week</button>
       <strong>{{ weekOffset === 0 ? 'This week' : `${weekOffset > 0 ? '+' : ''}${weekOffset} weeks` }}</strong>

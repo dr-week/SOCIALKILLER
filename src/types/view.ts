@@ -25,3 +25,4 @@ export type View =
   | 'whitelist'
   | 'social-publisher'
   | 'community-inbox'
+  | 'leads'

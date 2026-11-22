@@ -14,7 +14,8 @@ export const MINI_APP_ROUTES = {
   'design-system': 'design-system',
   'asset-manager': 'asset-manager',
   'android-builder': 'android-studio',
-  automations: 'automation-studio'
+  automations: 'automation-studio',
+  leads: 'leads'
 } as const satisfies Record<string, View>
 
 const AUDIENCE_VIEWS: readonly string[] = [

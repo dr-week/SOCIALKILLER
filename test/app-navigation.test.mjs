@@ -12,12 +12,14 @@ test('opens the launcher by default and maps app IDs to the same site', () => {
   assert.equal(viewFromSearch('?app=asset-manager'), 'asset-manager')
   assert.equal(viewFromSearch('?app=automations'), 'automation-studio')
   assert.equal(viewFromSearch('?app=android-builder'), 'android-studio')
+  assert.equal(viewFromSearch('?app=leads'), 'leads')
   assert.equal(appHref('connections', 'https://local.test/workspace?keep=1#top'), '/workspace?keep=1&app=connections#top')
   assert.equal(appHref('workflows', 'https://local.test/workspace'), '/workspace?app=workflows')
   assert.equal(appHref('design-system', 'https://local.test/workspace'), '/workspace?app=design-system')
   assert.equal(appHref('asset-manager', 'https://local.test/workspace'), '/workspace?app=asset-manager')
   assert.equal(appHref('automation-studio', 'https://local.test/workspace'), '/workspace?app=automations')
   assert.equal(appHref('android-studio', 'https://local.test/workspace'), '/workspace?app=android-builder')
+  assert.equal(appHref('leads', 'https://local.test/workspace'), '/workspace?app=leads')
 })
 
 test('keeps audience subviews addressable within the Audience Audit app', () => {

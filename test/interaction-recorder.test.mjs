@@ -65,7 +65,7 @@ function loadRecorder(elements = []) {
     clearTimeout,
     Math
   }
-  const source = readFileSync(new URL('../extension/modules/interaction-recorder.js', import.meta.url), 'utf8')
+  const source = readFileSync(new URL('../extension/modules/session/interaction-recorder.js', import.meta.url), 'utf8')
   runInNewContext(source, context)
   return {
     docListeners,

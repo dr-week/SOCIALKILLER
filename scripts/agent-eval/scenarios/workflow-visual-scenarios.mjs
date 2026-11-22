@@ -6,7 +6,7 @@ import { normalizeAutomationDefinition } from '../../../server/automation/automa
 import { createAutomationRepository } from '../../../server/automation/automation-repository.mjs'
 import { initializeAutomationSchema } from '../../../server/db/schema-automation.mjs'
 import { computeSobelEdges, rgbaToGrayscale, synthesizeIconEdgeMap, matchTemplateEdge } from '../../../server/engine/vision-contour.mjs'
-import { computeHumanJitterMs } from '../../../extension/modules/human-cadence.js'
+import { computeHumanJitterMs } from '../../../extension/modules/session/human-cadence.js'
 
 function check(checks) {
   const passed = checks.every(c => c.ok)
@@ -131,7 +131,7 @@ export const workflowVisualScenarios = [
     suite: 'workflow-visual',
     description: 'Extension interaction-recorder blocks unsafe submit/publish/payment labels',
     run: async () => {
-      const src = await readFile(resolve('extension/modules/interaction-recorder.js'), 'utf8')
+      const src = await readFile(resolve('extension/modules/session/interaction-recorder.js'), 'utf8')
       const match = src.match(/const UNSAFE_ACTION = (\/.*\/[gimsuy]*)/)
       if (!match) return { found: false, blocked: [], allowed: [] }
       const regex = new RegExp(match[1].slice(1, match[1].lastIndexOf('/')), match[1].slice(match[1].lastIndexOf('/') + 1))

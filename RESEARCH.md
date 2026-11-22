@@ -10,3 +10,6 @@
 - [Social publisher UX review and competitor snapshot](docs/product/uiux/research/social-publisher-audit-2026-11-05.md)
 - [Publisher UI/UX source registry](docs/product/uiux/research/sources.json)
 - [LinkedIn API module contract](docs/integrations/linkedin.md)
+- [Quantum Mechanics SDKs & Advanced Toolkits Feasibility](docs/research/QUANTUM_AND_ADVANCED_SDK_EVALUATION.md)
+- [GitHub Pages Deployment & Free-Tier Backend Strategy](docs/deployment/FREE_TIER_BACKEND_AND_GITHUB_DEPLOYMENT.md)
+- [Phased Development Roadmap & Architecture Evolution](docs/roadmap/PHASED_DEVELOPMENT_ROADMAP.md)

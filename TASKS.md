@@ -79,21 +79,21 @@
 
 ## 🎯 Phase 5 — Leads: CRM & Pipeline
 
-- [ ] Initialize `leads` SQLite table:
+- [x] Initialize `leads` SQLite table:
   `id` · `brandId` · `contactName` · `handle` · `platformId` · `source`
   `triggerWord` · `message` · `email` · `phone` · `intent` · `status` · `notes` · `createdAt`
-- [ ] REST API endpoints:
+- [x] REST API endpoints:
   - `GET /api/leads` — list with status + brand filter
   - `POST /api/leads` — create manually or via comment trigger
   - `PUT /api/leads/:id` — update status: `new → contacted → qualified → proposal → won`
   - `DELETE /api/leads/:id` — archive/delete
-- [ ] **Pipeline view:** Kanban board with status columns
-- [ ] **Leads Table:** full list with intent badges, source column, trigger word, assigned owner
-- [ ] **Lead Profile:** name, handle, platform, email, phone, intent, notes, activity history
-- [ ] 1-click CSV export
-- [ ] Manual lead creation modal
+- [x] **Pipeline view:** Kanban board with status columns
+- [x] **Leads Table:** full list with intent badges, source column, trigger word, assigned owner
+- [x] **Lead Profile:** name, handle, platform, email, phone, intent, notes, activity history
+- [x] 1-click CSV export
+- [x] Manual lead creation modal
 - [ ] Trigger config UI: keyword → auto-create lead rule per brand
-- [ ] Stat cards: Total Leads · Hot Inquiries · Contacted · Won Rate
+- [x] Stat cards: Total Leads · Hot Inquiries · Contacted · Won Rate
 
 ---
 

@@ -49,11 +49,11 @@ export const APP_NAVIGATION: MiniApp[] = [
   { id: 'design-system', label: 'Design System', category: 'Build', description: '✦ Glass Themes · ◈ 5 Accents · ▹ Tokens', view: MINI_APP_ROUTES['design-system'], icon: Palette, accent: '#69aaff', visual: 'prism', background: designSystemBackground, status: 'Available' },
   { id: 'asset-manager', label: 'Asset Manager', category: 'Build', description: '✦ Local Masters · ◈ WebP Variants · ▹ Catalog', view: MINI_APP_ROUTES['asset-manager'], icon: Images, accent: '#59ddb6', visual: 'constellation', background: assetManagerBackground, status: 'Available' },
   { id: 'automations', label: 'Automation Studio', category: 'Operate', description: '✦ Triggers · ◈ Conditions · ▹ Auto-Drafts', view: MINI_APP_ROUTES.automations, icon: GitBranch, accent: '#b495ff', visual: 'flow', background: automationsBackground, status: 'Available' },
-  { id: 'android-builder', label: 'Android Build Studio', category: 'Build', description: '✦ JDK/SDK Check · ◈ APK & AAB Builds', view: MINI_APP_ROUTES['android-builder'], icon: Smartphone, accent: '#72d9a8', visual: 'isometric', background: androidBuilderBackground, status: 'Available' }
+  { id: 'android-builder', label: 'Android Build Studio', category: 'Build', description: '✦ JDK/SDK Check · ◈ APK & AAB Builds', view: MINI_APP_ROUTES['android-builder'], icon: Smartphone, accent: '#72d9a8', visual: 'isometric', background: androidBuilderBackground, status: 'Available' },
+  { id: 'leads', label: 'Leads & CRM', category: 'Grow', description: '✦ Comment-to-Lead · ◈ Kanban Pipeline · ▹ CSV Export', view: MINI_APP_ROUTES.leads, icon: Target, accent: '#59ddb6', visual: 'flow', status: 'Available' }
 ]
 
 export const ROADMAP_APPS: Array<Omit<MiniApp, 'view'>> = [
-  { id: 'leads', label: 'Leads', category: 'Grow', description: '✦ Comment-to-Lead · ◈ Kanban CRM', icon: Target, accent: '#59ddb6', visual: 'flow', status: 'Planned' },
   { id: 'email', label: 'Email Marketing', category: 'Grow', description: '✦ Lists · ◈ Sequences · ▹ Open Rates', icon: Mail, accent: '#54d6ee', visual: 'aurora', status: 'Planned' },
   { id: 'research', label: 'Research & Trends', category: 'Grow', description: '✦ Niche Signals · ◈ Viral Hooks', icon: Compass, accent: '#69aaff', visual: 'radar', status: 'Planned' },
   { id: 'projects', label: 'Projects', category: 'Deliver', description: '✦ Deliverables · ◈ Milestones', icon: FolderKanban, accent: '#ffcf70', visual: 'isometric', status: 'Planned' },

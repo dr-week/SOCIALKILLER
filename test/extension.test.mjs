@@ -2,9 +2,9 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import fs from 'node:fs'
 import path from 'node:path'
-import { computeHumanJitterMs, buildContextualChatReplies } from '../extension/modules/human-cadence.js'
-import { PLATFORM_SESSION_RULES } from '../extension/modules/account-recognizer.js'
-import { ADAPTIVE_PLATFORM_THEMES } from '../extension/modules/page-harvester.js'
+import { computeHumanJitterMs, buildContextualChatReplies } from '../extension/modules/session/human-cadence.js'
+import { PLATFORM_SESSION_RULES } from '../extension/modules/session/account-recognizer.js'
+import { ADAPTIVE_PLATFORM_THEMES } from '../extension/modules/harvester/page-harvester.js'
 
 test('extension manifest is valid Manifest V3 structure with multi-platform permissions', () => {
   const manifestPath = path.resolve('extension/manifest.json')
@@ -37,7 +37,6 @@ test('extension entry points and modules exist and are non-empty', () => {
     'extension/background.js',
     'extension/modules/background/app-lifecycle.js',
     'extension/modules/background/constants.js',
-    'extension/modules/background/constants.js',
     'extension/modules/background/context-menu.js',
     'extension/modules/background/extension-logger.js',
     'extension/modules/background/keep-alive-alarm.js',
@@ -47,7 +46,6 @@ test('extension entry points and modules exist and are non-empty', () => {
     'extension/modules/background/messages/active-brand.js',
     'extension/modules/background/messages/dispatch-posts.js',
     'extension/modules/background/messages/disabled-hybrid.js',
-    'extension/modules/background/messages/disabled-hybrid.js',
     'extension/modules/background/messages/fill-active-tab.js',
     'extension/modules/background/messages/mark-posted.js',
     'extension/modules/background/messages/pending-autopost.js',
@@ -55,18 +53,23 @@ test('extension entry points and modules exist and are non-empty', () => {
     'extension/popup.html',
     'extension/popup.js',
     'extension/extractor.js',
-    'extension/modules/popup-scanner.js',
-    'extension/modules/popup-publisher.js',
-    'extension/modules/popup-accounts-chat.js',
-    'extension/modules/account-recognizer.js',
-    'extension/modules/human-cadence.js',
-    'extension/modules/page-harvester.js',
-    'extension/modules/tab-service.js',
-    'extension/modules/cookie-service.js',
-    'extension/modules/sync-service.js',
-    'extension/modules/media-downloader.js',
-    'extension/modules/ghost-mode.js',
-    'extension/modules/profile-badge.js',
+    'extension/modules/popup/popup-scanner.js',
+    'extension/modules/popup/popup-publisher.js',
+    'extension/modules/popup/popup-accounts-chat.js',
+    'extension/modules/popup/popup-theme.js',
+    'extension/modules/session/account-recognizer.js',
+    'extension/modules/session/human-cadence.js',
+    'extension/modules/session/tab-service.js',
+    'extension/modules/session/cookie-service.js',
+    'extension/modules/session/sync-service.js',
+    'extension/modules/session/ghost-mode.js',
+    'extension/modules/session/app-launcher.js',
+    'extension/modules/session/auto-poster.js',
+    'extension/modules/harvester/page-harvester.js',
+    'extension/modules/harvester/media-downloader.js',
+    'extension/modules/harvester/profile-badge.js',
+    'extension/modules/extractor/extractor-identity.js',
+    'extension/modules/extractor/extractor-checkpoint.js',
     'extension/modules/injections/app-bridge.js',
     'extension/modules/injections/dom-chat-banner.js',
     'extension/modules/injections/search-injector.js',
@@ -75,12 +78,7 @@ test('extension entry points and modules exist and are non-empty', () => {
     'extension/modules/injections/modal-harvester.js',
     'extension/modules/injections/social-autoposter.js',
     'extension/modules/fiber/react-fiber-bridge.js',
-    'extension/modules/fiber/network-interceptor.js',
-    'extension/modules/extractor-identity.js',
-    'extension/modules/extractor-checkpoint.js',
-    'extension/modules/popup-theme.js',
-    'extension/modules/app-launcher.js',
-    'extension/modules/auto-poster.js'
+    'extension/modules/fiber/network-interceptor.js'
   ]
   for (const file of files) {
     const filePath = path.resolve(file)

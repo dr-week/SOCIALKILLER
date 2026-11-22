@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
-import { MessageCircle, Plus, RefreshCw, Send, Sparkles, UserRound, X } from 'lucide-vue-next'
+import { MessageCircle, Plus, RefreshCw, Send, Sparkles, UserPlus, UserRound, X } from 'lucide-vue-next'
+import { classifyInboxIntent } from '../domain/inbox-intent'
+import { createLead } from '../features/leads/leads-api'
 import { useToast } from '../shared/ui/useToast'
 
 type Interaction = { id: string; brandId: string; platformId: string; kind: 'comment' | 'message'; contactName: string; message: string; replyDraft: string; status: 'open' | 'draft' | 'replied' | 'needs-human'; createdAt: string; updatedAt: string }
@@ -16,8 +18,13 @@ const newContact = ref('')
 const newMessage = ref('')
 const newPlatform = ref('instagram')
 const newKind = ref<'comment' | 'message'>('comment')
-const current = computed(() => items.value.find(item => item.id === selectedId.value) || items.value[0])
-const api = 'http://127.0.0.1:4174/api/inbox'
+const intentFilter = ref<'all' | 'hot_lead' | 'inquiry' | 'complaint'>('all')
+const filteredItems = computed(() =>
+  intentFilter.value === 'all' ? items.value : items.value.filter(i => classifyInboxIntent(i.message).intent === intentFilter.value)
+)
+const current = computed(() => filteredItems.value.find(item => item.id === selectedId.value) || filteredItems.value[0])
+const currentIntent = computed(() => current.value ? classifyInboxIntent(current.value.message) : null)
+const api = '/api/inbox'
 
 async function request(path: string, body?: Record<string, unknown>) {
   const response = await fetch(`${api}${path}`, { method: body ? 'POST' : 'GET', headers: body ? { 'Content-Type': 'application/json' } : undefined, body: body ? JSON.stringify(body) : undefined })
@@ -52,6 +59,19 @@ async function saveStatus(status: Interaction['status']) {
   catch (e) { error.value = e instanceof Error ? e.message : 'Could not save reply.'; pushToast(error.value, 'error') }
   finally { busy.value = false }
 }
+async function promoteToLead() {
+  if (!current.value) return
+  busy.value = true
+  try {
+    await createLead({
+      brandId: props.brandId, contactName: current.value.contactName, handle: current.value.contactName,
+      platformId: current.value.platformId, source: 'inbox', intent: currentIntent.value?.label || 'General',
+      status: currentIntent.value?.intent === 'hot_lead' ? 'contacted' : 'new', message: current.value.message
+    })
+    pushToast(`Promoted ${current.value.contactName} to Leads CRM`, 'success')
+  } catch (e) { pushToast(e instanceof Error ? e.message : 'Could not promote to Lead CRM.', 'error') }
+  finally { busy.value = false }
+}
 watch(() => props.brandId, load)
 onMounted(load)
 </script>
@@ -78,11 +98,18 @@ onMounted(load)
       <button class="primary full" :disabled="busy || !newMessage.trim()" @click="addInteraction">Add to {{ brandName }} inbox</button>
     </section>
     <div class="inbox-grid">
-      <section v-auto-animate class="inbox-list card"><div class="section-title"><h2>Inbox</h2><span>{{ items.length }}</span></div>
-        <button v-for="item in items" :key="item.id" class="thread" :class="{ selected: current?.id === item.id }" @click="selectedId = item.id"><span class="platform-dot">{{ item.platformId.slice(0, 1).toUpperCase() }}</span><span class="thread-copy"><strong>{{ item.contactName }} <small>{{ item.kind }}</small></strong><span>{{ item.message }}</span><small>{{ item.platformId }} · {{ item.status.replace('-', ' ') }}</small></span></button>
+      <section v-auto-animate class="inbox-list card">
+        <div class="section-title"><h2>Inbox</h2><span>{{ filteredItems.length }}</span></div>
+        <div class="heading-actions" style="flex-wrap: wrap; gap: 4px; margin-bottom: 6px;">
+          <button v-for="f in (['all', 'hot_lead', 'inquiry', 'complaint'] as const)" :key="f" type="button" class="secondary" :style="intentFilter === f ? 'border-color: var(--accent, #38bdf8);' : ''" @click="intentFilter = f">{{ f === 'all' ? 'All' : f.replace('_', ' ') }}</button>
+        </div>
+        <button v-for="item in filteredItems" :key="item.id" class="thread" :class="{ selected: current?.id === item.id }" @click="selectedId = item.id">
+          <span class="platform-dot">{{ item.platformId.slice(0, 1).toUpperCase() }}</span>
+          <span class="thread-copy"><strong>{{ item.contactName }} <small>{{ classifyInboxIntent(item.message).label }}</small></strong><span>{{ item.message }}</span><small>{{ item.platformId }} · {{ item.status.replace('-', ' ') }}</small></span>
+        </button>
         <p v-if="!items.length" class="empty">No conversations yet. Click Add to log a comment or message.</p>
       </section>
-      <section class="conversation card" v-if="current"><div class="section-title"><div><h2>{{ current.contactName }}</h2><span>{{ current.platformId }} · {{ current.kind }}</span></div><span class="status-pill">{{ current.status.replace('-', ' ') }}</span></div>
+      <section class="conversation card" v-if="current"><div class="section-title"><div><h2>{{ current.contactName }}</h2><span>{{ current.platformId }} · {{ current.kind }} · {{ currentIntent?.label }}</span></div><div class="heading-actions"><button class="secondary" :disabled="busy" title="Promote contact to Solo Creator CRM" @click="promoteToLead"><UserPlus :size="14" /> Promote Lead</button><span class="status-pill">{{ current.status.replace('-', ' ') }}</span></div></div>
         <div class="incoming"><span class="bubble-label"><UserRound :size="14" /> Incoming {{ current.kind }}</span><p>{{ current.message }}</p></div>
         <div class="reply-area"><label for="reply-draft">Your reply draft</label><textarea id="reply-draft" v-model="current.replyDraft" placeholder="Generate a suggested reply, or write your own…" rows="5"></textarea><div class="reply-actions"><button class="secondary" :disabled="busy" @click="generateDraft"><Sparkles :size="15" /> {{ busy ? 'Working…' : 'Draft with AI' }}</button><button class="secondary" :disabled="busy || !current.replyDraft.trim()" @click="saveStatus('draft')">Save draft</button><button class="primary" :disabled="busy || !current.replyDraft.trim()" @click="saveStatus('replied')"><Send :size="15" /> Mark replied</button></div><small>“Mark replied” records your status here; copy and send the reply in the platform.</small></div>
       </section>

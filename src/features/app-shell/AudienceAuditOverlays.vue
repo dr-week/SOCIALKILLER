@@ -8,18 +8,34 @@ const props = defineProps<{ controller: AppController }>()
 const { fileInput, showExportGuide, queueState, audience, navigation } = props.controller
 const {
   queue, isQueueOpen, isRunning, isPaused, currentIndex, countdownSeconds,
-  completedCount, pendingCount, currentItem, openQueueModal, closeQueueModal,
-  startQueue, pauseQueue, resumeQueue, stopQueue
+  minDelaySec, maxDelaySec, sessionLimit, autoOpenProfile, activePreset,
+  completedCount, skippedCount, pendingCount, currentItem, progressPercent,
+  openQueueModal, closeQueueModal, startQueue, pauseQueue, resumeQueue, stopQueue,
+  skipCurrent, markDoneAndNext, removeFromQueue, setPacingPreset
 } = queueState
-const { resetData, importedAt } = audience
+const { resetData, importedAt, toggleWhitelist } = audience
+
+function handleWhitelistCurrent(username: string) {
+  toggleWhitelist(username)
+  skipCurrent()
+}
 </script>
 
 <template>
   <UnfollowQueueModal
     :is-open="isQueueOpen" :queue="queue" :is-running="isRunning" :is-paused="isPaused"
     :current-index="currentIndex" :countdown-seconds="countdownSeconds"
-    :completed-count="completedCount" :pending-count="pendingCount" :current-item="currentItem"
-    @close="closeQueueModal" @start="startQueue" @pause="pauseQueue" @resume="resumeQueue" @stop="stopQueue"
+    :completed-count="completedCount" :skipped-count="skippedCount"
+    :pending-count="pendingCount" :progress-percent="progressPercent"
+    :min-delay-sec="minDelaySec" :max-delay-sec="maxDelaySec"
+    :session-limit="sessionLimit" :auto-open-profile="autoOpenProfile"
+    :active-preset="activePreset" :current-item="currentItem"
+    @close="closeQueueModal" @start="startQueue" @pause="pauseQueue"
+    @resume="resumeQueue" @stop="stopQueue" @skip="skipCurrent"
+    @mark-done="markDoneAndNext" @whitelist-current="handleWhitelistCurrent"
+    @remove-item="removeFromQueue" @set-preset="setPacingPreset"
+    @update:session-limit="(val) => { sessionLimit = val }"
+    @update:auto-open-profile="(val) => { autoOpenProfile = val }"
   />
   <AudienceQueuePill
     v-if="!isQueueOpen && (isRunning || isPaused)"

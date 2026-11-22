@@ -1,11 +1,12 @@
-import { savePageCloneSession, listPageCloneSessions, getHtmlClone } from './clone-service.mjs'
-import { addFeedback, getFeedbackLogs } from './sync-store.mjs'
 import { readJsonBody } from './http/read-json.mjs'
 import { handleInstagramRoutes } from './routes/instagram-routes.mjs'
 import { handleSocialAndMarketingRoutes } from './routes/social-routes.mjs'
 import { handleBrandRoutes } from './routes/brand-routes.mjs'
 import { handleAssistantRoutes } from './routes/assistant-routes.mjs'
 import { createInboxRoutes } from './routes/inbox-routes.mjs'
+import { handleLeadsRoutes } from './routes/leads-routes.mjs'
+import { handleDevRoutes } from './routes/dev-routes.mjs'
+import { handleUnfollowLogRoutes } from './routes/unfollow-log-routes.mjs'
 import { assistantService } from './assistant/assistant-service.mjs'
 import { handleAutomationRoutes } from './automation/automation-routes.mjs'
 import { handleRuntimeRoutes } from './routes/runtime-routes.mjs'
@@ -77,6 +78,9 @@ export async function routeRequest(req, res) {
   const handledInbox = await handleInboxRoutes(req, res, url, json)
   if (handledInbox) return
 
+  const handledLeads = await handleLeadsRoutes(req, res, url, json)
+  if (handledLeads) return
+
   // 2. Delegate Instagram Profile, Follower Relationship & Sync Routes
   const handledInstagram = await handleInstagramRoutes(req, res, url, json)
   if (handledInstagram) return
@@ -85,50 +89,20 @@ export async function routeRequest(req, res) {
   const handledSocial = await handleSocialAndMarketingRoutes(req, res, url, json)
   if (handledSocial) return
 
+  // 3b. QUBO Simulated Annealing Post-Schedule Optimizer
+  if (req.method === 'POST' && url.pathname === '/api/social/optimize-schedule') {
+    const body = await readJsonBody(req).catch(() => ({}))
+    const { optimizePostSchedule } = await import('./marketing/scheduling/qubo-scheduler.mjs')
+    return json(res, 200, { success: true, ...optimizePostSchedule(body) })
+  }
+
   // 4. Delegate Brand Workspaces & Video Script Engine routes
   const handledBrand = await handleBrandRoutes(req, res, url, json)
   if (handledBrand) return
 
-  // 4. Developer Feedback Endpoint
-  if (req.method === 'POST' && url.pathname === '/api/dev/feedback') {
-    try {
-      const item = await readJsonBody(req)
-      return json(res, 201, { success: true, feedback: addFeedback(item) })
-    } catch (err) {
-      return json(res, err.statusCode || 400, { error: err.message || 'Invalid feedback data' })
-    }
-  }
-
-  if (req.method === 'GET' && url.pathname === '/api/dev/feedback') {
-    const logs = getFeedbackLogs()
-    return json(res, 200, { total: logs.length, entries: logs })
-  }
-
-  // 5. Page Clone & Developer Session Endpoints
-  if (req.method === 'POST' && url.pathname === '/api/dev/clone') {
-    try {
-      const payload = await readJsonBody(req)
-      const session = savePageCloneSession(payload)
-      return json(res, 201, { success: true, session })
-    } catch (err) {
-      return json(res, err.statusCode || 400, { error: 'Failed to save page clone', details: err.message })
-    }
-  }
-
-  if (req.method === 'GET' && url.pathname === '/api/dev/clone') {
-    const sessionId = url.searchParams.get('id')
-    if (sessionId) {
-      const html = getHtmlClone(sessionId)
-      if (!html) return json(res, 404, { error: 'Clone not found' })
-      res.writeHead(200, {
-        'content-type': 'text/html; charset=utf-8',
-        'access-control-allow-origin': '*'
-      })
-      return res.end(html)
-    }
-    const sessions = listPageCloneSessions()
-    return json(res, 200, { total: sessions.length, sessions })
-  }
+  // 5. Delegate Unfollow Cooldown Ledger & Developer routes
+  if (await handleUnfollowLogRoutes(req, res, url, json)) return
+  if (await handleDevRoutes(req, res, url, json)) return
 
   return json(res, 404, { error: 'Not found' })
 }
