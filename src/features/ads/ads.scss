@@ -1,0 +1,47 @@
+.ads-workspace {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.ads-header, .ads-panel-head, .ads-approval-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.ads-kpi-rail {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.ads-kpi-card, .ads-panel {
+  background: var(--surface-card, rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--surface-border, rgba(255, 255, 255, 0.1));
+  border-radius: 0.75rem;
+  padding: 0.85rem 1rem;
+}
+
+.ads-kpi-label, .ads-muted {
+  font-size: 0.82rem;
+  opacity: 0.75;
+}
+
+.ads-kpi-value {
+  display: block;
+  font-size: 1.35rem;
+  margin-top: 0.25rem;
+}
+
+.ads-table-wrap { overflow-x: auto; }
+.ads-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.ads-table th, .ads-table td { text-align: left; padding: 0.45rem 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.ads-badge { padding: 0.15rem 0.45rem; border-radius: 999px; background: rgba(99, 102, 241, 0.2); font-size: 0.75rem; }
+.ads-controls-inline, .ads-actions, .ads-toggle { display: flex; align-items: center; gap: 0.5rem; }
+.ads-btn-primary { padding: 0.45rem 0.85rem; border-radius: 0.5rem; border: 0; background: #6366f1; color: #fff; cursor: pointer; }
+.ads-btn-ghost { padding: 0.45rem 0.85rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.2); background: transparent; color: inherit; cursor: pointer; }
+.ads-audit-pre { white-space: pre-wrap; font-size: 0.82rem; line-height: 1.4; }

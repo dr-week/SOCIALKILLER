@@ -22,6 +22,15 @@
 
 ---
 
+## 📦 Downloads, Live App & 15th Mini-App
+
+- **Android APK & Chrome Extension ZIP**: [GitHub Releases (Latest)](https://github.com/dr-week/SOCIALKILLER/releases/latest)
+- **Live Web Preview (GitHub Pages)**: [https://dr-week.github.io/SOCIALKILLER/](https://dr-week.github.io/SOCIALKILLER/)
+- **Windows Auto-Installer**: Double-click [`Launch FoundryDesk.cmd`](./Launch%20FoundryDesk.cmd) to bootstrap & launch locally (`$0/month` hosting).
+- **15th Mini-App — Ads & Media Buying AI**: Micro-modular QUBO budget solver (`<2.5ms`), Thompson Sampling / UCB1 creative bandits, deterministic Kill/Scale/Fatigue rules, and Paper-Trade HITL approval queue (`3-2-2 DCT`, `70/20/10 Full-Funnel`, `Broad-First`).
+
+---
+
 ## 🔥 The Manifesto — Why We Built This
 
 The creative industry is broken because of extractive social media agencies and middlemen.

@@ -50,7 +50,8 @@ export const APP_NAVIGATION: MiniApp[] = [
   { id: 'asset-manager', label: 'Asset Manager', category: 'Build', description: '✦ Local Masters · ◈ WebP Variants · ▹ Catalog', view: MINI_APP_ROUTES['asset-manager'], icon: Images, accent: '#59ddb6', visual: 'constellation', background: assetManagerBackground, status: 'Available' },
   { id: 'automations', label: 'Automation Studio', category: 'Operate', description: '✦ Triggers · ◈ Conditions · ▹ Auto-Drafts', view: MINI_APP_ROUTES.automations, icon: GitBranch, accent: '#b495ff', visual: 'flow', background: automationsBackground, status: 'Available' },
   { id: 'android-builder', label: 'Android Build Studio', category: 'Build', description: '✦ JDK/SDK Check · ◈ APK & AAB Builds', view: MINI_APP_ROUTES['android-builder'], icon: Smartphone, accent: '#72d9a8', visual: 'isometric', background: androidBuilderBackground, status: 'Available' },
-  { id: 'leads', label: 'Leads & CRM', category: 'Grow', description: '✦ Comment-to-Lead · ◈ Kanban Pipeline · ▹ CSV Export', view: MINI_APP_ROUTES.leads, icon: Target, accent: '#59ddb6', visual: 'flow', status: 'Available' }
+  { id: 'leads', label: 'Leads & CRM', category: 'Grow', description: '✦ Comment-to-Lead · ◈ Kanban Pipeline · ▹ CSV Export', view: MINI_APP_ROUTES.leads, icon: Target, accent: '#59ddb6', visual: 'flow', status: 'Available' },
+  { id: 'ads', label: 'Ads & Media Buying', category: 'Grow', description: '✦ QUBO Budget · ◈ Bandits · ▹ Paper-Trade HITL', view: 'ads' as any, icon: ChartNoAxesCombined, accent: '#6366f1', visual: 'radar', status: 'Available' }
 ]
 
 export const ROADMAP_APPS: Array<Omit<MiniApp, 'view'>> = [

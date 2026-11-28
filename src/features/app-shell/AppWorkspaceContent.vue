@@ -13,6 +13,7 @@ const AssetManagerWorkspace = defineAsyncComponent(() => import('../asset-manage
 const AutomationStudioWorkspace = defineAsyncComponent(() => import('../automation/AutomationStudioWorkspace.vue'))
 const AndroidBuildStudioWorkspace = defineAsyncComponent(() => import('../android-studio/AndroidBuildStudioWorkspace.vue'))
 const LeadsWorkspace = defineAsyncComponent(() => import('../leads/LeadsWorkspace.vue'))
+const AdsWorkspace = defineAsyncComponent(() => import('../ads/AdsWorkspace.vue'))
 const SocialPublisher = defineAsyncComponent(() => import('../../components/SocialPublisher.vue'))
 const CommunityInbox = defineAsyncComponent(() => import('../../components/CommunityInbox.vue'))
 const CreativeHub = defineAsyncComponent(() => import('../../components/CreativeHub.vue'))
@@ -60,6 +61,7 @@ const {
       v-else-if="activeView === 'leads'"
       :key="activeBrand.id" :brand-id="activeBrand.id" :brand-name="activeBrand.name"
     />
+    <AdsWorkspace v-else-if="(activeView as string) === 'ads'" />
     <CreativeHub v-else-if="activeView === 'content-studio'" :brand-handle="activeBrand.name" :search-query="search" />
     <ScriptStudioWorkspace
       v-else-if="activeView === 'script-studio'" :brand="activeBrand"

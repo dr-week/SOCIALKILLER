@@ -10,6 +10,7 @@ import { handleUnfollowLogRoutes } from './routes/unfollow-log-routes.mjs'
 import { assistantService } from './assistant/assistant-service.mjs'
 import { handleAutomationRoutes } from './automation/automation-routes.mjs'
 import { handleRuntimeRoutes } from './routes/runtime-routes.mjs'
+import { handleAdsRoutes } from './routes/ads-routes.mjs'
 
 const handleInboxRoutes = createInboxRoutes({ draftReply: input => assistantService.draftCommentReply(input) })
 
@@ -103,6 +104,7 @@ export async function routeRequest(req, res) {
   // 5. Delegate Unfollow Cooldown Ledger & Developer routes
   if (await handleUnfollowLogRoutes(req, res, url, json)) return
   if (await handleDevRoutes(req, res, url, json)) return
+  if (await handleAdsRoutes({ req, res, url, json, readJsonBody })) return
 
   return json(res, 404, { error: 'Not found' })
 }
